@@ -1,0 +1,55 @@
+<div class="custom-container">
+    <div class="card">
+        <div class="custom-card">
+            <h5 class="card-header">Danh sách các {{title}}</h5> 
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-5">
+        <button type="button" class="d-flex btn btn-outline-info">
+            <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a type">
+            <span class="ml-1">Thêm một {{type}}</span>
+        </button>
+        <button type="button" class="d-flex btn btn-outline-info ml-3">
+            <img src="/static/images/departmentOfficer/icon-delete.png" width="24" height="24" alt="delete a type">
+            <span class="ml-1">Xóa một {{type}}</span>
+        </button>
+        <button type="button" class="d-flex btn btn-outline-info ml-3">
+            <img src="/static/images/departmentOfficer/icon-update.png" width="24" height="24" alt="update a type">
+            <span class="ml-1">Cập nhật một {{type}}</span>
+        </button>
+    </div>
+    <div>
+        <div class="card mt-5">
+        <h5 class="card-header">Xem danh sách</h5>
+        {{#if empty}}
+            <div class="card-body">Không có dữ liệu</div>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-1">#</th>
+                    <th scope="col" class="col-3">Tên loại vị trí</th>
+                    <th scope="col" class="col-6">Mô tả</th>
+                    <th scope="col" class="col-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each information}}
+                <tr>
+                    <th scope="row">{{stt}}</th>
+                    <td>{{name}}</td>
+                    <td>{{description}}</td>
+                    <td class="d-flex">
+                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                        <span class="ml-1">Xem chi tiết</span>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+        <div class="card-footer text-muted">
+            2 days ago
+        </div>
+    </div>
+</div>

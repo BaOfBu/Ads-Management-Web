@@ -1,0 +1,77 @@
+<nav class="fixed-top navbar navbar-expand-lg navbar-light bg-light shadow">
+  <div class="custom-container">
+    <div class="row">
+      <a class="navbar-brand" href="#">
+        <div class="d-flex align-items-center">
+          <img src="/static/images/departmentOfficer/icon-department.png" alt="icon-department">
+          <span class="custom-font-color">Sở VH-TT</span>
+        </div>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-link">
+            <a class="custom-font-color" href="#">Quận <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-link">
+            <a class="custom-font-color" href="#">Phường</a>
+          </li>
+          <li class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+              <span class="custom-font-color">Thông tin cung cấp</span>
+            </a>
+            <div class="dropdown-menu custom-font-color">
+              <a class="dropdown-item" href="#">Các loại hình quảng cáo</a>
+              <a class="dropdown-item" href="#">Các loại hình thức báo cáo</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          <li class="nav-link">
+            <a class="custom-font-color" href="#">Quảng cáo</a>
+          </li>
+          <li class="nav-link">
+            <a class="custom-font-color" href="#">Thống kê</a>
+          </li>
+          <li class="nav-link">
+            <a class="custom-font-color" href="#">Cán bộ</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav">
+          {{#if auth}}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+              Hello, <b>{{authUser.name}}!</b>
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/account/profile">
+                <i class="bi bi-person"></i>
+                Profile
+              </a>
+              <div class="dropdown-divider"></div>
+              <form id="frmLogout" action="/account/logout" method="post"></form>
+              <a class="dropdown-item" href="javascript: $('#frmLogout').submit()">
+                <i class="bi bi-box-arrow-in-left"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+          {{else}}
+          <li class="nav-item">
+            <a class="nav-link" href="/account/register">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/account/login">Login</a>
+          </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

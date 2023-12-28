@@ -1,0 +1,64 @@
+<div class="custom-container">
+    <div class="card">
+        <div class="custom-card">
+            <h5 class="card-header">Danh sách các quận của thành phố Hồ Chí Minh</h5> 
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-5">
+        <button type="button" class="d-flex btn btn-outline-info">
+            <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a district">
+            <span class="ml-1">Thêm một quận</span>
+        </button>
+        <button type="button" class="d-flex btn btn-outline-info ml-3">
+            <img src="/static/images/departmentOfficer/icon-delete.png" width="24" height="24" alt="delete a district">
+            <span class="ml-1">Xóa một quận</span>
+        </button>
+        <button type="button" class="d-flex btn btn-outline-info ml-3">
+            <img src="/static/images/departmentOfficer/icon-update.png" width="24" height="24" alt="update a district">
+            <span class="ml-1">Cập nhật một quận</span>
+        </button>
+    </div>
+    <div>
+        <div class="card mt-5">
+        <h5 class="card-header">Xem danh sách</h5>
+        {{#if empty}}
+            <div class="card-body">Không có dữ liệu</div>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-1">#</th>
+                    <th scope="col" class="col-3">Tên quận</th>
+                    <th scope="col" class="col-6">Mô tả</th>
+                    <th scope="col" class="col-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{!-- <tr>
+                    <th scope="row">1</th>
+                    <td>Quận 1</td>
+                    <td>Nơi thu hút nhiều khách nước ngoài nhất</td>
+                    <td class="d-flex">
+                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                        <span class="ml-1">Xem chi tiết</span>
+                    </td>
+                </tr> --}}
+                {{#each district}}
+                <tr>
+                    <th scope="row">{{stt}}</th>
+                    <td>{{name}}</td>
+                    <td>{{description}}</td>
+                    <td class="d-flex">
+                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                        <span class="ml-1">Xem chi tiết</span>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+        <div class="card-footer text-muted">
+            2 days ago
+        </div>
+    </div>
+</div>
