@@ -3,6 +3,6 @@ import wardController from "../../controllers/departmentOfficer/ward.controller.
 
 const router = express.Router();
 
-router.get("/", wardController.index);
+router.get("/:districtId", wardController.index);
 
 export default router;

@@ -1,7 +1,6 @@
 const index = async function (req, res) {
-    const districtId = req.params.districtId || 1;
     const empty = true;
-    res.render("departmentOfficer/ward", {
+    res.render("departmentOfficer/ads_panel", {
         empty: empty
     });
 };

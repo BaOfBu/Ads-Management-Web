@@ -1,11 +1,11 @@
 const index = async function (req, res) {
-    const page = req.query.page || 'location-type';
+    const choice = req.params.choice || 'location-type';
     const empty = true;
 
     let title = 'loại vị trí được phép đặt bảng quảng cáo ở thành phố';
     let type = 'loại';
 
-    switch(page){
+    switch(choice){
         case 'ads-type':{
             title = 'hình thức quảng cáo ở thành phố';
             type = 'hình thức';

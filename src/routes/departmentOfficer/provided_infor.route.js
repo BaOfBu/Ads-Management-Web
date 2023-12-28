@@ -3,6 +3,6 @@ import providedInforController from "../../controllers/departmentOfficer/provide
 
 const router = express.Router();
 
-router.get("/", providedInforController.index);
+router.get("/:choice", providedInforController.index);
 
 export default router;
