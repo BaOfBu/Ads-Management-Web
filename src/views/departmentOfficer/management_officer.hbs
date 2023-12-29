@@ -107,6 +107,24 @@
                             </div>
 
                             <div class="area d-flex mt-3">
+                                <div class="district mr-5">
+                                    <label for="dropdownDistrict">Quận</label>
+                                    <button class="form-control dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false" required>
+                                    Quận
+                                    </button>
+                                    <div class="input-group has-validation">
+                                        <input id="selectedDistrict" name="district" type="hidden"></input>
+                                        <div id="districtError" class="invalid-feedback">
+                                            Vui lòng chọn một quận.
+                                        </div>
+                                    </div>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" required>
+                                        {{#each district}}
+                                            <li><a class="dropdown-item" data-value="{{name}}">{{name}}</a></li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+
                                 <div class="ward">
                                     <label for="dropdownWard">Phường</label>
                                     <button class="form-control dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false" required>
@@ -120,31 +138,7 @@
                                     </div>
                                     
                                     <ul class="dropdown-menu" aria-labelledby="dropdownWard">
-                                        <li><a class="dropdown-item" data-value="1">1</a></li>
-                                        <li><a class="dropdown-item" data-value="2">2</a></li>
-                                        {{#each ward}}
-                                            <li><a class="dropdown-item" data-value="{{name}}">{{name}}</a></li>
-                                        {{/each}}
-                                    </ul>
-                                </div>
 
-                                <div class="district ml-5">
-                                    <label for="dropdownDistrict">Quận</label>
-                                    <button class="form-control dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false" required>
-                                    Quận
-                                    </button>
-                                    <div class="input-group has-validation">
-                                        <input id="selectedDistrict" name="district" type="hidden"></input>
-                                        <div id="districtError" class="invalid-feedback">
-                                            Vui lòng chọn một quận.
-                                        </div>
-                                    </div>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" required>
-                                        <li><a class="dropdown-item" data-value="1">1</a></li>
-                                        <li><a class="dropdown-item" data-value="2">2</a></li>
-                                        {{#each district}}
-                                            <li><a class="dropdown-item" data-value="{{name}}">{{name}}</a></li>
-                                        {{/each}}
                                     </ul>
                                 </div>
                             </div>
@@ -155,7 +149,7 @@
             <div class="card-footer">
                 <button id="submitButton" type="submit" class="btn btn-primary">
                     <i class="bi bi-check2"></i>
-                    Save
+                    Lưu
                 </button>
             </div>
         </div>

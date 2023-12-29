@@ -47,24 +47,7 @@ function checkConfirmPassword() {
     let password = $("#txtPassword").val();
     let confirm_password = $("#txtConfirm").val();
 
-    return password == confirm_password;
-}
-
-$("#txtConfirm").on("input", function () {
-    if (checkConfirmPassword()) {
-        $(this).removeClass("is-invalid");
-        $("#checkValidationConfirmPassword").hide();
-    } else {
-        $(this).addClass("is-invalid");
-        $("#checkValidationConfirmPassword").show();
-    }
-});
-
-function checkConfirmPassword() {
-    let password = $("#txtPassword").val();
-    let confirm_password = $("#txtConfirm").val();
-
-    return !confirm_password && password == confirm_password;
+    return confirm_password.length > 0 && password == confirm_password;
 }
 
 $("#txtName").on("input", function () {
@@ -138,14 +121,18 @@ $("#dropdownWard").on("click", function () {
         $("#dropdownWard").addClass("is-invalid");
         $("#wardError").show();
     }else{
-        $(this).removeClass("is-invalid");
         $("#dropdownWard").removeClass("is-invalid");
         $("#wardError").hide();
     }
 });
 
-$(".ward .dropdown-menu .dropdown-item").on("click", function () {
-    var selectedValue = $(this).data("value");
+$(".ward ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
+    event.preventDefault();
+    console.log("Đã vô");
+    $("#dropdownDistrict").removeClass("is-invalid");
+    $("#districtError").hide();
+    let selectedValue = $(this).data("value");
+    console.log("selectedWard: ", selectedValue);
     $("#selectedWard").val(selectedValue);
     $("#dropdownWard").text(selectedValue);
     $("#dropdownWard").removeClass("is-invalid");
@@ -162,41 +149,58 @@ $("#dropdownDistrict").on("click", function () {
     }
 });
 
-$(".district .dropdown-menu .dropdown-item").on("click", function () {
-    var selectedValue = $(this).data("value");
+$(".district .dropdown-menu .dropdown-item").on("click", function (event) {
+    event.preventDefault();
+    let selectedValue = $(this).data("value");
     $("#selectedDistrict").val(selectedValue);
     $("#dropdownDistrict").text(selectedValue);
+
+    console.log("selectedDistrict: ", selectedValue);
+    $('.ward ul.dropdown-menu').empty();
+    $.getJSON(`/department-officer/management-officer/list-ward?district=${selectedValue}`, function (data) {
+        if(data != false){
+            for (let p of data) {
+                let newItem = '<li><a class="dropdown-item" data-value="' + p.name + '">' + p.name + '</a></li>';
+                console.log(newItem);
+                $(".ward ul.dropdown-menu").append(newItem);
+            }
+        }else{
+            $("#selectedWard").val("");
+            $("#dropdownWard").text("Phường");
+        }  
+    });
+
     $("#dropdownDistrict").removeClass("is-invalid");
     $("#districtError").hide();
 });
 
 $("#submitButton").on("click", function (event) {
     let isValid = true;
-    if(!checkUsername()){
+    if(checkUsername() === false){
         $('#txtUsername').addClass("is-invalid");
         $("#checkValidationUsername").show();
         $('#txtUsername').focus();
         isValid = false;
     }
-    if(!checkPassword()){
+    if(checkPassword() === false){
         $('#txtPassword').addClass("is-invalid");
         $("#checkValidationPassword").show();
         if(isValid) $('#txtPassword').focus();
         isValid = false;
     }
-    if(!checkConfirmPassword()){
+    if(checkConfirmPassword() === false){
         $('#txtConfirm').addClass("is-invalid");
         $("#checkValidationConfirmPassword").show();
         if(isValid) $('#txtConfirm').focus();
         isValid = false;
     }
-    if(!checkName()){
+    if(checkName() === false){
         $('#txtName').addClass("is-invalid");
         $("#checkValidationName").show();
         if(isValid) $('#txtName').focus();
         isValid = false;
     }
-    if(!checkEmail()){
+    if(checkEmail() === false){
         $('#txtEmail').addClass("is-invalid");
         $("#checkValidationEmail").show();
         if(isValid) $('#txtEmail').focus();
@@ -208,22 +212,24 @@ $("#submitButton").on("click", function (event) {
         if(isValid) $("#txtDoB").focus();
         isValid = false;
     }
-    if(!checkPhone()){
+    if(checkPhone() === false){
         $('#txtPhone').addClass("is-invalid");
         $("#checkValidationPhone").show();
         if(isValid) $('#txtPhone').focus();
         isValid = false;
     }
-    if($("#selectedWard").val() == ""){
-        $("#dropdownWard").addClass("is-invalid");
-        $("#wardError").show();
-        if(isValid) $("#dropdownWard").focus();
-        isValid = false;
-    }
+
     if($("#selectedDistrict").val() == ""){
         $("#dropdownDistrict").addClass("is-invalid");
         $("#districtError").show();
         if(isValid) $("#dropdownDistrict").focus(); 
+        isValid = false;
+    }
+    
+    if($("#selectedWard").val() == ""){
+        $("#dropdownWard").addClass("is-invalid");
+        $("#wardError").show();
+        if(isValid) $("#dropdownWard").focus();
         isValid = false;
     }
 

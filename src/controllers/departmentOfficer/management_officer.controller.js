@@ -6,14 +6,32 @@ import districtService from "../../services/departmentOfficer/district.service.j
 import officerService from '../../services/departmentOfficer/officer.service.js';
 
 const index = async function (req, res) {
-    const empty = true;
+    const district = districtService.findAll();
     res.render("departmentOfficer/management_officer", {
-        empty: empty
+        district: district
     });
 };
 
 const register = async function(req, res){
-    res.render("departmentOfficer/management_officer");
+    const district = await districtService.findAll();
+    res.render("departmentOfficer/management_officer", {
+        district: district,
+    });
+}
+
+const list_ward = async function(req, res){
+    const district = req.query.district;
+    const districtId = await districtService.getIdByName(district);
+    if(districtId){
+        const ward = await wardService.findAllByDistrictId(districtId.districtId);
+        if(ward){
+            return res.json(ward);
+        }else{
+            res.json(false);
+        }
+    }else{
+        res.json(false);
+    }
 }
 
 const isAvaiable = async function(req, res){
@@ -38,9 +56,9 @@ const handle_register = async function(req, res){
         const raw_dob = req.body.raw_dob;
         const dob = moment(raw_dob, 'DD/MM/YYYY').format('YYYY-MM-DD');
 
-        const wardId = wardService.getIdByName(req.body.ward);
+        const wardId = await wardService.getIdByName(req.body.ward);
 
-        const districtId = districtService.getIdByName(req.body.district);
+        const districtId = await districtService.getIdByName(req.body.district);
 
         const account = {
             username: req.body.username,
@@ -50,12 +68,15 @@ const handle_register = async function(req, res){
             phone: req.body.phone,
             dob: dob,
             role: req.body.role,
-            wardId: wardId,
-            districtId: districtId
+            wardId: wardId.wardId,
+            districtId: districtId.districtId
         }
 
         await officerService.add(account);
     }
-    res.render("departmentOfficer/management_officer");
+    const district = districtService.findAll();
+    res.render("departmentOfficer/management_officer", {
+        district: district
+    });
 }
-export default { index, register, isAvaiable, handle_register};
+export default { index, register, list_ward, isAvaiable, handle_register};
