@@ -1,0 +1,50 @@
+{{#section 'js'}}
+    <script src="/static/js/departmentOfficer/management_district/edit.js"></script>
+{{/section}}
+
+<div class="custom-container">
+    <form action="" method="post" id="frmEdit">
+        <div class="card">
+            <h5 class="card-header">
+            Chỉnh sửa thông tin quận
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="txtDistrictID">#</label>
+                    <input type="text" name="districtId" id="txtDistrictID" class="form-control" readonly value="{{districtId}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtName">Tên quận</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="name" id="txtName" class="form-control" value="{{name}}" aria-describedby="checkValidationName checkValidationEmptyName" autofocus>
+                        <div id="checkValidationEmptyName" class="invalid-feedback">
+                            Vui lòng không để trống mục này
+                        </div>
+                        <div id="checkValidationName" class="invalid-feedback">
+                            Vui lòng nhập tên quận không quá 50 kí tự
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="txtDescription">Mô tả</label>
+                    <textarea class="form-control" name="description" id="txtDescription" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-outline-success" href="/department-officer/district" role="button">
+                    <i class="bi bi-skip-backward-fill"></i>
+                    Danh sách
+                </a>
+                <button id="btnDelete" type="submit" class="btn btn-danger" formaction="/department-officer/district/del">
+                    <i class="bi bi-trash-fill"></i>
+                    Xóa
+                </button>
+                <button id="btnSubmit" type="submit" class="btn btn-primary" formaction="/department-officer/district/patch">
+                    <i class="bi bi-check2"></i>
+                    Lưu
+                </button>
+                <input type="hidden" id="action" value="noAction">
+            </div>
+        </div>
+    </form>
+</div>

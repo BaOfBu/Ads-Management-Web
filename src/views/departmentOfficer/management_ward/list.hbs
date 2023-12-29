@@ -1,0 +1,83 @@
+{{#section 'css'}}
+    <link rel="stylesheet" href="/static/css/departmentOfficer/district.css">
+{{/section}}
+
+<div class="custom-container">
+    <div class="card">
+        <div class="custom-card">
+            <h5 class="card-header d-flex justify-content-center">Danh sách các phường của quận {{districtName}} thành phố Hồ Chí Minh</h5> 
+        </div>
+    </div>
+    <div>
+        <div class="card mt-5">
+        <h5 class="card-header d-flex justify-content-between align-items-center">
+            Xem danh sách phường
+            <a href="ward/add?districtId={{districtId}}" class="d-flex btn btn-outline-info" role="button">
+                <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a district">
+                <span class="ml-1">Thêm một phường</span>
+            </a>
+        </h5>
+        {{#if empty}}
+            <div class="card-body">Không có dữ liệu</div>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">#</span>
+                    </th>
+                    <th scope="col" class="col-3">
+                        <span class="d-flex justify-content-center">Tên phường</span>
+                    </th>
+                    <th scope="col" class="col-5">
+                        <span class="d-flex justify-content-center">Mô tả</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Hành động</span>
+                    </th>
+                    <th scope="col" class="col-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each ward}}
+                <tr>
+                    <th scope="row">
+                        <span class="d-flex justify-content-center">
+                            {{stt}}
+                        </span>
+                    </th>
+                    <td>
+                        <span class="d-flex justify-content-center">
+                            {{name}}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center">
+                            {{description}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-sm btn-outline-info" href="ward/edit?districtId={{districtId}}&wardId={{wardId}}" role="button">
+                                <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="d-flex view-detail mt-1" href="ward/view-detail?districtId={{districtId}}&wardId={{wardId}}" role="button">
+                                <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                                <span class="ml-1">Xem chi tiết</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+        <div class="card-footer text-muted font-italic">
+            <span class="small">{{date}}</span>
+        </div>
+    </div>
+</div>
