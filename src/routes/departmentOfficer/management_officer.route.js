@@ -4,5 +4,8 @@ import managementOfficerController from "../../controllers/departmentOfficer/man
 const router = express.Router();
 
 router.get("/", managementOfficerController.index);
+router.get("/register", managementOfficerController.register);
+router.get("/is-available", managementOfficerController.isAvaiable);
+router.post("/register", managementOfficerController.handle_register);
 
 export default router;

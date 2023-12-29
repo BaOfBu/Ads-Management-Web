@@ -1,116 +1,104 @@
-$(document).ready(function () {
-    $("#txtUsername").on("input", function () {
-        if (checkUsername()) {
-            $(this).removeClass("is-invalid");
-            $("#checkValidationUsername").hide();
-        } else {
-            $(this).addClass("is-invalid");
-            $("#checkValidationUsername").show();
-        }
-    });
-
-    function checkUsername() {
-        let username = $("#txtUsername").val();
-
-        let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*\s).{8,50}$/;
-        return regex.test(username);
+$("#txtUsername").on("input", function () {
+    if (checkUsername()) {
+        $(this).removeClass("is-invalid");
+        $("#checkValidationUsername").hide();
+    } else {
+        $(this).addClass("is-invalid");
+        $("#checkValidationUsername").show();
     }
 });
 
-$(document).ready(function () {
-    $("#txtPassword").on("input", function () {
-        $("#txtConfirm").val("");
-        if (checkPassword()) {
-            $(this).removeClass("is-invalid");
-            $("#checkValidationPassword").hide();
-        } else {
-            $(this).addClass("is-invalid");
-            $("#checkValidationPassword").show();
-        }
-    });
+function checkUsername() {
+    let username = $("#txtUsername").val();
 
-    function checkPassword() {
-        let password = $("#txtPassword").val();
+    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*\s).{8,50}$/;
+    return regex.test(username);
+}
 
-        let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*\s).{8,50}$/;
-        return regex.test(password);
+$("#txtPassword").on("input", function () {
+    $("#txtConfirm").val("");
+    if (checkPassword()) {
+        $(this).removeClass("is-invalid");
+        $("#checkValidationPassword").hide();
+    } else {
+        $(this).addClass("is-invalid");
+        $("#checkValidationPassword").show();
     }
 });
 
-$(document).ready(function () {
-    $("#txtConfirm").on("input", function () {
-        if (checkConfirmPassword()) {
-            $(this).removeClass("is-invalid");
-            $("#checkValidationConfirmPassword").hide();
-        } else {
-            $(this).addClass("is-invalid");
-            $("#checkValidationConfirmPassword").show();
-        }
-    });
+function checkPassword() {
+    let password = $("#txtPassword").val();
 
-    function checkConfirmPassword() {
-        let password = $("#txtPassword").val();
-        let confirm_password = $("#txtConfirm").val();
+    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?!.*\s).{8,50}$/;
+    return regex.test(password);
+}
 
-        return password == confirm_password;
+$("#txtConfirm").on("input", function () {
+    if (checkConfirmPassword()) {
+        $(this).removeClass("is-invalid");
+        $("#checkValidationConfirmPassword").hide();
+    } else {
+        $(this).addClass("is-invalid");
+        $("#checkValidationConfirmPassword").show();
     }
 });
 
-$(document).ready(function () {
-    $("#txtConfirm").on("input", function () {
-        if (checkConfirmPassword()) {
-            $(this).removeClass("is-invalid");
-            $("#checkValidationConfirmPassword").hide();
-        } else {
-            $(this).addClass("is-invalid");
-            $("#checkValidationConfirmPassword").show();
-        }
-    });
+function checkConfirmPassword() {
+    let password = $("#txtPassword").val();
+    let confirm_password = $("#txtConfirm").val();
 
-    function checkConfirmPassword() {
-        let password = $("#txtPassword").val();
-        let confirm_password = $("#txtConfirm").val();
+    return password == confirm_password;
+}
 
-        return password == confirm_password;
+$("#txtConfirm").on("input", function () {
+    if (checkConfirmPassword()) {
+        $(this).removeClass("is-invalid");
+        $("#checkValidationConfirmPassword").hide();
+    } else {
+        $(this).addClass("is-invalid");
+        $("#checkValidationConfirmPassword").show();
     }
 });
 
-$(document).ready(function () {
-    $("#txtName").on("input", function () {
-        if (checkName()) {
-            $(this).removeClass("is-invalid");
-            $("#checkValidationName").hide();
-        } else {
-            $(this).addClass("is-invalid");
-            $("#checkValidationName").show();
-        }
-    });
+function checkConfirmPassword() {
+    let password = $("#txtPassword").val();
+    let confirm_password = $("#txtConfirm").val();
 
-    function checkName() {
-        let name = $("#txtName").val();
+    return !confirm_password && password == confirm_password;
+}
 
-        return name.length <= 100;
+$("#txtName").on("input", function () {
+    if (checkName()) {
+        $(this).removeClass("is-invalid");
+        $("#checkValidationName").hide();
+    } else {
+        $(this).addClass("is-invalid");
+        $("#checkValidationName").show();
     }
 });
 
-$(document).ready(function () {
-    $("#txtEmail").on("input", function () {
-        if (checkEmail()) {
-            $(this).removeClass("is-invalid");
-            $("#checkValidationEmail").hide();
-        } else {
-            $(this).addClass("is-invalid");
-            $("#checkValidationEmail").show();
-        }
-    });
+function checkName() {
+    let name = $("#txtName").val();
 
-    function checkEmail() {
-        let email = $("#txtEmail").val();
+    return name.length > 0 && name.length <= 100;
+}
 
-        let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email) && email.length <= 100;
+$("#txtEmail").on("input", function () {
+    if (checkEmail()) {
+        $(this).removeClass("is-invalid");
+        $("#checkValidationEmail").hide();
+    } else {
+        $(this).addClass("is-invalid");
+        $("#checkValidationEmail").show();
     }
 });
+
+function checkEmail() {
+    let email = $("#txtEmail").val();
+
+    let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email) && email.length <= 100;
+}
 
 $('#txtDoB').datetimepicker({
     timepicker: false,
@@ -118,76 +106,144 @@ $('#txtDoB').datetimepicker({
     mask: true
 });
 
-$(document).ready(function () {
-    $("#txtPhone").on("input", function () {
-        if (checkPhone()) {
-            $(this).removeClass("is-invalid");
-            $("#checkValidationPhone").hide();
-        } else {
-            $(this).addClass("is-invalid");
-            $("#checkValidationPhone").show();
-        }
-    });
-
-    function checkPhone() {
-        let phone = $("#txtPhone").val();
-
-        let regex = /^(0[3-9])+([0-9]{8})$/;
-        return regex.test(phone);
+$("#txtDoB").on("input", function () {
+    if ($("#txtDoB").val().trim() === "" || $("#txtDoB").val() === "__/__/____") {
+        $(this).addClass("is-invalid");
+        $("#checkValidationPhone").show();
+    } else {
+        $(this).removeClass("is-invalid");
+        $("#checkValidationPhone").hide();
     }
 });
 
-$(document).ready(function () {
-    $("#dropdownWard").on("click", function () {
-        if($("#selectedWard").val() == ""){
-            $(this).addClass("is-invalid");
-            $("#dropdownWard").addClass("is-invalid");
-            $("#wardError").show();
-        }else{
-            $(this).removeClass("is-invalid");
-            $("#dropdownWard").removeClass("is-invalid");
-            $("#wardError").hide();
-        }
-    });
-
-    $(".ward .dropdown-menu .dropdown-item").on("click", function () {
-        var selectedValue = $(this).data("value");
-        $("#selectedWard").val(selectedValue);
-        $("#dropdownWard").text(selectedValue);
-        $("#dropdownWard").removeClass("is-invalid");
-        $("#wardError").hide();
-    });
+$("#txtPhone").on("input", function () {
+    if (checkPhone()) {
+        $(this).removeClass("is-invalid");
+        $("#checkValidationPhone").hide();
+    } else {
+        $(this).addClass("is-invalid");
+        $("#checkValidationPhone").show();
+    }
 });
 
-$(document).ready(function () {
-    $("#dropdownDistrict").on("click", function () {
-        if($("#selectedDistrict").val() == ""){
-            $("#dropdownDistrict").addClass("is-invalid");
-            $("#districtError").show();
-        }else{
-            $("#dropdownDistrict").removeClass("is-invalid");
-            $("#districtError").hide();
-        }
-    });
+function checkPhone() {
+    let phone = $("#txtPhone").val();
 
-    $(".district .dropdown-menu .dropdown-item").on("click", function () {
-        var selectedValue = $(this).data("value");
-        $("#selectedDistrict").val(selectedValue);
-        $("#dropdownDistrict").text(selectedValue);
+    let regex = /^(0[3-9])+([0-9]{8})$/;
+    return regex.test(phone);
+}
+
+$("#dropdownWard").on("click", function () {
+    if($("#selectedWard").val() == ""){
+        $("#dropdownWard").addClass("is-invalid");
+        $("#wardError").show();
+    }else{
+        $(this).removeClass("is-invalid");
+        $("#dropdownWard").removeClass("is-invalid");
+        $("#wardError").hide();
+    }
+});
+
+$(".ward .dropdown-menu .dropdown-item").on("click", function () {
+    var selectedValue = $(this).data("value");
+    $("#selectedWard").val(selectedValue);
+    $("#dropdownWard").text(selectedValue);
+    $("#dropdownWard").removeClass("is-invalid");
+    $("#wardError").hide();
+});
+
+$("#dropdownDistrict").on("click", function () {
+    if($("#selectedDistrict").val() == ""){
+        $("#dropdownDistrict").addClass("is-invalid");
+        $("#districtError").show();
+    }else{
         $("#dropdownDistrict").removeClass("is-invalid");
         $("#districtError").hide();
-    });
+    }
+});
+
+$(".district .dropdown-menu .dropdown-item").on("click", function () {
+    var selectedValue = $(this).data("value");
+    $("#selectedDistrict").val(selectedValue);
+    $("#dropdownDistrict").text(selectedValue);
+    $("#dropdownDistrict").removeClass("is-invalid");
+    $("#districtError").hide();
 });
 
 $("#submitButton").on("click", function (event) {
-    var selectedValue = $("#selectedWard").val();
+    let isValid = true;
+    if(!checkUsername()){
+        $('#txtUsername').addClass("is-invalid");
+        $("#checkValidationUsername").show();
+        $('#txtUsername').focus();
+        isValid = false;
+    }
+    if(!checkPassword()){
+        $('#txtPassword').addClass("is-invalid");
+        $("#checkValidationPassword").show();
+        if(isValid) $('#txtPassword').focus();
+        isValid = false;
+    }
+    if(!checkConfirmPassword()){
+        $('#txtConfirm').addClass("is-invalid");
+        $("#checkValidationConfirmPassword").show();
+        if(isValid) $('#txtConfirm').focus();
+        isValid = false;
+    }
+    if(!checkName()){
+        $('#txtName').addClass("is-invalid");
+        $("#checkValidationName").show();
+        if(isValid) $('#txtName').focus();
+        isValid = false;
+    }
+    if(!checkEmail()){
+        $('#txtEmail').addClass("is-invalid");
+        $("#checkValidationEmail").show();
+        if(isValid) $('#txtEmail').focus();
+        isValid = false;
+    }
+    if(!$("#txtDoB").val().trim() ||  $("#txtDoB").val() === "__/__/____"){
+        $('txtDoB').addClass("is-invalid");
+        $("#checkValidationDoB").show();
+        if(isValid) $("#txtDoB").focus();
+        isValid = false;
+    }
+    if(!checkPhone()){
+        $('#txtPhone').addClass("is-invalid");
+        $("#checkValidationPhone").show();
+        if(isValid) $('#txtPhone').focus();
+        isValid = false;
+    }
+    if($("#selectedWard").val() == ""){
+        $("#dropdownWard").addClass("is-invalid");
+        $("#wardError").show();
+        if(isValid) $("#dropdownWard").focus();
+        isValid = false;
+    }
+    if($("#selectedDistrict").val() == ""){
+        $("#dropdownDistrict").addClass("is-invalid");
+        $("#districtError").show();
+        if(isValid) $("#dropdownDistrict").focus(); 
+        isValid = false;
+    }
 
-    if (!selectedValue) {
+    if (!isValid) {
         event.preventDefault();
     } else {
         $('#frmRegister').on('submit', function (e) {
             e.preventDefault();
-            alert("Đã tạo tài khoản thành công!");
-        });
+        
+            const username = $('#txtUsername').val();
+        
+            $.getJSON(`/department-officer/management-officer/is-available?username=${username}`, function (data) {
+              if (data === false) {
+                alert('Tài khoản đã tồn tại. Vui lòng chọn tên đăng nhập khác!');
+                $('#frmRegister').off('submit').submit();
+              } else {
+                alert('Đã tạo tài khoản thành công!');
+                $('#frmRegister').off('submit').submit();
+              }
+            });
+        })
     }
 });
