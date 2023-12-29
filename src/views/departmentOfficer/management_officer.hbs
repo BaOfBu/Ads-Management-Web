@@ -2,6 +2,7 @@
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js">
     </script>
+    <script src="/static/js/departmentOfficer/management_officer.js"></script>
 {{/section}}
 
 {{#section 'css'}}
@@ -18,33 +19,68 @@
                 <h5>Thông tin tài khoản</h5>
                 <div class="form-group">
                     <label for="txtUsername">Tên đăng nhập</label>
-                    <input type="text" name="username" id="txtUsername" class="form-control" autofocus>
+                    <div class="input-group has-validation">
+                        <input type="text" name="username" id="txtUsername" class="form-control" autofocus aria-describedby="checkValidationUsername" required>
+                        <div id="checkValidationUsername" class="invalid-feedback">
+                            Vui lòng nhập tên đăng nhập gồm ít nhất 8 kí tự và nhiều nhất là 50 kí tự, có chứa ít nhất 1 chữ cái in hoa, 1 chữ cái thường và 1 chữ số, không chứa khoảng trắng nào.
+                        </div>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <label for="txtPassword">Mật khẩu</label>
-                    <input type="password" name="raw_password" id="txtPassword" class="form-control">
+                    <div class="input-group has-validation">
+                        <input type="password" name="raw_password" id="txtPassword" class="form-control" aria-describedby="checkValidationPassword" required>
+                        <div id="checkValidationPassword" class="invalid-feedback">
+                            Vui lòng nhập mật khẩu gồm ít nhất 8 kí tự và nhiều nhất là 50 kí tự, có chứa ít nhất 1 chữ cái in hoa, 1 chữ cái thường và 1 chữ số, không chứa khoảng trắng nào.
+                        </div>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <label for="txtConfirm">Nhập lại mật khẩu</label>
-                    <input type="password" name="confirm_password" id="txtConfirm" class="form-control">
+                    <div class="input-group has-validation">
+                        <input type="password" name="confirm_password" id="txtConfirm" class="form-control" aria-describedby="checkValidationConfirmPassword" required>
+                        <div id="checkValidationConfirmPassword" class="invalid-feedback">
+                            Vui lòng nhập chính xác mật khẩu đã nhập ở trên
+                        </div>
+                    </div>
                 </div>
 
                 <h5>Thông tin cá nhân</h5>
                 <div class="form-group">
                     <label for="txtName">Họ và tên</label>
-                    <input type="text" name="name" id="txtName" class="form-control">
+                    <div class="input-group has-validation">
+                        <input type="text" name="name" id="txtName" class="form-control" aria-describedby="checkValidationName" required>
+                        <div id="checkValidationName" class="invalid-feedback">
+                            Vui lòng nhập họ và tên không quá 100 kí tự
+                        </div>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <label for="txtEmail">Email</label>
-                    <input type="text" name="email" id="txtEmail" class="form-control">
+                    <div class="input-group has-validation">
+                        <input type="text" name="email" id="txtEmail" class="form-control" aria-describedby="checkValidationEmail" required>
+                        <div id="checkValidationEmail" class="invalid-feedback">
+                            Vui lòng nhập đúng định dạng email và không quá 100 kí tự, ví dụ abc@gmail.com
+                        </div>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <label for="txtDoB">Ngày sinh</label>
-                    <input type="text" name="raw_dob" id="txtDoB" class="form-control">
+                    <input type="text" name="raw_dob" id="txtDoB" class="form-control" required>
                 </div>
+
                 <div class="form-group">
                     <label for="txtPhone">Số điện thoại</label>
-                    <input type="text" name="phone" id="txtPhone" class="form-control">
+                    <div class="input-group has-validation">
+                        <input type="text" name="phone" id="txtPhone" class="form-control" aria-describedby="checkValidationPhone" required>
+                        <div id="checkValidationPhone" class="invalid-feedback">
+                            Vui lòng nhập đúng định dạng số điện thoại, ví dụ: 03676842622
+                        </div>
+                    </div>
                 </div>
 
                 <h5>Khu vực quản lý</h5>
@@ -68,10 +104,16 @@
                             <div class="area d-flex mt-3">
                                 <div class="ward">
                                     <label for="dropdownWard">Phường</label>
-                                    <button class="form-control dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false">
+                                    <button class="form-control dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false" required>
                                     Phường
                                     </button>
-                                    <input id="selectedWard" name="ward" type="hidden"></input>
+                                    <div class="input-group has-validation">
+                                        <input id="selectedWard" name="ward" type="hidden" aria-describedby="wardError" required></input>
+                                        <div id="wardError" class="invalid-feedback">
+                                            Vui lòng chọn một phường.
+                                        </div>
+                                    </div>
+                                    
                                     <ul class="dropdown-menu" aria-labelledby="dropdownWard">
                                         <li><a class="dropdown-item" data-value="1">1</a></li>
                                         <li><a class="dropdown-item" data-value="2">2</a></li>
@@ -80,13 +122,19 @@
                                         {{/each}}
                                     </ul>
                                 </div>
+
                                 <div class="district ml-5">
                                     <label for="dropdownDistrict">Quận</label>
-                                    <button class="form-control dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
+                                    <button class="form-control dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false" required>
                                     Quận
                                     </button>
-                                    <input id="selectedDistrict" name="district" type="hidden"></input>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownDistrict">
+                                    <div class="input-group has-validation">
+                                        <input id="selectedDistrict" name="district" type="hidden"></input>
+                                        <div id="districtError" class="invalid-feedback">
+                                            Vui lòng chọn một quận.
+                                        </div>
+                                    </div>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" required>
                                         <li><a class="dropdown-item" data-value="1">1</a></li>
                                         <li><a class="dropdown-item" data-value="2">2</a></li>
                                         {{#each district}}
@@ -100,7 +148,7 @@
                 </div>  
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">
+                <button id="submitButton" type="submit" class="btn btn-primary">
                     <i class="bi bi-check2"></i>
                     Save
                 </button>
