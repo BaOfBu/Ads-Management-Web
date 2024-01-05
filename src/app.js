@@ -11,8 +11,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 import numeral from 'numeral';
 
-// import wardOfficerRoute from './routes/wardOfficer/index.route.js';
-// import districtOfficerRoute from './routes/districtOfficer/index.route.js';
+import wardOfficerRoute from './routes/wardOfficer/index.route.js';
+import districtOfficerRoute from './routes/districtOfficer/index.route.js';
 import departmentOfficerRoute from './routes/departmentOfficer/index.route.js';
 
 const port = 3000;
@@ -50,8 +50,8 @@ app.set('views', './views');
 
 app.use('/static', express.static('static'));
 
-// app.use('/ward-officer', wardOfficerRoute);
-// app.use('/district-officer', districtOfficerRoute);
+app.use('/ward-officer', wardOfficerRoute);
+app.use('/district-officer', districtOfficerRoute);
 app.use('/department-officer', departmentOfficerRoute);
 
 app.listen(port, function serverStartedHandler() {

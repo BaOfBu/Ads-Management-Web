@@ -7,14 +7,14 @@ import officerService from '../../services/departmentOfficer/officer.service.js'
 
 const index = async function (req, res) {
     const district = districtService.findAll();
-    res.render("departmentOfficer/management_officer", {
+    res.render("departmentOfficer/management_officer/management_officer", {
         district: district
     });
 };
 
 const register = async function(req, res){
     const district = await districtService.findAll();
-    res.render("departmentOfficer/management_officer", {
+    res.render("departmentOfficer/management_officer/management_officer", {
         district: district,
     });
 }
@@ -75,7 +75,7 @@ const handle_register = async function(req, res){
         await officerService.add(account);
     }
     const district = districtService.findAll();
-    res.render("departmentOfficer/management_officer", {
+    res.render("departmentOfficer/management_officer/management_officer", {
         district: district
     });
 }

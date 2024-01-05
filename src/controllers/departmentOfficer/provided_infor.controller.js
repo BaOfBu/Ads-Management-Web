@@ -21,7 +21,7 @@ const index = async function (req, res) {
         }
     }
 
-    res.render("departmentOfficer/provided_infor", {
+    res.render("departmentOfficer/management_type/provided_infor", {
         title: title,
         type: type,
         empty: empty
