@@ -1,0 +1,72 @@
+:root {
+    --nunito-font: "Nunito", sans-serif;
+    --white-color: #ffffff;
+    --black-color: #000000;
+    --blue-light-color: #EEF5FF;
+    --blue-thin-color: #d9edf7;
+    --blue-normal-color: #bce8f1;
+    --blue-medimum-color: #B4D4FF;
+    --blue-bold-color: #176B87
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: var(--nunito-font);
+    box-sizing: border-box;
+}
+
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+select,
+textarea {
+    background-color: transparent;
+    outline: none;
+}
+
+button {
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    border: 0;
+}
+a {
+    text-decoration: none;
+}
+
+body {
+    padding-top: 110px;
+    min-height: 100vh;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    padding-bottom: 50px;
+}
+
+.custom-container{
+    width: 85%;
+    margin: 0 auto;
+}
+
+.custom-card{
+    background-color: var(--blue-thin-color);
+    border: var(--blue-normal-color);
+    color: var(--blue-bold-color);
+}
+
+span{
+    color: var(--black-color);
+}

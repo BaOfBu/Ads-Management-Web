@@ -1,0 +1,21 @@
+.card-header{
+    font-weight: bolder;
+}
+
+.view-detail{
+    font-style: italic;
+    text-decoration: 1px underline var(--blue-bold-color);
+}
+
+.view-detail:hover span{
+    font-weight: bolder;
+    color: var(--blue-bold-color);
+}
+
+th{
+    font-size: 15px;
+}
+
+td{
+    font-size: 14px;
+}
