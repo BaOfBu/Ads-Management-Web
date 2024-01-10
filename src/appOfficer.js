@@ -14,6 +14,9 @@ import numeral from "numeral";
 import wardOfficerRoute from "./routes/wardOfficer/index.route.js";
 import districtOfficerRoute from "./routes/districtOfficer/index.route.js";
 import departmentOfficerRoute from "./routes/departmentOfficer/index.route.js";
+import accountRoute from "./routes/account/index.route.js";
+
+import auth from "./middleware/auth.mdw.js";
 
 const port = 8888;
 const app = express();
@@ -49,12 +52,30 @@ const hbs = engine({
 app.engine("hbs", hbs);
 app.set("view engine", "hbs");
 app.set("views", "./views");
+app.set("trust proxy", 1);
+app.use(session({
+        secret: "Ads-management-web-app",
+        resave: false,
+        saveUninitialized: true,
+        cookie: {}
+    })
+);
+app.use(function (req, res, next) {
+    // console.log(req.session.auth);
+    if (typeof req.session.auth === "undefined") {
+        req.session.auth = false;
+    }
+    res.locals.auth = req.session.auth;
+    res.locals.authUser = req.session.authUser;
+    next();
+});
 
 app.use("/static", express.static("static"));
 
-app.use("/ward-officer", wardOfficerRoute);
+app.use("/ward-officer",auth.authWardOfficer, wardOfficerRoute);
 app.use("/district-officer", districtOfficerRoute);
-app.use("/department-officer", departmentOfficerRoute);
+app.use("/department-officer",auth.authDepartmentOfficer ,departmentOfficerRoute);
+app.use("/",auth.authUser, accountRoute)
 
 app.listen(port, function serverStartedHandler() {
     console.log(`Ads Management server is running at http://localhost:${port}`);
