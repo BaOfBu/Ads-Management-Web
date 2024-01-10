@@ -1,3 +1,7 @@
+{{#section 'css'}}
+    <link rel="stylesheet" href="/static/css/departmentOfficer/district.css">
+{{/section}}
+
 <div class="custom-container">
     <div class="card">
         <div class="custom-card">
@@ -24,58 +28,100 @@
         {{#if empty}}
             <div class="card-body">Không có dữ liệu</div>
         {{else}}
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col" class="col-1">#</th>
-                    <th scope="col" class="col-3">Địa chỉ</th>
-                    <th scope="col" class="col-2">Loại vị trí</th>
-                    <th scope="col" class="col-2">Hình thức quảng cáo</th>
-                    <th scope="col" class="col-2">Phường</th>
-                    <th scope="col" class="col-2"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {{!-- <tr>
-                    <th scope="row">1</th>
-                    <td>xxxx</td>
-                    <td>Đất công</td>
-                    <td>Quảng cáo thương mại</td>
-                    <td>Phường 4 Quận 5</td>
-                    <td class="d-flex">
-                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                        <span class="ml-1">Xem chi tiết</span>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>xxxx</td>
-                    <td>Công viên</td>
-                    <td>Cổ động chính trị</td>
-                    <td>Phường 4 Quận 5</td>
-                    <td class="d-flex">
-                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                        <span class="ml-1">Xem chi tiết</span>
-                    </td>
-                </tr> --}}
-                {{#each ads_loation}}
-                <tr>
-                    <th scope="row">{{stt}}</th>
-                    <td>{{location}}</td>
-                    <td>{{locationType}}</td>
-                    <td>{{adsType}}</td>
-                    <td>{{ward}}</td>
-                    <td class="d-flex">
-                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                        <span class="ml-1">Xem chi tiết</span>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" class="col-1">
+                            <span class="d-flex justify-content-center">#</span>
+                        </th>
+                        <th scope="col" class="col-3">
+                            <span class="d-flex justify-content-center">
+                                Địa chỉ
+                            </span>
+                        </th>
+                        <th scope="col" class="col-2">
+                            <span class="d-flex justify-content-center">
+                                Loại vị trí
+                            </span>
+                        </th>
+                        <th scope="col" class="col-2">
+                            <span class="d-flex justify-content-center">
+                                Hình thức quảng cáo
+                            </span>
+                        </th>
+                        <th scope="col" class="col-2">
+                            <span class="d-flex justify-content-center">
+                                Phường
+                            </span>
+                        </th>
+                        <th scope="col" class="col-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{!-- <tr>
+                        <th scope="row">1</th>
+                        <td>xxxx</td>
+                        <td>Đất công</td>
+                        <td>Quảng cáo thương mại</td>
+                        <td>Phường 4 Quận 5</td>
+                        <td class="d-flex">
+                            <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                            <span class="ml-1">Xem chi tiết</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>xxxx</td>
+                        <td>Công viên</td>
+                        <td>Cổ động chính trị</td>
+                        <td>Phường 4 Quận 5</td>
+                        <td class="d-flex">
+                            <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                            <span class="ml-1">Xem chi tiết</span>
+                        </td>
+                    </tr> --}}
+                    {{#each ads_locations}}
+                    <tr>
+                        <th scope="row">
+                            <span class="d-flex justify-content-center">
+                                {{stt}}
+                            </span>
+                        </th>
+                        <td>
+                            <span class="d-flex justify-content-center">
+                                {{location}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="d-flex justify-content-center">
+                                {{location_type_name}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="d-flex justify-content-center">
+                                {{ads_type_name}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="d-flex justify-content-center">
+                                {{ward_name}}
+                            </span>
+                        </td>
+                        <td class="d-flex">
+                            <div>
+                                <a class="d-flex view-detail mt-1" href="ads-location/view-detail?adsLocationId={{adsLocationId}}" role="button">
+                                    <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                                    <span class="ml-1">Xem chi tiết</span>    
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         {{/if}}
-        <div class="card-footer text-muted">
-            2 days ago
+        <div class="card-footer text-muted font-italic">
+            <span class="small">{{date}}</span>
         </div>
     </div>
 </div>
