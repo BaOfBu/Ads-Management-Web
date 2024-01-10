@@ -53,6 +53,8 @@ body {
 #map {
     width: 100vw;
     height: 100vh;
+    flex-grow: 1;
+    transition: width 0.3s ease, margin-left 0.3s ease;
 }
 .mapboxgl-ctrl-top-left {
     width: 50%;
@@ -119,4 +121,43 @@ input:checked + .slider:before {
     font-size: 16px;
     color: var(--black-light-color);
     line-height: 16px;
+}
+.my-custom-popup .mapboxgl-popup-close-button {
+    padding: 10px;
+    font-size: 18px;
+}
+.info-popup-content {
+    padding: 10px;
+    background: #ffffff;
+    max-width: 300px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.title-popup-info {
+    font-weight: bold;
+}
+.status-popup-info {
+    font-weight: bold;
+    font-style: italic;
+    text-transform: uppercase;
+}
+#sidebar {
+    position: relative;
+    width: 0px;
+    height: 100%;
+    background-color: white;
+    z-index: 20;
+    transition: width 0.3s ease;
+}
+#toggleSidebarButton {
+    background-color: white;
+    border: none;
+    padding: 10px 0px 10px 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 43%;
+    left: -20px;
 }

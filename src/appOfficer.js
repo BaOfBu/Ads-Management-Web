@@ -4,6 +4,7 @@ import { engine } from "express-handlebars";
 import hbs_sections from "express-handlebars-sections";
 import session from "express-session";
 import path from "path";
+import cors from "cors";
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -49,6 +50,8 @@ const hbs = engine({
 app.engine("hbs", hbs);
 app.set("view engine", "hbs");
 app.set("views", "./views");
+
+app.use(cors({ origin: "http://localhost:3000" }));
 
 app.use("/static", express.static("static"));
 
