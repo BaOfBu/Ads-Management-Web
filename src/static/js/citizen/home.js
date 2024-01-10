@@ -1,4 +1,5 @@
 // Access the map
+const accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
 mapboxgl.accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
 
 // Initialize the map
@@ -12,6 +13,7 @@ const map = new mapboxgl.Map({
 
 // Global variable
 let currentMarker = null;
+let isMarker = false;
 
 // User Location
 navigator.geolocation.getCurrentPosition(position => {
@@ -48,13 +50,80 @@ geocoder.on("result", function (event) {
     currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
 });
 
-// Listen click the point in the map
+// Update the information for the point without marker
+function updateSideBarWithEmptyPoint() {
+    const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${currentMarker._lngLat.lng},${currentMarker._lngLat.lat}.json?access_token=${accessToken}`;
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            const sidebar = document.getElementById("sidebar");
+            const features = data.features;
+            if (features.length > 0) {
+                const firstFeature = features[0];
+                const place = firstFeature.place_name;
+                const parts = place.split(",");
+                const trimmedParts = parts.map(part => part.trim());
+                let address = "";
+                for (let i = 1; i < trimmedParts.length; i++) {
+                    address = address + trimmedParts[i] + ", ";
+                }
+                const div = document.createElement("div");
+                div.innerHTML = `
+                <div id="detail-empty-info">
+                    <div id="ads-info">
+                        <div class="ads-info-icon">
+                            <i class="bi bi-info-circle"></i>
+                        </div>
+                        <div id="ads-info-text">
+                            <h6>Thông tin bảng quảng cáo</h6>
+                            <div id="ads-content">
+                                <p>Chưa có dữ liệu!</p>
+                                <p>Vui lòng chọn điểm trên bản đồ để xem.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="location-info">
+                        <div class="location-info-icon">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div id="location-info-text">
+                            <h6>Thông tin địa điểm</h6>
+                            <div id="location-content">
+                                <p>${trimmedParts[0]}</p>
+                                <p>${address}</p>
+                            </div>
+                            <button class="report-button">
+                                <i class="bi bi-exclamation-octagon-fill"></i>
+                                BÁO CÁO VI PHẠM
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+                sidebar.appendChild(div);
+            } else {
+                console.log("No results found.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
 map.on("click", function (e) {
     let coordinates = e.lngLat;
     if (currentMarker) {
         currentMarker.remove();
     }
     currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+    if (isMarker == true) {
+        isMarker = false;
+        return;
+    }
+    if (isMarker == false) {
+        resetTheInformationOfSideBar();
+        updateSideBarWithEmptyPoint();
+        toggleSidebar();
+    }
 });
 
 // Function default for Switch
@@ -64,6 +133,7 @@ function toggleSidebar() {
     sidebar.style.width = "600px";
     button.style.display = "block";
     button.addEventListener("click", () => {
+        resetTheInformationOfSideBar();
         sidebar.style.width = "0px";
         button.style.display = "none";
     });
@@ -109,6 +179,32 @@ function createMarkerElementAds(ad) {
     el.style.backgroundSize = "cover";
     return el;
 }
+// Listener for click into the ads location
+function updateTheInformationAdsItemForSideBar(ad) {
+    const sidebar = document.getElementById("sidebar");
+    const start = 1;
+    const end = 2;
+    for (let i = start; i <= end; i++) {
+        let adsDetailItem = document.createElement("div");
+        adsDetailItem.id = "ads-detail-item";
+        adsDetailItem.innerHTML = `
+        <h5 id="ads-detail-item-title">Trụ, cụm Pano</h5>
+        <p id="ads-detail-item-address">217 Nguyễn Văn Cừ St., Dist. 5, Ho Chi Minh City, 748400, Vietnam</p>
+        <p id="ads-detail-item-size">Kích thước: <strong>2.5m * 10m</strong></p>
+        <p id="ads-detail-item-number">Số lượng: <strong>1 trụ/bảng</strong></p>
+        <p id="ads-detail-item-ads-type">Hình thức: <strong>Cổ động chính trị</strong></p>
+        <p id="ads-detai-item-location-type">Phân loại: <strong>Đất công cộng viên/Hành lang an toàn giao thông</strong></p>
+        <div id="button-pane">
+            <button class="more-information"><i class="bi bi-info-circle"></i></button>
+            <button class="report-button">
+                <i class="bi bi-exclamation-octagon-fill"></i>
+                BÁO CÁO VI PHẠM
+            </button>
+        </div>
+    `;
+        sidebar.appendChild(adsDetailItem);
+    }
+}
 function createMarkerAds(ad) {
     const el = createMarkerElementAds(ad);
     const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
@@ -117,7 +213,12 @@ function createMarkerAds(ad) {
     const popup = createPopup();
     el.addEventListener("mouseenter", () => mouseEnterAds(el, ad, popup));
     el.addEventListener("mouseleave", () => popup.remove());
-    el.addEventListener("click", () => toggleSidebar());
+    el.addEventListener("click", () => {
+        resetTheInformationOfSideBar();
+        updateTheInformationAdsItemForSideBar(ad);
+        toggleSidebar();
+        isMarker = true;
+    });
 }
 document.getElementById("switchAds").addEventListener("change", function () {
     if (this.checked) {
@@ -174,26 +275,14 @@ function createMarkerReport(report) {
     const popup = createPopup();
     el.addEventListener("mouseenter", () => mouseEnterReport(el, report, popup));
     el.addEventListener("mouseleave", () => popup.remove());
-    el.addEventListener("click", () => toggleSidebar());
+    el.addEventListener("click", () => {
+        isMarker = true;
+        toggleSidebar();
+    });
 }
 document.getElementById("switchReport").addEventListener("change", function () {
     if (this.checked) {
-        reports = [
-            {
-                lat: 10.764269039650591,
-                long: 106.68471399288329,
-                status: "Đã xử lý",
-                reportType: "Tố giác sai phạm",
-                content: "Đây là báo cáo đến từ bạn"
-            },
-            {
-                lat: 10.764817617443542,
-                long: 106.67906482079373,
-                status: "Chưa xử lý",
-                reportType: "Tố giác sai phạm",
-                content: "Đây là báo cáo đến từ bạn"
-            }
-        ];
+        let reports = [];
         reports.forEach(report => {
             createMarkerReport(report);
         });
@@ -204,3 +293,11 @@ document.getElementById("switchReport").addEventListener("change", function () {
         marker_report = [];
     }
 });
+
+// Listen click the point in the map
+function resetTheInformationOfSideBar() {
+    const sidebar = document.getElementById("sidebar");
+    const toggleButton = document.getElementById("toggleSidebarButton");
+    sidebar.innerHTML = "";
+    sidebar.appendChild(toggleButton);
+}
