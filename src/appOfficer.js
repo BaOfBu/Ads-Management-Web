@@ -1,25 +1,27 @@
-import express from 'express';
-import knex from 'knex';
-import { engine } from 'express-handlebars';
-import hbs_sections from 'express-handlebars-sections';
-import session from 'express-session';
+import express from "express";
+import knex from "knex";
+import { engine } from "express-handlebars";
+import hbs_sections from "express-handlebars-sections";
+import session from "express-session";
 import path from "path";
 
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-import numeral from 'numeral';
+import numeral from "numeral";
 
-import wardOfficerRoute from './routes/wardOfficer/index.route.js';
-import districtOfficerRoute from './routes/districtOfficer/index.route.js';
-import departmentOfficerRoute from './routes/departmentOfficer/index.route.js';
+import wardOfficerRoute from "./routes/wardOfficer/index.route.js";
+import districtOfficerRoute from "./routes/districtOfficer/index.route.js";
+import departmentOfficerRoute from "./routes/departmentOfficer/index.route.js";
 
-const port = 3000;
+const port = 8888;
 const app = express();
-app.use(express.urlencoded({
-  extended: true
-}));
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
 app.use(express.json());
 
 const hbs = engine({
@@ -45,14 +47,14 @@ const hbs = engine({
 });
 
 app.engine("hbs", hbs);
-app.set('view engine', 'hbs');
-app.set('views', './views');
+app.set("view engine", "hbs");
+app.set("views", "./views");
 
-app.use('/static', express.static('static'));
+app.use("/static", express.static("static"));
 
-app.use('/ward-officer', wardOfficerRoute);
-app.use('/district-officer', districtOfficerRoute);
-app.use('/department-officer', departmentOfficerRoute);
+app.use("/ward-officer", wardOfficerRoute);
+app.use("/district-officer", districtOfficerRoute);
+app.use("/department-officer", departmentOfficerRoute);
 
 app.listen(port, function serverStartedHandler() {
     console.log(`Ads Management server is running at http://localhost:${port}`);
