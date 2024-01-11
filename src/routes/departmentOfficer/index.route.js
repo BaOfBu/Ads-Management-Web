@@ -17,7 +17,7 @@ router.use(setDefaultLayoutAndPartials);
 
 router.use("/district", districtRoutes);
 router.use("/ward", wardRoutes);
-router.use("/provided-infor", providedInforRoutes);
+router.use("/provided-info", providedInforRoutes);
 router.use("/ads-location", adsLocationRoutes);
 router.use("/ads-panel", adsPanelRoutes);
 router.use("/management-officer", managementOfficerRoutes);
