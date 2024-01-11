@@ -49,11 +49,37 @@
                             <td>{{name}}</td>
                             <td>{{description}}</td>
                             <td>
-                                <div class="d-flex justify-content-center">
-                                    <a class="btn btn-sm btn-outline-info" href="district/edit?districtId={{districtId}}" role="button">
-                                        <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
-                                    </a>
-                                </div>
+                                {{#if (equal choice 'location-type')}}
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-sm btn-outline-info" href="edit/{{choice}}?id={{locationTypeId}}&stt={{stt}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
+                                        </a>
+                                    </div>
+                                {{/if}}
+
+                                {{#if (equal choice 'ads-type')}}
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-sm btn-outline-info" href="edit/{{choice}}?id={{adsTypeId}}&stt={{stt}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
+                                        </a>
+                                    </div>
+                                {{/if}}
+                                
+                                {{#if (equal choice 'ads-panel-type')}}
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-sm btn-outline-info" href="edit/{{choice}}?id={{adsPanelTypeId}}&stt={{stt}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
+                                        </a>
+                                    </div>
+                                {{/if}}
+
+                                {{#if (equal choice 'report-type')}}
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-sm btn-outline-info" href="edit/{{choice}}?id={{reportTypeId}}&stt={{stt}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
+                                        </a>
+                                    </div>
+                                {{/if}}
                             </td>
                             <td class="d-flex">
                                 {{#if (equal choice 'location-type')}}

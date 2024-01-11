@@ -34,13 +34,13 @@ $("#submitButton").on("click", function (event) {
             console.log("choice: ", choice);
 
             let typeName = 'Loại vị trí';
-        if(choice === 'ads-type'){
-            typeName = 'Hình thức quảng cáo';
-        }else if(choice === 'ads-panel-type'){
-            typeName = 'Loại bảng quảng cáo';
-        }else if(choice === 'report-type'){
-            typeName = 'Hình thức báo cáo';
-        }
+            if(choice === 'ads-type'){
+                typeName = 'Hình thức quảng cáo';
+            }else if(choice === 'ads-panel-type'){
+                typeName = 'Loại bảng quảng cáo';
+            }else if(choice === 'report-type'){
+                typeName = 'Hình thức báo cáo';
+            }
             $.getJSON(`/department-officer/provided-info/is-available/${choice}?name=${name}`, function (data) {
                 console.log("data: ", data);
                 if(data === false){

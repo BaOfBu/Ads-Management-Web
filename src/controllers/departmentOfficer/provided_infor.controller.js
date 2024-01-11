@@ -31,7 +31,6 @@ const index = async function (req, res) {
         }
     }
 
-    console.log("Info: ", information);
     if(!information || information.length === 0){
         empty = true;
     }
@@ -115,11 +114,14 @@ const isAvailable = async function(req, res){
     let choice = req.params.choice;
     const name = req.query.name;
     let database = choice.replace('-', '_');
-    let id = await providedInfo.findByName(database, name);
 
+    let id = await providedInfo.findByName(database, name);
+    console.log("id: ", id);
     if (!id) {
         console.log("undefined");
         return res.json(true);
+    }else{
+        if(id.name === name) return res.json(true);
     }
     res.json(false);
 }
@@ -142,4 +144,71 @@ const handle_addType = async function(req, res){
 
     res.redirect(`/department-officer/provided-info/${choice}`);
 }
-export default { index, viewDetailProvidedInfo, addType, isAvailable, handle_addType };
+
+const editType = async function (req, res){
+    let choice = req.params.choice;
+    const id = req.query.id;
+    const stt = req.query.stt;
+
+    let database = choice.replace('-', '_');
+    let field = 'locationTypeId';
+    if(choice === 'ads-type'){
+        field = 'adsTypeId';
+    }else if(choice === 'ads-panel-type'){
+        field = 'adsPanelTypeId';
+    }else if(choice === 'report-type'){
+        field = 'reportTypeId';
+    }
+
+    const type = await providedInfo.findById(database, field, id);
+
+    let typeName = 'loại vị trí';
+    if(choice === 'ads-type'){
+        typeName = 'hình thức quảng cáo';
+    }else if(choice === 'ads-panel-type'){
+        typeName = 'loại bảng quảng cáo';
+    }else if(choice === 'report-type'){
+        typeName = 'hình thức báo cáo';
+    }
+
+    res.render("departmentOfficer/management_type/edit", {
+        choice: choice,
+        type: type,
+        id: id,
+        stt: stt,
+        typeName: typeName
+    });
+}
+
+const handle_deleteType = async function (req, res){
+    const choice = req.body.choice;
+    let database = choice.replace('-', '_');
+    let field = 'locationTypeId';
+    if(choice === 'ads-type'){
+        field = 'adsTypeId';
+    }else if(choice === 'ads-panel-type'){
+        field = 'adsPanelTypeId';
+    }else if(choice === 'report-type'){
+        field = 'reportTypeId';
+    }
+
+    await providedInfo.del(database, field, req.body.id);
+    res.redirect(`/department-officer/provided-info/${choice}`);
+}
+
+const handle_editType = async function (req, res){
+    const choice = req.body.choice;
+    let database = choice.replace('-', '_');
+    let field = 'locationTypeId';
+    if(choice === 'ads-type'){
+        field = 'adsTypeId';
+    }else if(choice === 'ads-panel-type'){
+        field = 'adsPanelTypeId';
+    }else if(choice === 'report-type'){
+        field = 'reportTypeId';
+    }
+
+    await providedInfo.patch(database, field, req.body.id, req.body);
+    res.redirect(`/department-officer/provided-info/${choice}`);
+}
+export default { index, viewDetailProvidedInfo, addType, isAvailable, handle_addType, editType, handle_deleteType, handle_editType };

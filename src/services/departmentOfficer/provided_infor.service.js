@@ -16,4 +16,9 @@ export default {
   del(database, field, id) {
     return db(database).where(field, id).del();
   },
+  patch(database, field, id, entity) {
+    delete entity.choice;
+    delete entity.id;
+    return db(database).where(field, id).update(entity);
+  }
 }
