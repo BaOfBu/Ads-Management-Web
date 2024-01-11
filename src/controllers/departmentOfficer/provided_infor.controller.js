@@ -17,6 +17,7 @@ const index = async function (req, res) {
         };
         case 'ads-panel-type':{
             title = 'loại bảng quảng cáo ở thành phố';
+            information = await providedInfo.findAll('ads_panel_type');
             break;
         };
         case 'report-type':{
