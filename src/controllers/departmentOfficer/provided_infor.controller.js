@@ -57,7 +57,6 @@ const index = async function (req, res) {
 
 const viewDetailProvidedInfo = async function (req, res){
     const choice = req.params.choice || 'location-type';
-    const empty = false;
     let id;
     let typeName = 'loại';
 
@@ -86,14 +85,6 @@ const viewDetailProvidedInfo = async function (req, res){
         }
     }
 
-    // res.render("departmentOfficer/management_type/provided_infor", {
-    //     choice: choice,
-    //     title: title,
-    //     type: type,
-    //     information: informationsWithIndex,
-    //     empty: empty
-    // });
-
     res.render("departmentOfficer/management_type/view_detail", {
         id: id,
         choice: choice,
@@ -103,4 +94,52 @@ const viewDetailProvidedInfo = async function (req, res){
     });
 }
 
-export default { index, viewDetailProvidedInfo };
+const addType = async function (req, res){
+    let choice = req.params.choice;
+    let typeName = 'loại vị trí';
+    if(choice === 'ads-type'){
+        typeName = 'hình thức quảng cáo';
+    }else if(choice === 'ads-panel-type'){
+        typeName = 'loại bảng quảng cáo';
+    }else if(choice === 'report-type'){
+        typeName = 'hình thức báo cáo';
+    }
+
+    res.render("departmentOfficer/management_type/add", {
+        choice: choice,
+        typeName: typeName
+    });
+}
+
+const isAvailable = async function(req, res){
+    let choice = req.params.choice;
+    const name = req.query.name;
+    let database = choice.replace('-', '_');
+    let id = await providedInfo.findByName(database, name);
+
+    if (!id) {
+        console.log("undefined");
+        return res.json(true);
+    }
+    res.json(false);
+}
+
+const handle_addType = async function(req, res){
+    let choice = req.body.choice;
+    const name = req.body.name;
+    let database = choice.replace('-', '_');
+
+    const isExisted = await providedInfo.findByName(database, name);
+
+    if(!isExisted){
+        const type = {
+            name: name,
+            description: req.body.description,
+        }
+
+        await providedInfo.add(database, type);
+    }
+
+    res.redirect(`/department-officer/provided-info/${choice}`);
+}
+export default { index, viewDetailProvidedInfo, addType, isAvailable, handle_addType };
