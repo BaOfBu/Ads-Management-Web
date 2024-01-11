@@ -13,14 +13,6 @@
             <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a point">
             <span class="ml-1">Thêm một điểm</span>
         </button>
-        <button type="button" class="d-flex btn btn-outline-info ml-3">
-            <img src="/static/images/departmentOfficer/icon-delete.png" width="24" height="24" alt="delete a point">
-            <span class="ml-1">Xóa một điểm</span>
-        </button>
-        <button type="button" class="d-flex btn btn-outline-info ml-3">
-            <img src="/static/images/departmentOfficer/icon-update.png" width="24" height="24" alt="update a point">
-            <span class="ml-1">Cập nhật một điểm</span>
-        </button>
     </div>
     <div>
         <div class="card mt-5">
@@ -34,7 +26,7 @@
                         <th scope="col" class="col-1">
                             <span class="d-flex justify-content-center">#</span>
                         </th>
-                        <th scope="col" class="col-3">
+                        <th scope="col" class="col-2">
                             <span class="d-flex justify-content-center">
                                 Địa chỉ
                             </span>
@@ -54,6 +46,7 @@
                                 Phường
                             </span>
                         </th>
+                        <th scope="col" class="col-1"></th>
                         <th scope="col" class="col-2"></th>
                     </tr>
                 </thead>
@@ -106,6 +99,13 @@
                             <span class="d-flex justify-content-center">
                                 {{ward_name}}
                             </span>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-sm btn-outline-info" href="district/edit?adsLocationId={{adsLocationId}}" role="button">
+                                    <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
+                                </a>
+                            </div>
                         </td>
                         <td class="d-flex">
                             <div>
