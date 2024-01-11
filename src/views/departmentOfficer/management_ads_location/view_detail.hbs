@@ -1,0 +1,49 @@
+<div class="custom-container">
+    <form action="" method="post">
+        <div class="card">
+            <h5 class="card-header">
+            Xem chi tiết điểm đặt quảng cáo
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="txtStt">#</label>
+                    <input type="text" id="txtStt" class="form-control" readonly value="{{stt}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtLocation">Địa chỉ</label>
+                    <input type="text" id="txtLocation" class="form-control" readonly value="{{adsLocation.location}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtCoordinate">Tọa độ</label>
+                    <input class="form-control" id="txtCoordinate" readonly value="{{adsLocation.lat}}, {{adsLocation.long}}"></input>
+                </div>
+                <div class="form-group">
+                    <label for="txtWard">Phường</label>
+                    <input class="form-control" id="txtWard" readonly value="{{adsLocation.ward_name}}"></input>
+                </div>
+                <div class="form-group">
+                    <label for="txtLocationType">Loại vị trí</label>
+                    <input type="text" id="txtLocationType" class="form-control" readonly value="{{adsLocation.location_type_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtAdsType">Hình thức quảng cáo</label>
+                    <input type="text" id="txtAdsType" class="form-control" readonly value="{{adsLocation.ads_type_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtImage">Hình ảnh điểm đặt quảng cáo</label>
+                    <img src="{{adsLocation.image_link}}" class="d-flex justify-content-center" alt="">
+                </div>
+                <div class="form-group">
+                    <label for="txtStatus">Trạng thái</label>
+                    <input type="text" id="txtStatus" class="form-control" readonly value="{{adsLocation.status}}">
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-outline-success" href="/department-officer/ads-location" role="button">
+                    <i class="bi bi-skip-backward-fill"></i>
+                    Danh sách
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
