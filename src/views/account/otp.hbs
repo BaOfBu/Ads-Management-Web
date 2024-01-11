@@ -1,0 +1,64 @@
+{{#section 'js'}}
+    <script src="/static/js/account/otp.js"></script>
+{{/section}}
+
+{{#section 'css'}}
+<link rel="stylesheet" href="../../static/css/account/otp.css">
+{{/section}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Forgot Password</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    body {
+      height: 100vh;
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8yOS8xMiKqq3kAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAABHklEQVRIib2Vyw6EIAxFW5idr///Qx9sfG3pLEyJ3tAwi5EmBqRo7vHawiEEERHS6x7MTMxMVv6+z3tPMUYSkfTM/R0fEaG2bbMv+Gc4nZzn+dN4HAcREa3r+hi3bcuu68jLskhVIlW073tWaYlQ9+F9IpqmSfq+fwskhdO/AwmUTJXrOuaRQNeRkOd5lq7rXmS5InmERKoER/QMvUAPlZDHcZRhGN4CSeGY+aHMqgcks5RrHv/eeh455x5KrMq2yHQdibDO6ncG/KZWL7M8xDyS1/MIO0NJqdULLS81X6/X6aR0nqBSJcPeZnlZrzN477NKURn2Nus8sjzmEII0TfMiyxUuxphVWjpJkbx0btUnshRihVv70Bv8ItXq6Asoi/ZiCbU6YgAAAABJRU5ErkJggg==);
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid h-100">
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col-sm-5">
+            <h2>Xác minh tài khoản</h2>
+            <p>Vui lòng nhập mã OTP được gửi về {{this.email}} của bạn để xác minh tài khoản</p>
+            <form action="" method="post" id="frmRegister">
+                <div class="mb-6 text-center d-flex flex-row">
+                <div id="otp" class="d-flex flex-row">
+                    <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" name="first" id="first"  maxlength="1" autofocus/>
+                    <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" name="second" id="second" maxlength="1" />
+                    <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" name="third" id="third" maxlength="1" />
+                    <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" name="fourth" id="fourth" maxlength="1" />
+                    <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" name="fifth" id="fifth" maxlength="1" />
+                    <input class="m-2 text-center form-control form-control-solid rounded focus:border-blue-400 focus:shadow-outline" type="text" name="sixth" id="sixth" maxlength="1" />
+                </div>
+                </div>
+                <input type="hidden" name="username" value={{this.username}} />
+                <div class="form-group">
+                    <div class="ml-2" >
+                        <button type="submit" class="btn w-100 btn-lg btn-info btn-block">
+                            Xác minh
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    {{!-- <div class="container">
+        <div class="d-flex flex-row flex-fill align-items-center justify-content-center">
+        <div
+            class="col-sm-12 d-flex justify-content-center align-items-center"
+            style="background-color: #fff; height: 500px; margin: 30px 0px 100px 0px; border-radius: 8px;"
+        >
+            <div 
+            class="d-flex flex-column flex-xl-fill"
+            style="margin: 30px 40px 30px 40px;"> --}}
+
+</body>
+</html>
