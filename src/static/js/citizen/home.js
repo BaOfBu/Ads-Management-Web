@@ -49,7 +49,6 @@ geocoder.on("result", function (event) {
     }
     currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
 });
-
 // Update the information for the point without marker
 function updateSideBarWithEmptyPoint() {
     const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${currentMarker._lngLat.lng},${currentMarker._lngLat.lat}.json?access_token=${accessToken}`;
@@ -182,8 +181,11 @@ function createMarkerElementAds(ad) {
 // Listener for click into the ads location
 function updateTheInformationAdsItemForSideBar(ad) {
     const sidebar = document.getElementById("sidebar");
+    const limit = 2;
+    const page = 1;
+    const offset = (page - 1) * limit;
     const start = 1;
-    const end = 2;
+    const end = 5;
     for (let i = start; i <= end; i++) {
         let adsDetailItem = document.createElement("div");
         adsDetailItem.id = "ads-detail-item";
@@ -204,6 +206,16 @@ function updateTheInformationAdsItemForSideBar(ad) {
     `;
         sidebar.appendChild(adsDetailItem);
     }
+    addEvenDetailAdsPanel();
+}
+function addEvenDetailAdsPanel() {
+    $(".more-information").click(function () {
+        resetTheInformationOfSideBar();
+        $("#sidebar").css("padding", "0px");
+        $("#sidebar").html(`
+        <img class="img-detail-panel" src="../../static/images/citizen/test.jpg" alt="" />
+        `);
+    });
 }
 function createMarkerAds(ad) {
     const el = createMarkerElementAds(ad);
@@ -282,10 +294,7 @@ function createMarkerReport(report) {
 }
 document.getElementById("switchReport").addEventListener("change", function () {
     if (this.checked) {
-        let reports = [];
-        reports.forEach(report => {
-            createMarkerReport(report);
-        });
+        $.getJSON(`http://localhost:8888/department-officer/get-report-location`, function (data) {});
     } else {
         marker_report.forEach(function (marker) {
             marker.remove();
@@ -296,8 +305,6 @@ document.getElementById("switchReport").addEventListener("change", function () {
 
 // Listen click the point in the map
 function resetTheInformationOfSideBar() {
-    const sidebar = document.getElementById("sidebar");
-    const toggleButton = document.getElementById("toggleSidebarButton");
-    sidebar.innerHTML = "";
-    sidebar.appendChild(toggleButton);
+    $("#sidebar").css("padding-top", "30px");
+    $("#sidebar").html("");
 }

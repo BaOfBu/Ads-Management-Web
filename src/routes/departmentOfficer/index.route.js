@@ -8,6 +8,7 @@ import adsLocationRoutes from "./ads_location.route.js";
 import adsPanelRoutes from "./ads_panel.route.js";
 import managementOfficerRoutes from "./management_officer.route.js";
 import getTheAdsRoute from "./get-the-ads.route.js";
+import getReportRoutes from "./get-report.route.js";
 
 // Middleware to apply default settings to the response locals
 function setDefaultLayoutAndPartials(req, res, next) {
@@ -23,5 +24,6 @@ router.use("/ads-location", adsLocationRoutes);
 router.use("/ads-panel", adsPanelRoutes);
 router.use("/management-officer", managementOfficerRoutes);
 router.use("/get-ads-location", getTheAdsRoute);
+router.use("/get-report-location", getReportRoutes);
 
 export default router;
