@@ -1,6 +1,7 @@
 import express from "express";
 import accountController from '../../controllers/account/account.controller.js';
 import auth from '../../middleware/auth.mdw.js';
+import changepassword from '../../middleware/changepassword.mdw.js';
 const router = express.Router();
 
 function setDefaultLayoutAndPartials(req, res, next) {
@@ -18,5 +19,13 @@ router.get('/', accountController.getLogin);
 router.post('/', accountController.postLogin);
 
 router.post('/logout',auth.authLogout, accountController.logout);
+
+router.get('/verification', accountController.get_verification);
+
+router.post('/verification', accountController.post_verification);
+
+router.get('/change-password',changepassword.checkStatus,accountController.getChangePassword);
+
+router.post('/change-password',accountController.postChangePassword);
 
 export default router;

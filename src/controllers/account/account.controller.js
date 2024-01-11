@@ -65,17 +65,17 @@ const logout = function (req, res) {
 
 
 const get_verification = function (req, res) {
-  res.render("user/verification", {
+  res.render("account/otp", {
     username: req.session.username,
     email: req.session.email,
   });
 };
 
 const post_verification = async function (req, res) {
-  console.log(req.body);
-  const user = await userService.findByUsername(req.body.username);
+  //console.log(req.body);
+  const user = await accountService.findByUsername(req.body.username);
   if (!user) {
-    return res.render("user/verification", {
+    return res.render("account/otp.hbs", {
       err_message: "Invalid user.",
     });
   }
@@ -86,22 +86,18 @@ const post_verification = async function (req, res) {
     req.body.fourth +
     req.body.fifth +
     req.body.sixth;
-  console.log("OTP:" + OTP);
+  //console.log("OTP:" + OTP);
 
-  const ret = bcrypt.compareSync(OTP, user.emailVerificationToken);
+  const ret = bcrypt.compareSync(OTP, user.otp);
   if (ret === false) {
+    console.log("Invalid OTP");
     req.session.err_message = "Invalid OTP.";
-    return res.redirect("/account/register/verification");
-  }
-
-  if (user.emailVerificationExpires < Date.now()) {
-    req.session.err_message = "OTP expired.";
-    return res.redirect("/account/register/verification");
+    return res.redirect("/verification");
   }
   const username = req.body.username
-  const temp = await Account.findOneAndUpdate({username}, {$set: {status: "active"}}, {new: true})
+  const temp = await accountService.updateStatus(username, "Change Password");
 
-  res.redirect("/account/login");
+  res.redirect("/change-password");
 };
 
 const getForgotpassword = function (req, res) {
@@ -111,32 +107,55 @@ const getForgotpassword = function (req, res) {
 const postForgotpassword = async function (req, res) {
   try {
     const email = req.body.email;
-    const newpass = Math.random().toString(36).substring(2, 10);
-    const hash_password = bcrypt.hashSync(newpass, salt);
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const verificationToken = bcrypt.hashSync(verificationCode, salt);
 
-    const user = await userService.findByEmail(email);
+    const user = await accountService.findByEmail(email);
     if (!user) {
       req.session.err_message = "Not Found User";
-      return res.redirect("/account/forgotpasswword");
+      return res.redirect("/forgot-password");
     }
-    const temp = await userService.updateOne(email, hash_password);
+    const temp = await accountService.updateToken(email, verificationToken);
 
     const mailOptions = {
-      from: "ntson21@clc.fitus.edu.vn",
-      to: req.body.email,
-      subject: "New Password for Door-rush website",
-      text: `Your New Password is ${newpass}\n\nPlease go to your profile page to change your password as soon as possible`,
+        from: "ntson21@clc.fitus.edu.vn",
+        to: req.body.email,
+        subject: "OTP Code for Ads Management website",
+        text: `Dear user ${user.username}
+        \nYou have choose ${req.body.email} as email address for verification page.
+        \nYour OTP code is ${verificationCode}
+        \nIf you have not requested this, please ignore this email. \n`,
     };
 
     await transporter.sendMail(mailOptions);
-
-    req.session.email = req.body.email;
-    res.redirect("/account/login");
+    req.session.username = user.username;
+    req.session.email = user.email;
+    res.redirect("/verification");
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
 };
+
+const getChangePassword = function (req, res) {
+    res.render("account/change-password.hbs");
+}
+
+const postChangePassword = async function (req, res) {
+  console.log("post change pass",req.body);
+    try {
+        const username = req.session.username;
+        const password = req.body.password;
+        const hash = await bcrypt.hashSync(password, salt);
+        const temp = await accountService.updatePassword(username, hash);
+        const temp1 = await accountService.updateStatus(username, "Active");
+        req.session.err_message = "Change password successfully";
+        res.redirect("/");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+}
 
 export default {
     getLogin,
@@ -146,4 +165,6 @@ export default {
     postForgotpassword,
     get_verification,
     post_verification,
+    getChangePassword,
+    postChangePassword
 };

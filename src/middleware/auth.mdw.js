@@ -21,10 +21,10 @@ next();
 };
 
 const authLogout = function (req, res, next) {
-if (req.session.auth === false) {s
-    return res.redirect('/');
-}
-next();
+    if (req.session.auth === false) {
+        return res.redirect('/');
+    }
+    next();
 };
 
 const authWardOfficer = function (req, res, next) {
