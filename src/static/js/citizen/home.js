@@ -234,7 +234,7 @@ function createMarkerAds(ad) {
 }
 document.getElementById("switchAds").addEventListener("change", function () {
     if (this.checked) {
-        $.getJSON(`http://localhost:8888/department-officer/get-ads-location`, function (data) {
+        $.getJSON(`http://localhost:8888/get-data/get-ads-location`, function (data) {
             if (data === false) {
                 alert("Không thể tải dữ liệu từ Server");
             } else {
@@ -294,7 +294,7 @@ function createMarkerReport(report) {
 }
 document.getElementById("switchReport").addEventListener("change", function () {
     if (this.checked) {
-        $.getJSON(`http://localhost:8888/department-officer/get-report-location`, function (data) {});
+        $.getJSON(`http://localhost:8888/get-data/get-report-location`, function (data) {});
     } else {
         marker_report.forEach(function (marker) {
             marker.remove();

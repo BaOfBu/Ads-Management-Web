@@ -157,7 +157,7 @@ input:checked + .slider:before {
     justify-content: flex-start;
     gap: 20px;
     box-shadow: -1px 0px 10px rgba(0, 0, 0, 0.2);
-    overflow: scroll;
+    overflow: auto;
 }
 #toggleSidebarButton {
     background-color: white;
@@ -167,11 +167,11 @@ input:checked + .slider:before {
     position: absolute;
     z-index: 30;
     top: 45%;
-    right: 410px;
+    right: 420px;
     transition: width 1s ease, right 1s ease;
 }
 #sidebar::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
 }
 
 #sidebar::-webkit-scrollbar-track {
