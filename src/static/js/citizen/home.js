@@ -108,6 +108,7 @@ function updateSideBarWithEmptyPoint() {
             console.error("Error:", error);
         });
 }
+function addReportButtonForEmptyLocation() {}
 map.on("click", function (e) {
     let coordinates = e.lngLat;
     if (currentMarker) {
@@ -129,7 +130,7 @@ map.on("click", function (e) {
 function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
     const button = document.getElementById("toggleSidebarButton");
-    sidebar.style.width = "600px";
+    sidebar.style.width = "700px";
     button.style.display = "block";
     button.addEventListener("click", () => {
         resetTheInformationOfSideBar();
@@ -190,14 +191,14 @@ function updateTheInformationAdsItemForSideBar(ad) {
         let adsDetailItem = document.createElement("div");
         adsDetailItem.id = "ads-detail-item";
         adsDetailItem.innerHTML = `
-        <h5 id="ads-detail-item-title">Trụ, cụm Pano</h5>
+        <h5 id="ads-detail-item-title">Trụ, cụm Pano ${i}</h5>
         <p id="ads-detail-item-address">217 Nguyễn Văn Cừ St., Dist. 5, Ho Chi Minh City, 748400, Vietnam</p>
         <p id="ads-detail-item-size">Kích thước: <strong>2.5m * 10m</strong></p>
         <p id="ads-detail-item-number">Số lượng: <strong>1 trụ/bảng</strong></p>
         <p id="ads-detail-item-ads-type">Hình thức: <strong>Cổ động chính trị</strong></p>
         <p id="ads-detai-item-location-type">Phân loại: <strong>Đất công cộng viên/Hành lang an toàn giao thông</strong></p>
         <div id="button-pane">
-            <button class="more-information"><i class="bi bi-info-circle"></i></button>
+            <button class="more-information" ads-panel-id=${i}><i class="bi bi-info-circle"></i></button>
             <button class="report-button">
                 <i class="bi bi-exclamation-octagon-fill"></i>
                 BÁO CÁO VI PHẠM
@@ -208,13 +209,64 @@ function updateTheInformationAdsItemForSideBar(ad) {
     }
     addEvenDetailAdsPanel();
 }
+function addReturnButtonListener() {
+    $(".return-button").click(function () {
+        resetTheInformationOfSideBar();
+        console.log("hello");
+        $("#sidebar").html(listHtmlSideBar);
+        addEvenDetailAdsPanel();
+    });
+}
+function addReportButtonAdsListener() {}
+let listHtmlSideBar;
 function addEvenDetailAdsPanel() {
     $(".more-information").click(function () {
+        var adsPanelId = $(this).attr("ads-panel-id");
+        listHtmlSideBar = $("#sidebar").html();
         resetTheInformationOfSideBar();
         $("#sidebar").css("padding", "0px");
         $("#sidebar").html(`
-        <img class="img-detail-panel" src="../../static/images/citizen/test.jpg" alt="" />
+        <div class="image-detail">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                    <img src="/static/images/citizen/test.jpg" class="d-block w-100 image-detail-pane" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                    <img src="/static/images/citizen/test-2.jpg" class="d-block w-100 image-detail-pane" alt="...">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class = "detail-ads-information">
+            <h5 id="ads-detail-item-title"><b>Trụ, cụm Pano ${adsPanelId}</b></h5>
+            <p id="ads-detail-item-address">217 Nguyễn Văn Cừ St., Dist. 5, Ho Chi Minh City, 748400, Vietnam</p>
+            <p id="ads-detail-item-size">Kích thước: <strong>2.5m * 10m</strong></p>
+            <p id="ads-detail-item-number">Số lượng: <strong>1 trụ/bảng</strong></p>
+            <p id="ads-detail-item-ads-type">Hình thức: <strong>Cổ động chính trị</strong></p>
+            <p id="ads-detai-item-location-type">Phân loại: <strong>Đất công cộng viên/Hành lang an toàn giao thông</strong></p>
+            <p id="expired-date-item">Ngày hết hạn: <b>31/12/2024</b></p>
+            <div id="button-pane">
+                <button class="report-button">
+                    <i class="bi bi-exclamation-octagon-fill"></i>
+                    BÁO CÁO VI PHẠM
+                </button>
+                <button class="return-button">
+                    <i class="bi bi-arrow-return-left"></i>
+                    Trở về
+                </button>
+            </div>
+        </div>
         `);
+        addReturnButtonListener();
     });
 }
 function createMarkerAds(ad) {
