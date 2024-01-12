@@ -111,7 +111,8 @@ function updateSideBarWithEmptyPoint() {
 }
 function addReportButtonForEmptyLocation() {
     $(".report-button").on("click", function () {
-        let newUrl = "/report?adsPanelId=" + "";
+        let newUrl =
+            "/report?adsPanelId=" + "" + "&lat=" + currentMarker._lngLat.lat + "&long=" + currentMarker._lngLat.lng + "&status=" + status;
         window.location.href = newUrl;
     });
 }
@@ -210,7 +211,7 @@ function updateTheInformationAdsItemForSideBar(ad) {
     `;
         sidebar.appendChild(adsDetailItem);
     }
-    addEvenDetailAdsPanel();
+    addEvenDetailAdsPanel(ad);
     addReportButtonAdsListener(ad.lat, ad.long, ad.status);
 }
 function addReturnButtonListener() {
@@ -229,7 +230,7 @@ function addReportButtonAdsListener(lat, long, status) {
     });
 }
 let listHtmlSideBar;
-function addEvenDetailAdsPanel() {
+function addEvenDetailAdsPanel(ad) {
     $(".more-information").click(function () {
         var adsPanelId = $(this).attr("ads-panel-id");
         listHtmlSideBar = $("#sidebar").html();
@@ -277,7 +278,7 @@ function addEvenDetailAdsPanel() {
         </div>
         `);
         addReturnButtonListener();
-        addReportButtonAdsListener();
+        addReportButtonAdsListener(ad.lat, ad.long, ad.status);
     });
 }
 function createMarkerAds(ad) {

@@ -15,7 +15,7 @@ const map = new mapboxgl.Map({
     container: "map",
     style: "mapbox://styles/mapbox/streets-v12",
     center: [lng, lat],
-    zoom: 18,
+    zoom: 15,
     projection: "globe",
     interactive: false
 });
@@ -24,13 +24,19 @@ const el = document.createElement("div");
 el.className = "default-marker";
 if (sts == "Đã quy hoạch") {
     el.style.backgroundImage = 'url("/static/images/citizen/ads-blue.png")';
+    el.style.backgroundSize = "cover";
+    el.style.width = "30px";
+    el.style.height = "30px";
+    new mapboxgl.Marker(el).setLngLat([Number(lng), Number(lat)]).addTo(map);
 } else if (sts === "Chưa quy hoạch") {
     el.style.backgroundImage = 'url("/static/images/citizen/ads-red.png")';
+    el.style.backgroundSize = "cover";
+    el.style.width = "30px";
+    el.style.height = "30px";
+    new mapboxgl.Marker(el).setLngLat([Number(lng), Number(lat)]).addTo(map);
+} else {
+    new mapboxgl.Marker().setLngLat([Number(lng), Number(lat)]).addTo(map);
 }
-el.style.backgroundSize = "cover";
-el.style.width = "30px";
-el.style.height = "30px";
-new mapboxgl.Marker(el).setLngLat([Number(lng), Number(lat)]).addTo(map);
 document.getElementById("form-citizen").addEventListener("submit", function (event) {
     event.preventDefault();
     let recaptchaResponse = grecaptcha.getResponse();
