@@ -188,9 +188,6 @@ function createMarkerElementAds(ad) {
 // Listener for click into the ads location
 function updateTheInformationAdsItemForSideBar(ad) {
     const sidebar = document.getElementById("sidebar");
-    const limit = 2;
-    const page = 1;
-    const offset = (page - 1) * limit;
     const start = 1;
     const end = 5;
     for (let i = start; i <= end; i++) {
@@ -214,7 +211,7 @@ function updateTheInformationAdsItemForSideBar(ad) {
         sidebar.appendChild(adsDetailItem);
     }
     addEvenDetailAdsPanel();
-    addReportButtonAdsListener();
+    addReportButtonAdsListener(ad.lat, ad.long, ad.status);
 }
 function addReturnButtonListener() {
     $(".return-button").click(function () {
@@ -224,10 +221,10 @@ function addReturnButtonListener() {
         addReportButtonAdsListener();
     });
 }
-function addReportButtonAdsListener() {
+function addReportButtonAdsListener(lat, long, status) {
     $(".report-button").on("click", function () {
         let adsPanelId = $(this).attr("ads-panel-id");
-        let newUrl = "/report?adsPanelId=" + adsPanelId;
+        let newUrl = "/report?adsPanelId=" + adsPanelId + "&lat=" + lat + "&long=" + long + "&status=" + status;
         window.location.href = newUrl;
     });
 }
