@@ -100,6 +100,7 @@ function updateSideBarWithEmptyPoint() {
                 </div>
                 `;
                 sidebar.appendChild(div);
+                addReportButtonForEmptyLocation();
             } else {
                 console.log("No results found.");
             }
@@ -108,7 +109,12 @@ function updateSideBarWithEmptyPoint() {
             console.error("Error:", error);
         });
 }
-function addReportButtonForEmptyLocation() {}
+function addReportButtonForEmptyLocation() {
+    $(".report-button").on("click", function () {
+        let newUrl = "/report?adsPanelId=" + "";
+        window.location.href = newUrl;
+    });
+}
 map.on("click", function (e) {
     let coordinates = e.lngLat;
     if (currentMarker) {
@@ -199,7 +205,7 @@ function updateTheInformationAdsItemForSideBar(ad) {
         <p id="ads-detai-item-location-type">Phân loại: <strong>Đất công cộng viên/Hành lang an toàn giao thông</strong></p>
         <div id="button-pane">
             <button class="more-information" ads-panel-id=${i}><i class="bi bi-info-circle"></i></button>
-            <button class="report-button">
+            <button class="report-button" ads-panel-id="${i}">
                 <i class="bi bi-exclamation-octagon-fill"></i>
                 BÁO CÁO VI PHẠM
             </button>
@@ -208,16 +214,22 @@ function updateTheInformationAdsItemForSideBar(ad) {
         sidebar.appendChild(adsDetailItem);
     }
     addEvenDetailAdsPanel();
+    addReportButtonAdsListener();
 }
 function addReturnButtonListener() {
     $(".return-button").click(function () {
         resetTheInformationOfSideBar();
-        console.log("hello");
         $("#sidebar").html(listHtmlSideBar);
         addEvenDetailAdsPanel();
     });
 }
-function addReportButtonAdsListener() {}
+function addReportButtonAdsListener() {
+    $(".report-button").on("click", function () {
+        let adsPanelId = $(this).attr("ads-panel-id");
+        let newUrl = "/report?adsPanelId=" + adsPanelId;
+        window.location.href = newUrl;
+    });
+}
 let listHtmlSideBar;
 function addEvenDetailAdsPanel() {
     $(".more-information").click(function () {
@@ -255,11 +267,11 @@ function addEvenDetailAdsPanel() {
             <p id="ads-detai-item-location-type">Phân loại: <strong>Đất công cộng viên/Hành lang an toàn giao thông</strong></p>
             <p id="expired-date-item">Ngày hết hạn: <b>31/12/2024</b></p>
             <div id="button-pane">
-                <button class="report-button">
+                <button class="report-button" ads-panel-id="${adsPanelId}">
                     <i class="bi bi-exclamation-octagon-fill"></i>
                     BÁO CÁO VI PHẠM
                 </button>
-                <button class="return-button">
+                <button class="return-button" >
                     <i class="bi bi-arrow-return-left"></i>
                     Trở về
                 </button>
@@ -267,11 +279,13 @@ function addEvenDetailAdsPanel() {
         </div>
         `);
         addReturnButtonListener();
+        addReportButtonAdsListener();
     });
 }
 function createMarkerAds(ad) {
     const el = createMarkerElementAds(ad);
     const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
+
     marker_ads.push(marker);
     // Add event listeners for hover
     const popup = createPopup();
@@ -296,10 +310,16 @@ document.getElementById("switchAds").addEventListener("change", function () {
             }
         });
     } else {
-        marker_ads.forEach(function (marker) {
-            marker.remove();
-        });
+        // marker_ads.forEach(function (marker) {
+        //     marker.remove();
+        // });
+        // marker_ads = [];
+        marker_ads.forEach(marker => marker.remove());
         marker_ads = [];
+        map.getSource("markers").setData({
+            type: "FeatureCollection",
+            features: []
+        });
     }
 });
 
