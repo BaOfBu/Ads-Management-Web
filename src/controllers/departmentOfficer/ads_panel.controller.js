@@ -27,4 +27,15 @@ const index = async function (req, res) {
     });
 };
 
-export default { index };
+const viewDetailAdsPanel= async function (req, res){
+    let location = await adsPanel.findById(req.query.adsPanelId);
+    location.startDate = moment(location.startDate).format('DD/MM/YYYY');
+    location.endDate = moment(location.endDate).format('DD/MM/YYYY');
+
+    res.render("departmentOfficer/management_ads_panel/view_detail", {
+        stt: req.query.stt,
+        adsPanel: location
+    });
+}
+
+export default { index, viewDetailAdsPanel };

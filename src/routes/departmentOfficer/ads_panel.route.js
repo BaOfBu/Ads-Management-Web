@@ -4,5 +4,6 @@ import adsPanelController from "../../controllers/departmentOfficer/ads_panel.co
 const router = express.Router();
 
 router.get("/", adsPanelController.index);
+router.get("/view-detail", adsPanelController.viewDetailAdsPanel);
 
 export default router;
