@@ -1,9 +1,4 @@
 {{#section 'js'}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js">
-    </script>
-    
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/locales/vi.min.js"></script>
@@ -12,12 +7,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/piexif.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/sortable.min.js"></script>
 
-    <script src="/static/js/departmentOfficer/management_ads_panel/add.js"></script>
+    <script src="/static/js/departmentOfficer/management_ads_panel/edit.js"></script>
 {{/section}}
 
 {{#section "css"}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
 {{/section}}
 
@@ -25,16 +18,20 @@
     <form action="" method="post" id="frmAdd">
         <div class="card">
             <h5 class="card-header">
-            Thêm bảng quảng cáo
+            Chỉnh sửa bảng quảng cáo
             </h5>
             <div class="card-body">
+                <div class="form-group">
+                    <label for="txtStt">#</label>
+                    <input type="text" id="txtStt" class="form-control" readonly value="{{stt}}">
+                </div>
                 <div class="adsLocation">
                     <label for="dropdownAdsLocation">Điểm đặt quảng cáo</label>
                     <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownAdsLocation" data-toggle="dropdown" aria-describedby="adsLocationError" aria-expanded="false" required>
-                    {{defaultAdsLocation}}
+                    {{adsPanelCurrent.ads_location_name}}
                     </button>
                     <div class="input-group has-validation">
-                        <input id="selectedAdsLocation" name="adsLocationId" type="hidden" value="1"></input>
+                        <input id="selectedAdsLocation" name="adsLocationId" type="hidden" value="{{adsPanelCurrent.adsLocationId}}"></input>
                         <div id="adsLocationError" class="invalid-feedback">
                             Vui lòng chọn một điểm đặt.
                         </div>
@@ -49,10 +46,10 @@
                 <div class="adsAdsPanelType mt-1">
                     <label for="dropdownAdsPanelType">Loại bảng quảng cáo</label>
                     <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownAdsPanelType" data-toggle="dropdown" aria-describedby="adsPanelTypeError" aria-expanded="false" required>
-                    {{defaultAdsPanelType}}
+                    {{adsPanelCurrent.ads_panel_type_name}}
                     </button>
                     <div class="input-group has-validation">
-                        <input id="selectedAdsPanelType" name="adsPanelTypeId" type="hidden" value="1"></input>
+                        <input id="selectedAdsPanelType" name="adsPanelTypeId" type="hidden" value="{{adsPanelCurrent.adsPanelTypeId}}"></input>
                         <div id="adsPanelTypeError" class="invalid-feedback">
                             Vui lòng chọn một loại bảng quảng cáo.
                         </div>
@@ -88,18 +85,25 @@
                 <div class="form-group mb-1">
                     <label for="img">Ảnh bảng quảng cáo</label>
                     <input type="file" id="img" name="image">
-                    <input type="hidden" id="imgId" name="imgId" value="{{lengthImg}}">
+                    <input type="hidden" id="imgId" name="imgId" value="{{adsPanelCurrent.image_id}}">
                 </div>
+                <input type="hidden" name="adsPanelId" value="{{adsPanelCurrent.adsPanelId}}">
             </div>
+            
             <div class="card-footer text-muted">
                 <a class="btn btn-outline-success" href="/department-officer/ads-panel" role="button">
                     <i class="bi bi-skip-backward-fill"></i>
                     Danh sách
                 </a>
-                <button id="submitButton" type="submit" class="btn btn-primary">
+                <button id="btnDelete" type="submit" class="btn btn-danger" formaction="/department-officer/ads-panel/del">
+                    <i class="bi bi-trash-fill"></i>
+                    Xóa
+                </button>
+                <button id="btnSubmit" type="submit" class="btn btn-primary" formaction="/department-officer/ads-panel/patch">
                     <i class="bi bi-check2"></i>
                     Lưu
                 </button>
+                <input type="hidden" id="action" value="noAction">
             </div>
         </div>
     </form>

@@ -11,7 +11,7 @@ async function uploadImage() {
       console.error('No file selected.');
       return;
     }
-
+    console.log("origin: ", fileInput.name);
     const filename = $('#imgId').val() + '.' + fileInput.name.split(".").pop();
 
     const newFile = new File([fileInput], filename, { type: fileInput.type, lastModified: fileInput.lastModified });
@@ -63,50 +63,20 @@ $('.adsAdsPanelType .dropdown-menu .dropdown-item').click(function () {
     $('#selectedAdsPanelType').val($(this).data('id'));
 });
 
-$("#submitButton").on("click", async function(event) {
-    let isValid = true; 
-    event.preventDefault();
-    // if (isEmpty($('#dropdownAdsLocation').val())) {
-    //   $('#dropdownAdsLocation').addClass("is-invalid");
-    //   $("#adsLocationError").show();
-    //   $('#dropdownAdsLocation').focus();
-    //   isValid = false;
-    //   return;
-    // }
-  
-    // if (isEmpty($("#dropdownAdsPanelType").val())) {
-    //   $("#dropdownAdsPanelType").addClass("is-invalid");
-    //   $("#adsPanelTypeError").show();
-    //   if(isValid) $('#dropdownAdsPanelType').focus();
-    //   isValid = false;
-    //   return;
-    // }
-  
-    // if(isEmpty($('#txtWidth').val())){
-    //     $('#txtWidth').addClass('is-invalid');
-    //     $('#checkValidationEmptyWidth').show();
-    //     if(isValid) $('#txtWidth').focus();
-    //     isValid = false;
-    // }
+$("#btnDelete").on("click", function() {
+    alert(`Bạn đã xóa bảng quảng cáo này thành công!`);
+    $("#action").val("del");
+    $("#frmEdit").submit();
+});
 
-    // if(isEmpty($('#txtHeight').val())){
-    //     $('#txtHeight').addClass('is-invalid');
-    //     $('#checkValidationEmptyHeight').show();
-    //     if(isValid) $('#txtHeight').focus();
-    //     isValid = false;
-    // }
-
-    if(isValid){
-        try {
-            await uploadImage();
-            console.log("Upload thành công");
-            $("#frmAdd").submit();
-            alert("Đã thêm bảng quảng cáo thành công!!!");
-        } catch (error) {
-            console.error('Error during image upload:', error);
-        }
-    }else{
-        event.preventDefault();
-    } 
-    
-  });
+$("#btnSubmit").on("click", async function() {
+    try {
+        await uploadImage();
+        $("#action").val("patch");
+        $("#frmEdit").submit();
+        alert('Đã chỉnh sửa thông tin bảng quảng cáo này thành công!');
+    } catch (error) {
+        console.error('Lỗi trong quá trình tải ảnh lên:', error);
+        alert('Có lỗi trong quá trình tải ảnh lên. Vui lòng thử lại.');
+    }
+});

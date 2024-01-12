@@ -21,5 +21,4 @@ router.use("/provided-info", providedInforRoutes);
 router.use("/ads-location", adsLocationRoutes);
 router.use("/ads-panel", adsPanelRoutes);
 router.use("/management-officer", managementOfficerRoutes);
-
 export default router;

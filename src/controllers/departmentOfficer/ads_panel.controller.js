@@ -6,7 +6,7 @@ import imageService from "../../services/departmentOfficer/image.service.js";
 import multer from "multer";
 
 const index = async function (req, res) {
-    const empty = false;
+    let empty = false;
     const ads_panels = await adsPanel.findAll();
 
     console.log("List ads_panels: ", ads_panels);
@@ -20,7 +20,7 @@ const index = async function (req, res) {
         stt: index + 1,
     }));
 
-    console.log("List có index: ", ads_panelsWithIndex);
+    // console.log("List có index: ", ads_panelsWithIndex);
 
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
 
@@ -47,9 +47,8 @@ const addAdsPanel = async function (req, res){
     const adsPanelTypes = await adsPanelType.findAll('ads_panel_type');
     const image = await imageService.findAll();
 
-    console.log("length: ", image.length);
+    // console.log("length: ", image.length);
     res.render("departmentOfficer/management_ads_panel/add", {
-        districtId: req.query.districtId,
         adsLocations: adsLocations,
         defaultAdsLocation: adsLocations[0].location,
         adsPanelTypes: adsPanelTypes,
@@ -63,9 +62,8 @@ const storage = multer.diskStorage({
         cb(null, process.cwd() + '/static/images/ads-panel');
     },
     filename: async function (req, file, cb) {
-        const img = await imageService.findAll();
-        const imgId = img.length + 1;
-        const filename = imgId + '.' + file.originalname.split('.').pop();
+        console.log("file: ", file);
+        const filename = file.originalname;
         req.body.image = "/static/images/ads-panel/" + filename;
         console.log(filename);
         cb(null, filename);
@@ -78,13 +76,22 @@ const uploadImage = async function(req, res) {
     console.log("Đã vô upload");
     
     upload.single('image')(req, res, async function (err) {
+        console.log("req upload: ", req.body);
         if (err) {
             console.error("error: ", err);
             return res.status(500).json({ error: 'Error during upload.' });
         } else {
             console.log("file name: ", req.body.image);
-            const image = await imageService.add({imgLink: req.body.image});
-            return res.json({ success: true, image: req.body.image });
+            const imgId = await imageService.findById(req.body.imgId);
+            console.log("id: ", imgId);
+            if(!imgId){
+                const image = await imageService.add({imgLink: req.body.image});
+                return res.json({ success: true, image: req.body.image });
+            }else{
+                const image = await imageService.patch(imgId);
+                return res.json({ success: true, image: req.body.image });   
+            }
+            
         }
     });
 }
@@ -99,4 +106,35 @@ const handle_addAdsPanel = async function(req, res){
     const ads_panel = await adsPanel.add(req.body);
     res.redirect("/department-officer/ads-panel");
 }
-export default { index, viewDetailAdsPanel, addAdsPanel, uploadImage, handle_addAdsPanel };
+
+const editAdsPanel = async function(req, res){
+    const adsLocations = await adsLocation.findAll();
+    const adsPanelTypes = await adsPanelType.findAll('ads_panel_type');
+
+    const adsPanelCurrent = await adsPanel.findById(req.query.adsPanelId);
+    console.log("current: ", adsPanelCurrent);
+    res.render("departmentOfficer/management_ads_panel/edit", {
+        stt: req.query.stt,
+        adsLocations: adsLocations,
+        adsPanelCurrent: adsPanelCurrent,
+        // defaultAdsLocation: adsPanelCurrent.ads_location_name,
+        adsPanelTypes: adsPanelTypes,
+        // defaultAdsPanelType: adsPanelCurrent.ads_panel_type_name,
+    });
+}
+
+const handle_deleteAdsPanel = async function (req, res){
+    console.log("Body: ", req.body);
+    const imgId = req.body.imgId;
+    await adsPanel.del(req.body.adsPanelId);
+    await imageService.del(imgId);
+    res.redirect("/department-officer/ads-panel");
+}
+
+const handle_editAdsPanel = async function (req, res){
+    delete req.body.image;
+    delete req.body.imgId;
+    await adsPanel.patch(req.body);
+    res.redirect("/department-officer/ads-panel");
+}
+export default { index, viewDetailAdsPanel, addAdsPanel, uploadImage, handle_addAdsPanel, editAdsPanel, handle_deleteAdsPanel, handle_editAdsPanel };
