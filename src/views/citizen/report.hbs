@@ -1,1 +1,28 @@
-<h1>report</h1>
+{{#section "js"}}
+    <script src="/static/js/citizen/report.js"></script>
+{{/section}}
+{{#section "css"}}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" href="/static/css/citizen/report.css" />
+{{/section}}
+<form class="form-citizen">
+    <div class="mb-3">
+        <label for="reportType" class="form-label"><b>Hình thức báo cáo</b></label>
+        <select class="form-select" aria-label="Default select example" id="reportType" name="reportType">
+            <option value="1">Tố giác sai phạm</option>
+            <option value="2">Đăng ký nội dung</option>
+            <option value="3">Đóng góp ý kiến</option>
+            <option value="4">Giải đáp thắcmắc</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="fullname" class="form-label"><b>Họ và tên</b></label>
+        <input type="text" class="form-control" id="fullname" name="fullname" />
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label"><b>Email</b></label>
+        <input type="email" class="form-control" id="email" name="email" />
+    </div>
+    <div class="g-recaptcha mb-3" data-sitekey="6LdzXk4pAAAAAMPczaqyDAgY2Xiy2IQGedVV9tpL">Submit</div>
+    <button type="submit" class="btn btn-primary">Gửi báo cáo</button>
+</form>

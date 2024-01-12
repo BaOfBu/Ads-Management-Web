@@ -221,6 +221,7 @@ function addReturnButtonListener() {
         resetTheInformationOfSideBar();
         $("#sidebar").html(listHtmlSideBar);
         addEvenDetailAdsPanel();
+        addReportButtonAdsListener();
     });
 }
 function addReportButtonAdsListener() {
@@ -285,7 +286,6 @@ function addEvenDetailAdsPanel() {
 function createMarkerAds(ad) {
     const el = createMarkerElementAds(ad);
     const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
-
     marker_ads.push(marker);
     // Add event listeners for hover
     const popup = createPopup();
@@ -310,16 +310,10 @@ document.getElementById("switchAds").addEventListener("change", function () {
             }
         });
     } else {
-        // marker_ads.forEach(function (marker) {
-        //     marker.remove();
-        // });
-        // marker_ads = [];
-        marker_ads.forEach(marker => marker.remove());
-        marker_ads = [];
-        map.getSource("markers").setData({
-            type: "FeatureCollection",
-            features: []
+        marker_ads.forEach(function (marker) {
+            marker.remove();
         });
+        marker_ads = [];
     }
 });
 
