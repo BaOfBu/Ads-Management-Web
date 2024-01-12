@@ -214,12 +214,12 @@ function updateTheInformationAdsItemForSideBar(ad) {
     addEvenDetailAdsPanel(ad);
     addReportButtonAdsListener(ad.lat, ad.long, ad.status);
 }
-function addReturnButtonListener() {
+function addReturnButtonListener(ads) {
     $(".return-button").click(function () {
         resetTheInformationOfSideBar();
         $("#sidebar").html(listHtmlSideBar);
-        addEvenDetailAdsPanel();
-        addReportButtonAdsListener();
+        addEvenDetailAdsPanel(ads);
+        addReportButtonAdsListener(ads.lat, ads.long, ads.status);
     });
 }
 function addReportButtonAdsListener(lat, long, status) {
@@ -234,6 +234,7 @@ function addEvenDetailAdsPanel(ad) {
     $(".more-information").click(function () {
         var adsPanelId = $(this).attr("ads-panel-id");
         listHtmlSideBar = $("#sidebar").html();
+        ads = ad;
         resetTheInformationOfSideBar();
         $("#sidebar").css("padding", "0px");
         $("#sidebar").html(`
@@ -277,7 +278,7 @@ function addEvenDetailAdsPanel(ad) {
             </div>
         </div>
         `);
-        addReturnButtonListener();
+        addReturnButtonListener(ad);
         addReportButtonAdsListener(ad.lat, ad.long, ad.status);
     });
 }
