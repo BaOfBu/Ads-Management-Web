@@ -6,6 +6,8 @@
         {{{json lng}}}
         var sts =
         {{{json status}}}
+        var adsPanelId =
+        {{{json adsPanelId}}}
     </script>
     <script
         src="https://cdn.tiny.cloud/1/ezd73nxbzc7bu6e86g2l82jbbffke0mwevwrnyvc5q8h89j6/tinymce/6/tinymce.min.js"
@@ -57,18 +59,18 @@
         </div> }}
         <div id="map-container"><div id="map"></div></div>
     </div>
-    <form id="form-citizen">
-        <div class="title">
-            <legend class="mb-3 h2"><b>Thông tin báo cáo</b></legend>
+    <form id="form-citizen" method="post" enctype="multipart/form-data">
+        <div class="title mb-4">
+            <legend class="h2" style="margin-bottom:0;"><b>Thông tin báo cáo</b></legend>
             <i class="bi bi-arrow-left-circle icon-back"></i>
         </div>
         <div class="mb-3">
             <label for="reportType" class="form-label"><b>Hình thức báo cáo</b></label>
             <select class="form-select" aria-label="Default select example" id="reportType" name="reportType">
-                <option value="1">Tố giác sai phạm</option>
+                <option value="1" selected>Tố giác sai phạm</option>
                 <option value="2">Đăng ký nội dung</option>
                 <option value="3">Đóng góp ý kiến</option>
-                <option value="4">Giải đáp thắcmắc</option>
+                <option value="4">Giải đáp thắc mắc</option>
             </select>
         </div>
         <div class="mb-3">

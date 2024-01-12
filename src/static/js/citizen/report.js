@@ -75,61 +75,89 @@ $(".icon-back").on("click", function () {
 // Form
 document.getElementById("form-citizen").addEventListener("submit", function (event) {
     event.preventDefault();
-    let formData = new FormData();
-    let fileInput = document.getElementById("fileImage");
-    for (let i = 0; i < fileInput.files.length; i++) {
-        formData.append("images", fileInput.files[i]);
+    let email = $("#email").val();
+    let name = $("#fullname").val();
+    let phone = $("#phone").val();
+    let content = $("#contentArea");
+    let recaptchaResponse = grecaptcha.getResponse();
+    let isValid = true;
+    if (!recaptchaResponse) {
+        $("#notification-captcha").css("display", "block");
+        isValid = false;
+    } else {
+        $("#notification-captcha").css("display", "none");
     }
-    $.ajax({
-        url: "http://localhost:8888/get-data/send-report",
-        type: "POST",
-        data: {
-            email: $("#email").val(),
-            name: $("#fullname").val(),
-            phone: $("#phone").val(),
-            content: $("#contentArea").val()
-        },
-        dataType: "json",
-        success: function (data) {
-            console.log(data);
-        },
-        error: function (error) {
-            console.error("Error during POST request:", error);
+    if (email == "") {
+        $("#notification-email").css("display", "block");
+        isValid = false;
+    } else {
+        $("#notification-email").css("display", "none");
+    }
+    if (name == "") {
+        $("#notification-name").css("display", "block");
+        isValid = false;
+    } else {
+        $("#notification-name").css("display", "none");
+    }
+    if (phone == "") {
+        $("#notification-phone").css("display", "block");
+        isValid = false;
+    } else {
+        if (phone.length > 10) {
+            $("#notification-phone").css("display", "block");
+            $("#notification-phone").text("Số điện thoại không hợp lệ");
+            isValid = false;
+        } else {
+            $("#notification-phone").css("display", "none");
         }
-    });
-    // let recaptchaResponse = grecaptcha.getResponse();
-    // let email = $("#email").val();
-    // let name = $("#fullname").val();
-    // let phone = $("#phone").val();
-    // let content = $("#contentArea").val();
-    // if (!recaptchaResponse) {
-    //     $("#notification-captcha").css("display", "block");
-    // } else {
-    //     $("#notification-captcha").css("display", "none");
-    // }
-    // if (email == "") {
-    //     $("#notification-email").css("display", "block");
-    // } else {
-    //     $("#notification-email").css("display", "none");
-    // }
-    // if (name == "") {
-    //     $("#notification-name").css("display", "block");
-    // } else {
-    //     $("#notification-name").css("display", "none");
-    // }
-    // if (phone == "") {
-    //     $("#notification-phone").css("display", "block");
-    // } else {
-    //     if (phone.length > 10) {
-    //         $("#notification-phone").css("display", "block");
-    //         $("#notification-phone").text("Số điện thoại không hợp lệ");
-    //     } else {
-    //         $("#notification-phone").css("display", "none");
-    //     }
-    // }
-    // if (content == "") {
-    //     $("#notification-contentArea").css("display", "block");
-    // } else {
-    //     $("#notification-contentArea").css("display", "none");
-    // }
+    }
+    if (content.length == 0) {
+        $("#notification-contentArea").css("display", "block");
+        isValid = false;
+    } else {
+        $("#notification-contentArea").css("display", "none");
+    }
+    if (isValid == true) {
+        var formData = new FormData();
+        var fileInput = document.getElementById("fileImage");
+        if (fileInput.files.length > 0) {
+            for (var i = 0; i < fileInput.files.length; i++) {
+                formData.append("images", fileInput.files[i]);
+            }
+        }
+        var currentDate = new Date();
+        var options = { year: "numeric", month: "2-digit", day: "2-digit" };
+        var formattedDate = new Intl.DateTimeFormat("en-US", options).format(currentDate);
+        sendDate = formattedDate.replace(/(\d+)\/(\d+)\/(\d+)/, "$3-$1-$2");
+
+        formData.append("email", $("#email").val());
+        formData.append("name", $("#fullname").val());
+        formData.append("phone", $("#phone").val());
+        formData.append("content", $("#contentArea").val());
+        formData.append("long", lng);
+        formData.append("lat", lat);
+        formData.append("reportTypeId", $("#reportType").val());
+        formData.append("sendDate", sendDate);
+        formData.append("adsPanelId", adsPanelId);
+        $.ajax({
+            url: "http://localhost:8888/get-data/send-report",
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.status == "success") {
+                    alert("Gửi báo cáo thành công");
+                    window.history.back();
+                }
+            },
+            error: function (error) {
+                console.error("Error during POST request:", error);
+            }
+        });
+    } else {
+        event.preventDefault();
+        return;
+    }
 });
