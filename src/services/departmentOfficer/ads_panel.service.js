@@ -23,4 +23,7 @@ export default {
     .join('ads_location', 'ads_panel.adsLocationId', '=', 'ads_location.adsLocationId')
     .join('ads_panel_type', 'ads_panel.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId').where('adsPanelId', id).first();
   },
+  add(entity) {
+    return db('ads_panel').insert(entity);
+  },
 }
