@@ -1,0 +1,41 @@
+<div class="custom-container">
+    <form action="" method="post">
+        <div class="card">
+            <h5 class="card-header">
+            Xem chi tiết bảng quảng cáo
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="txtAdsPanelId">#</label>
+                    <input type="text" id="txtAdsPanelId" class="form-control" readonly value="{{adsPanel.adsPanelId}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtName">Loại bảng quảng cáo</label>
+                    <input type="text" id="txtName" class="form-control" readonly value="{{adsPanel.ads_panel_type_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtSize">Kích thước</label>
+                    <input type="text" class="form-control" id="txtSize" readonly value="{{adsPanel.width}}m x {{adsPanel.height}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtStartDate">Kích thước</label>
+                    <input type="text" class="form-control" id="txtStartDate" readonly value="{{adsPanel.startDate}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtEndDate">Kích thước</label>
+                    <input type="text" class="form-control" id="txtEndDate" readonly value="{{adsPanel.endDate}}">
+                </div>
+                <div class="form-group">
+                    <label for="image">Hình ảnh</label>
+                    <img src="{{adsPanel.image_link}}" alt="bảng quảng cáo">
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-outline-success" href="/ward-officer/ads/view-detail?adsLocationId={{adsPanel.adsLocationId}}" role="button">
+                    <i class="bi bi-skip-backward-fill"></i>
+                    Danh sách bảng quảng cáo
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
