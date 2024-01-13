@@ -38,10 +38,6 @@ const getWardByDistrict = async function(req, res){
 
 const getRequestByWard = async function(req, res){
     const requests = await adsPanelModificationRequest.findByWardId(req.body.wardId);
-    let empty = false;
-    if(!requests || requests.length === 0){
-        empty = true;
-    }
 
     let request = requests.map((request, index) => ({
         ...request,

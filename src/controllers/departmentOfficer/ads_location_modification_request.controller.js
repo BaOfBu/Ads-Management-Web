@@ -28,4 +28,23 @@ const index = async function (req, res) {
     });
 };
 
-export default { index };
+const getWardByDistrict = async function(req, res){
+    const wards = await ward.findAllByDistrictId(req.body.districtId);
+    console.log("wards: ", wards);
+    return res.json({success: true, wards: wards});
+}
+
+const getRequestByWard = async function(req, res){
+    const requests = await adsLocationModificationRequest.findByWardId(req.body.wardId);
+
+    let request = requests.map((request, index) => ({
+        ...request,
+        requestTime: moment(request.requestTime).format('DD/MM/YYYY HH:mm:ss'),
+        stt: index + 1,
+    }));
+
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
+    console.log("request: ", request);
+    return res.json({success: true, request: request, date: currentDateTime});   
+}
+export default { index, getWardByDistrict, getRequestByWard };

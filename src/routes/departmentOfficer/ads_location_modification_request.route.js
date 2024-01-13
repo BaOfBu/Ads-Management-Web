@@ -4,5 +4,7 @@ import adsLocationModificationRequestController from "../../controllers/departme
 const router = express.Router();
 
 router.get("/", adsLocationModificationRequestController.index);
+router.post("/get-ward-by-district", adsLocationModificationRequestController.getWardByDistrict);
+router.post("/get-request-by-ward", adsLocationModificationRequestController.getRequestByWard);
 
 export default router;
