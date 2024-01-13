@@ -27,6 +27,9 @@ export default {
     .join('location_type', 'ads_location.locationType', '=', 'location_type.locationTypeId')
     .join('ward', 'ads_location.wardId', '=', 'ward.wardId').where('adsLocationId', id).first();
   },
+  findByName(name){
+    return db('ads_location').where('location', name).first();
+  },
   del(id) {
     return db('ads_location').where('adsLocationId', id).del();
   },

@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.get("/", adsPanelModificationRequestController.index);
 router.post("/cancel-request", adsPanelModificationRequestController.cancelRequest);
+router.post("/accept-request", adsPanelModificationRequestController.acceptRequest);
 
 export default router;

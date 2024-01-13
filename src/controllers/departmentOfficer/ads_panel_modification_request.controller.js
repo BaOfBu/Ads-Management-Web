@@ -1,12 +1,12 @@
 import moment from "moment";
 import adsPanelModificationRequest from "../../services/departmentOfficer/ads_panel_modification_request.service.js";
-
+import adsPanel from "../../services/departmentOfficer/ads_panel.service.js";
+import adsLocation from "../../services/departmentOfficer/ads_location.service.js";
+import adsPanelType from "../../services/departmentOfficer/provided_infor.service.js";
 
 const index = async function (req, res) {
     let empty = false;
     const edit_ads_panels_request = await adsPanelModificationRequest.findAll();
-
-    console.log("List edit_ads_panels_request: ", edit_ads_panels_request);
 
     if(!edit_ads_panels_request || edit_ads_panels_request.length === 0){
         empty = true;
@@ -18,9 +18,6 @@ const index = async function (req, res) {
         stt: index + 1,
     }));
 
-    // edit_ads_panels_requestWithIndex.requestTime = moment(edit_ads_panels_requestWithIndex.requestTime).format('HH:mm:ss DD/MM/YYYY');
-    
-    console.log("List có index: ", edit_ads_panels_requestWithIndex);
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
 
     res.render("departmentOfficer/ads_panel_modification_request/list", {
@@ -37,4 +34,26 @@ const cancelRequest = async function(req, res){
     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
 }
 
-export default { index, cancelRequest};
+const acceptRequest = async function(req, res){
+    const requestId = req.body.requestId;
+    const adsPanelId = req.body.adsPanelId;
+    const adsPanelNew = req.body.adsPanelNew;
+
+    const adsLocationId = await adsLocation.findByName(adsPanelNew.ads_location);
+    const adsPanelTypeId = await adsPanelType.findByName('ads_panel_type', adsPanelNew.ads_panel_type);
+
+    const updateData = {
+        adsPanelId: adsPanelId, 
+        adsLocationId: adsLocationId.adsLocationId, 
+        adsPanelTypeId: adsPanelTypeId.adsPanelId, 
+        width: adsPanelNew.width,
+        height: adsPanelNew.height,
+        quantity: adsPanelNew.quantity
+    };
+
+    const updatedAdsPanel = await adsPanel.patch(updateData);
+    const updateStatus = await adsPanelModificationRequest.patch({requestId: requestId, status: "Đã duyệt"});
+    return res.json({success: true, message: "Đã phê duyệt yêu cầu này thành công!"});
+}
+
+export default { index, cancelRequest, acceptRequest};
