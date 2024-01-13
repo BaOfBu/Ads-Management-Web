@@ -9,6 +9,7 @@ import adsPanelRoutes from "./ads_panel.route.js";
 import managementOfficerRoutes from "./management_officer.route.js";
 import adsPanelModificationRoutes from "./ads_panel_modification_request.route.js";
 import adsLocationModificationRoutes from "./ads_location_modification_request.route.js";
+import licenseRequestRoutes from "./license_request.route.js";
 
 function setDefaultLayoutAndPartials(req, res, next) {
     res.locals.layout = "departmentOfficer/layouts/main";
@@ -24,5 +25,6 @@ router.use("/ads-panel", adsPanelRoutes);
 router.use("/management-officer", managementOfficerRoutes);
 router.use("/ads-panel-modification-request", adsPanelModificationRoutes);
 router.use("/ads-location-modification-request", adsLocationModificationRoutes);
+router.use("/license-request", licenseRequestRoutes);
 
 export default router;
