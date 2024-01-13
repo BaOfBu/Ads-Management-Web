@@ -1,29 +1,31 @@
 import moment from "moment";
-// import adsPanelModificationRequest from "../../services/departmentOfficer/ads_panel_modification_request.service.js";
+import adsPanelModificationRequest from "../../services/departmentOfficer/ads_panel_modification_request.service.js";
 
 
 const index = async function (req, res) {
     let empty = false;
-    // const ads_panels = await adsPanel.findAll();
+    const edit_ads_panels_request = await adsPanelModificationRequest.findAll();
 
-    // console.log("List ads_panels: ", ads_panels);
+    console.log("List edit_ads_panels_request: ", edit_ads_panels_request);
 
-    // if(!ads_panels || ads_panels.length === 0){
-    //     empty = true;
-    // }
+    if(!edit_ads_panels_request || edit_ads_panels_request.length === 0){
+        empty = true;
+    }
 
-    // const ads_panelsWithIndex = ads_panels.map((ads_panel, index) => ({
-    //     ...ads_panel,
-    //     stt: index + 1,
-    // }));
+    let edit_ads_panels_requestWithIndex = edit_ads_panels_request.map((request, index) => ({
+        ...request,
+        requestTime: moment(request.requestTime).format('DD/MM/YYYY HH:mm:ss'),
+        stt: index + 1,
+    }));
 
-    // console.log("List có index: ", ads_panelsWithIndex);
-
+    // edit_ads_panels_requestWithIndex.requestTime = moment(edit_ads_panels_requestWithIndex.requestTime).format('HH:mm:ss DD/MM/YYYY');
+    
+    console.log("List có index: ", edit_ads_panels_requestWithIndex);
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
 
     res.render("departmentOfficer/ads_panel_modification_request/list", {
         empty: empty,
-        // ads_panels: ads_panelsWithIndex,
+        edit_ads_panels_request: edit_ads_panels_requestWithIndex,
         date: currentDateTime
     });
 };

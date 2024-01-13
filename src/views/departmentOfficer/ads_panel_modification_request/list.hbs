@@ -25,16 +25,16 @@
                 </tr>
             </thead>
             <tbody>
-                {{!-- {{#each edit_ads_panels_request}} --}}
+                {{#each edit_ads_panels_request}}
                 <tr>
-                    <th scope="row">{{stt}}1</th>
-                    <td>{{requestTime}}1/13/2024</td>
-                    <td>{{requestReason}}Muốn sửa đổi kích thước của bảng quảng cáo</td>
-                    <td>{{ads_location_name}}322b Xô Viết Nghệ Tĩnh, Phường 25, Bình Thạnh, Thành phố Hồ Chí Minh</td>
-                    <td>{{ads_panel_type_name}}Bảng hiflex ốp tường</td>
-                    <td>{{width}}12m x {{height}}12m</td>
-                    <td>{{quantity}}1</td>
-                    <td>{{status}}Chưa duyệt</td>
+                    <th scope="row">{{stt}}</th>
+                    <td>{{requestTime}}</td>
+                    <td>{{requestReason}}</td>
+                    <td>{{ads_location_name}}</td>
+                    <td>{{ads_panel_type_name}}</td>
+                    <td>{{width}}m x {{height}}m</td>
+                    <td>{{quantity}}</td>
+                    <td>{{status}}</td>
                     <td class="d-flex">
                         <div class="d-flex justify-content-center" style="margin-right: 10px;">
                             <a class="btn btn-sm btn-outline-info" href="ads-panel/edit?adsPanelId={{adsPanelId}}&stt={{stt}}" role="button">
@@ -48,7 +48,7 @@
                         </div>
                     </td>
                 </tr>
-                {{!-- {{/each}} --}}
+                {{/each}}
             </tbody>
         </table>
         {{/if}}

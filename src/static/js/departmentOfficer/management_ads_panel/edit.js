@@ -1,43 +1,43 @@
-$('#img').fileinput({
-    dropZoneEnabled: false,
-    maxFileCount: 1,
-    allowedFileExtensions: ['jpg', 'png', 'gif'],
-    language: 'vi',
-});
+// $('#img').fileinput({
+//     dropZoneEnabled: false,
+//     maxFileCount: 1,
+//     allowedFileExtensions: ['jpg', 'png', 'gif'],
+//     language: 'vi',
+// });
 
-async function uploadImage() {
-    let fileInput = $("#img")[0].files[0];
-    if (!fileInput) {
-      console.error('No file selected.');
-      return;
-    }
-    console.log("origin: ", fileInput.name);
-    const filename = $('#imgId').val() + '.' + fileInput.name.split(".").pop();
+// async function uploadImage() {
+//     let fileInput = $("#img")[0].files[0];
+//     if (!fileInput) {
+//       console.error('No file selected.');
+//       return;
+//     }
+//     console.log("origin: ", fileInput.name);
+//     const filename = $('#imgId').val() + '.' + fileInput.name.split(".").pop();
 
-    const newFile = new File([fileInput], filename, { type: fileInput.type, lastModified: fileInput.lastModified });
+//     const newFile = new File([fileInput], filename, { type: fileInput.type, lastModified: fileInput.lastModified });
 
-    const formData = new FormData();
-    formData.append('image', newFile);
-    formData.append('imgId', $('#imgId').val());
+//     const formData = new FormData();
+//     formData.append('image', newFile);
+//     formData.append('imgId', $('#imgId').val());
   
-    return new Promise((resolve, reject) => {
-      $.ajax({
-        url: '/department-officer/ads-panel/upload-image',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            console.log("data: ", data);
-            resolve(data);
-        },
-        error: function(error) {
-            console.error('Error:', error);
-            reject(error);
-        }
-      });
-    });
-}
+//     return new Promise((resolve, reject) => {
+//       $.ajax({
+//         url: '/department-officer/ads-panel/upload-image',
+//         type: 'POST',
+//         data: formData,
+//         processData: false,
+//         contentType: false,
+//         success: function(data) {
+//             console.log("data: ", data);
+//             resolve(data);
+//         },
+//         error: function(error) {
+//             console.error('Error:', error);
+//             reject(error);
+//         }
+//       });
+//     });
+// }
 
 function isEmpty(field){
     return field.length === 0;
@@ -71,7 +71,7 @@ $("#btnDelete").on("click", function() {
 
 $("#btnSubmit").on("click", async function() {
     try {
-        await uploadImage();
+        // await uploadImage();
         $("#action").val("patch");
         $("#frmEdit").submit();
         alert('Đã chỉnh sửa thông tin bảng quảng cáo này thành công!');
