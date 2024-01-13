@@ -1,6 +1,7 @@
 import moment from "moment";
 import licenseRequest from "../../services/departmentOfficer/license_request.service.js";
 import district from "../../services/departmentOfficer/district.service.js";
+import ward from "../../services/departmentOfficer/ward.service.js";
 
 const index = async function (req, res) {
     let empty = false;
@@ -27,4 +28,25 @@ const index = async function (req, res) {
     });
 };
 
-export default { index };
+const getWardByDistrict = async function(req, res){
+    const wards = await ward.findAllByDistrictId(req.body.districtId);
+    console.log("wards: ", wards);
+    return res.json({success: true, wards: wards});
+}
+
+const getRequestByWard = async function(req, res){
+    const requests = await licenseRequest.findByWardId(req.body.wardId);
+
+    let request = requests.map((request, index) => ({
+        ...request,
+        startDate: moment(request.startDate).format('DD/MM/YYYY'),
+        endDate: moment(request.endDate).format('DD/MM/YYYY'),
+        stt: index + 1,
+    }));
+
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
+    console.log("request: ", request);
+    return res.json({success: true, request: request, date: currentDateTime});   
+}
+
+export default { index, getWardByDistrict, getRequestByWard };

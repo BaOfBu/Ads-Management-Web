@@ -4,5 +4,7 @@ import licenseRequestController from "../../controllers/departmentOfficer/licens
 const router = express.Router();
 
 router.get("/", licenseRequestController.index);
+router.post("/get-ward-by-district", licenseRequestController.getWardByDistrict);
+router.post("/get-request-by-ward", licenseRequestController.getRequestByWard);
 
 export default router;
