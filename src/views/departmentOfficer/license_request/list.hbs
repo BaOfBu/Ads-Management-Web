@@ -37,17 +37,16 @@
                     <thead>
                         <tr>
                             <th scope="col" style="width: 2%">#</th>
-                            <th scope="col" style="width: 15%">Địa chỉ</th>
+                            <th scope="col" style="width: 10%">Địa chỉ</th>
                             <th scope="col" style="width: 7%">Khu vực</th>
                             <th scope="col" style="width: 8%">Loại bảng</th>
-                            <th scope="col" style="width: 8%">Kích thước</th>
+                            <th scope="col" style="width: 9%">Kích thước</th>
                             <th scope="col" style="width: 8%">Hình thức</th>
                             <th scope="col" style="width: 8%">Phân loại</th>
-                            <th scope="col" style="width: 8%">Nội dung</th>
-                            <th scope="col" style="width: 8%">Hình ảnh</th>
-                            {{!-- <th scope="col" style="width: 9%">Tên công ty</th> --}}
-                            <th scope="col" style="width: 10%">Thông tin LH</th>
-                            <th scope="col" style="width: 8%">Thời gian</th>
+                            <th scope="col" style="width: 11%">Nội dung và ảnh</th>
+                            {{!-- <th scope="col" style="width: 8%">Hình ảnh</th> --}}
+                            <th scope="col" style="width: 17%">Thông tin LH</th>
+                            <th scope="col" style="width: 10%">Thời gian</th>
                             <th scope="col" style="width: 10%">Hành động</th>
                         </tr>
                     </thead>
@@ -58,11 +57,11 @@
                                 <td>{{ads_location_name}}</td>
                                 <td>Phường {{ward_name}} - Quận {{district_name}}</td>
                                 <td>{{ads_panel_type_name}}</td>
-                                <td>{{width}}m x {{height}}</td>
+                                <td>{{width}}m x {{height}}m</td>
                                 <td>{{ads_type_name}}</td>
-                                <td>{{ads_location_name}}</td>
-                                <td>{{content}}</td>
-                                <td>{{img_link}}</td>
+                                <td>{{ads_location_type_name}}</td>
+                                <td>{{content}} - Ảnh: {{img_link}}</td>
+                                {{!-- <td>{{img_link}}</td> --}}
                                 {{!-- <td>{{nameCompany}}</td> --}}
                                 <td>Tên công ty: {{nameCompany}} - Địa chỉ: {{locationCompany}} - Email: {{emailCompany}} - Số ĐT: {{phoneCompany}}</td>
                                 <td>{{startDate}} - {{endDate}}</td>
