@@ -38,4 +38,9 @@ export default {
       .where('edit_ads_location_request.wardId', wardId)
       .orderBy('requestTime');
   },
+  patch(entity){
+    const id = entity.requestId;
+    delete entity.requestId;
+    return db('edit_ads_location_request').where('requestId', id).update(entity);
+  }
 }
