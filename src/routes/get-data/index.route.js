@@ -3,8 +3,10 @@ import GetAdsLocationController from "../../controllers/departmentOfficer/get-ad
 import getTheAdsRoute from "../get-data/get-the-ads.route.js";
 import getReportRoutes from "../get-data/get-report.route.js";
 import sendReport from "../get-data/send-report.route.js";
+import getAdsPanel from "../get-data/get-ads-panel.route.js";
 const router = express.Router();
 router.use("/get-ads-location", getTheAdsRoute);
 router.use("/get-report-location", getReportRoutes);
+router.use("/get-ads-panel", getAdsPanel);
 router.use("/send-report", sendReport);
 export default router;

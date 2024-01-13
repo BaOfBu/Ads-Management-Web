@@ -189,36 +189,38 @@ function createMarkerElementAds(ad) {
 // Listener for click into the ads location
 function updateTheInformationAdsItemForSideBar(ad) {
     const sidebar = document.getElementById("sidebar");
-    const start = 1;
-    const end = 5;
-    for (let i = start; i <= end; i++) {
-        let adsDetailItem = document.createElement("div");
-        adsDetailItem.id = "ads-detail-item";
-        adsDetailItem.innerHTML = `
-        <h5 id="ads-detail-item-title">Trụ, cụm Pano ${i}</h5>
-        <p id="ads-detail-item-address">217 Nguyễn Văn Cừ St., Dist. 5, Ho Chi Minh City, 748400, Vietnam</p>
-        <p id="ads-detail-item-size">Kích thước: <strong>2.5m * 10m</strong></p>
-        <p id="ads-detail-item-number">Số lượng: <strong>1 trụ/bảng</strong></p>
-        <p id="ads-detail-item-ads-type">Hình thức: <strong>Cổ động chính trị</strong></p>
-        <p id="ads-detai-item-location-type">Phân loại: <strong>Đất công cộng viên/Hành lang an toàn giao thông</strong></p>
-        <div id="button-pane">
-            <button class="more-information" ads-panel-id=${i}><i class="bi bi-info-circle"></i></button>
-            <button class="report-button" ads-panel-id="${i}">
-                <i class="bi bi-exclamation-octagon-fill"></i>
-                BÁO CÁO VI PHẠM
-            </button>
-        </div>
-    `;
-        sidebar.appendChild(adsDetailItem);
-    }
-    addEvenDetailAdsPanel(ad);
-    addReportButtonAdsListener(ad.lat, ad.long, ad.status);
+    $.getJSON(`http://localhost:8888/get-data/get-ads-panel`, { entity: ad.adsLocationId }, function (data) {
+        if (data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+                let adsDetailItem = document.createElement("div");
+                adsDetailItem.id = "ads-detail-item";
+                adsDetailItem.innerHTML = `
+                <h5 id="ads-detail-item-title">${data[i].adsPanelType}</h5>
+                <p id="ads-detail-item-address">${ad.location}</p>
+                <p id="ads-detail-item-size">Kích thước: <strong>${data[i].width}m * ${data[i].height}m</strong></p>
+                <p id="ads-detail-item-number">Số lượng: <strong>${data[i].quantity} trụ/bảng</strong></p>
+                <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
+                <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
+                <div id="button-pane">
+                    <button class="more-information" ads-panel-id=${data[i].adsPanelId}><i class="bi bi-info-circle"></i></button>
+                    <button class="report-button" ads-panel-id="${data[i].adsPanelId}">
+                        <i class="bi bi-exclamation-octagon-fill"></i>
+                        BÁO CÁO VI PHẠM
+                    </button>
+                </div>
+            `;
+                sidebar.appendChild(adsDetailItem);
+            }
+            addEvenDetailAdsPanel(ad, data);
+            addReportButtonAdsListener(ad.lat, ad.long, ad.status);
+        }
+    });
 }
-function addReturnButtonListener(ads) {
+function addReturnButtonListener(ads, data) {
     $(".return-button").click(function () {
         resetTheInformationOfSideBar();
         $("#sidebar").html(listHtmlSideBar);
-        addEvenDetailAdsPanel(ads);
+        addEvenDetailAdsPanel(ads, data);
         addReportButtonAdsListener(ads.lat, ads.long, ads.status);
     });
 }
@@ -230,7 +232,7 @@ function addReportButtonAdsListener(lat, long, status) {
     });
 }
 let listHtmlSideBar;
-function addEvenDetailAdsPanel(ad) {
+function addEvenDetailAdsPanel(ad, data) {
     $(".more-information").click(function () {
         var adsPanelId = $(this).attr("ads-panel-id");
         listHtmlSideBar = $("#sidebar").html();
@@ -259,12 +261,12 @@ function addEvenDetailAdsPanel(ad) {
             </div>
         </div>
         <div class = "detail-ads-information">
-            <h5 id="ads-detail-item-title"><b>Trụ, cụm Pano ${adsPanelId}</b></h5>
-            <p id="ads-detail-item-address">217 Nguyễn Văn Cừ St., Dist. 5, Ho Chi Minh City, 748400, Vietnam</p>
-            <p id="ads-detail-item-size">Kích thước: <strong>2.5m * 10m</strong></p>
-            <p id="ads-detail-item-number">Số lượng: <strong>1 trụ/bảng</strong></p>
-            <p id="ads-detail-item-ads-type">Hình thức: <strong>Cổ động chính trị</strong></p>
-            <p id="ads-detai-item-location-type">Phân loại: <strong>Đất công cộng viên/Hành lang an toàn giao thông</strong></p>
+            <h5 id="ads-detail-item-title"><b>${data[adsPanelId - 1].adsPanelType}</b></h5>
+            <p id="ads-detail-item-address">${ad.location}</p>
+            <p id="ads-detail-item-size">Kích thước: <strong>${data[adsPanelId - 1].width}m * ${data[adsPanelId - 1].height}m</strong></p>
+            <p id="ads-detail-item-number">Số lượng: <strong>${data[adsPanelId - 1].quantity} trụ/bảng</strong></p>
+            <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
+            <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
             <p id="expired-date-item">Ngày hết hạn: <b>31/12/2024</b></p>
             <div id="button-pane">
                 <button class="report-button" ads-panel-id="${adsPanelId}">
@@ -278,7 +280,7 @@ function addEvenDetailAdsPanel(ad) {
             </div>
         </div>
         `);
-        addReturnButtonListener(ad);
+        addReturnButtonListener(ad, data);
         addReportButtonAdsListener(ad.lat, ad.long, ad.status);
     });
 }
@@ -315,7 +317,6 @@ document.getElementById("switchAds").addEventListener("change", function () {
         marker_ads = [];
     }
 });
-
 // Listen on the Switch Report
 let marker_report = [];
 function mouseEnterReport(el, report, popup) {
@@ -346,6 +347,58 @@ function createMarkerElementReport(report) {
     el.style.backgroundSize = "cover";
     return el;
 }
+function updateTheInformationReportItemForSideBar(report) {
+    const sidebar = document.getElementById("sidebar");
+    resetTheInformationOfSideBar();
+    $("#sidebar").css("padding", "0px");
+    let reportDetailItem = document.createElement("div");
+    reportDetailItem.id = "report-detail-item";
+    const carouselItems = [];
+    if (report.imgId1 != null) {
+        carouselItems.push(`
+            <div class="carousel-item active">
+                <img src="${report.imgId1}" class="d-block w-100 image-detail-pane" alt="Image 1">
+            </div>
+        `);
+    }
+    if (report.imgId2 != null) {
+        carouselItems.push(`
+            <div class="carousel-item ${!report.imgId1 ? "active" : ""}">
+                <img src="${report.imgId2}" class="d-block w-100 image-detail-pane" alt="">
+            </div>
+        `);
+    }
+    const dateObject = new Date(report.date);
+    const formattedDate = dateObject.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
+    reportDetailItem.innerHTML = `
+        <div class="image-detail">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    ${carouselItems.join("")}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class ="report-content">   
+            <span class="title-popup-info-report">${report.reportTypeName}</span>
+            <span class="report-content-pop-up"><b>Nội dung</b></span>
+            <span class="report-content-pop-up">${report.content}</span>
+            <span class="report-content-pop-up"><b>Địa chỉ</b></span>
+            <span class="report-location">${report.location}</span>
+            <span class="status-popup-info-report"><b>Trạng thái</b>: ${report.status}</span>
+            <span class="status-popup-info-report"><b>Ngày gửi</b>: ${formattedDate}</span>
+        </div>
+      
+    `;
+    sidebar.appendChild(reportDetailItem);
+}
 function createMarkerReport(report) {
     const el = createMarkerElementReport(report);
     const marker = new mapboxgl.Marker(el).setLngLat([report.long, report.lat]).addTo(map);
@@ -356,6 +409,7 @@ function createMarkerReport(report) {
     el.addEventListener("mouseleave", () => popup.remove());
     el.addEventListener("click", () => {
         resetTheInformationOfSideBar();
+        updateTheInformationReportItemForSideBar(report);
         toggleSidebar();
         isMarker = true;
     });
@@ -378,7 +432,6 @@ document.getElementById("switchReport").addEventListener("change", function () {
         marker_report = [];
     }
 });
-
 // Listen click the point in the map
 function resetTheInformationOfSideBar() {
     $("#sidebar").css("padding-top", "30px");

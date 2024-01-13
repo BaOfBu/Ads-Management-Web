@@ -327,7 +327,8 @@ input:checked + .slider:before {
 #location-content p:first-child {
     font-weight: bold;
 }
-.image-detail-pane {
+.image-detail-pane,
+.image-report {
     object-fit: cover;
     height: 250px;
 }
@@ -357,4 +358,20 @@ input:checked + .slider:before {
 .report-location {
     padding: 0;
     margin: 0;
+}
+#report-detail-item {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+.report-content {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.title-popup-info-report {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
