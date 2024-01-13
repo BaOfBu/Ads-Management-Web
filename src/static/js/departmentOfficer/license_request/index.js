@@ -157,4 +157,32 @@ $(document).ready(function() {
             }
         });
     }
+
+    $('[id^="accept-"]').on('click', function(event) {
+        event.preventDefault(); 
+
+        let licenseRequestId = $(this).data('id');
+        let adsPanelId = $(this).data('value');
+
+        handleAcceptClick(licenseRequestId, adsPanelId);
+    }); 
+    
+    function handleAcceptClick(licenseRequestId, adsPanelId) {
+        console.log("Accept button clicked for licenseRequestId: ", licenseRequestId);
+        $.ajax({
+            url: "license-request/accept-request",
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ licenseRequestId: licenseRequestId, adsPanelId: adsPanelId}),
+            success: function(response) {
+                console.log('Request accepted successfully:', response);
+                alert(response.message);
+                window.location.reload();
+            },
+            error: function(error) {
+                console.error('Error accepted request:', error);
+                window.location.reload();
+            }
+        });
+    }
 });

@@ -2,6 +2,7 @@ import moment from "moment";
 import licenseRequest from "../../services/departmentOfficer/license_request.service.js";
 import district from "../../services/departmentOfficer/district.service.js";
 import ward from "../../services/departmentOfficer/ward.service.js";
+import adsPanel from "../../services/departmentOfficer/ads_panel.service.js";
 
 const index = async function (req, res) {
     let empty = false;
@@ -56,4 +57,13 @@ const cancelRequest = async function(req, res){
     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
 }
 
-export default { index, getWardByDistrict, getRequestByWard, cancelRequest };
+const acceptRequest = async function(req, res){
+    const licenseRequestId = req.body.licenseRequestId;
+    const adsPanelId = req.body.adsPanelId;
+
+    const updatedAdsPanel = await adsPanel.patch({adsPanelId: adsPanelId, licenseId: licenseRequestId});
+    const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã duyệt"});
+    return res.json({success: true, message: "Đã phê duyệt yêu cầu này thành công!"});
+}
+
+export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest };
