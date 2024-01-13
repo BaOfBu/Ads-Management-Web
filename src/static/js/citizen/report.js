@@ -110,8 +110,8 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
             $("#notification-phone").css("display", "none");
         }
     }
-    let content = $("#contentArea").val();
-    if (content.length == 0) {
+    let content = tinymce.get("contentArea").getContent();
+    if (content.length === 0) {
         $("#notification-contentArea").css("display", "block");
         isValid = false;
     } else {
@@ -139,23 +139,23 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
         formData.append("reportTypeId", $("#reportType").val());
         formData.append("sendDate", sendDate);
         formData.append("adsPanelId", adsPanelId);
-        $.ajax({
-            url: "http://localhost:8888/get-data/send-report",
-            type: "POST",
-            data: formData,
-            dataType: "json",
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                if (data.status == "success") {
-                    alert("Gửi báo cáo thành công");
-                    window.history.back();
-                }
-            },
-            error: function (error) {
-                console.error("Error during POST request:", error);
-            }
-        });
+        // $.ajax({
+        //     url: "http://localhost:8888/get-data/send-report",
+        //     type: "POST",
+        //     data: formData,
+        //     dataType: "json",
+        //     contentType: false,
+        //     processData: false,
+        //     success: function (data) {
+        //         if (data.status == "success") {
+        //             alert("Gửi báo cáo thành công");
+        //             window.history.back();
+        //         }
+        //     },
+        //     error: function (error) {
+        //         console.error("Error during POST request:", error);
+        //     }
+        // });
     } else {
         event.preventDefault();
         return;
