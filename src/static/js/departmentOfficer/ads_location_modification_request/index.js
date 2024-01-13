@@ -153,4 +153,42 @@ $(document).ready(function() {
         });
     }
 
+    $('[id^="accept-"]').on('click', function(event) {
+        event.preventDefault(); 
+
+        let requestId = $(this).data('id');
+        let adsLocationId = $(this).data('value');
+
+        let row = $('#accept-' + requestId).closest('tr');
+        let ads_location_type = row.find('td:eq(4)').text();
+        let ads_type = row.find('td:eq(5)').text();
+        let img_link = row.find('td:eq(6)').text();
+
+        const adsLocationNew = {
+            ads_location_type: ads_location_type,
+            ads_type: ads_type,
+            img_link: img_link
+        };
+
+        handleAcceptClick(requestId, adsLocationId, adsLocationNew);
+    }); 
+    
+    function handleAcceptClick(requestId, adsLocationId, adsLocationNew) {
+        console.log("Accept button clicked for requestId: ", requestId);
+        $.ajax({
+            url: "ads-location-modification-request/accept-request",
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ requestId: requestId, adsLocationId: adsLocationId, adsLocationNew: adsLocationNew }),
+            success: function(response) {
+                console.log('Request accepted successfully:', response);
+                alert(response.message);
+                window.location.reload();
+            },
+            error: function(error) {
+                console.error('Error accepted request:', error);
+                window.location.reload();
+            }
+        });
+    }
 });

@@ -2,6 +2,9 @@ import moment from "moment";
 import adsLocationModificationRequest from "../../services/departmentOfficer/ads_location_modification_request.service.js";
 import ward from "../../services/departmentOfficer/ward.service.js";
 import district from "../../services/departmentOfficer/district.service.js";
+import providedInfo from "../../services/departmentOfficer/provided_infor.service.js";
+import imageService from "../../services/departmentOfficer/image.service.js";
+import adsLocation from "../../services/departmentOfficer/ads_location.service.js";
 
 const index = async function (req, res) {
     let empty = false;
@@ -55,4 +58,29 @@ const cancelRequest = async function(req, res){
     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
 }
 
-export default { index, getWardByDistrict, getRequestByWard, cancelRequest };
+const acceptRequest = async function(req, res){
+    const requestId = req.body.requestId;
+    const adsLocationId = req.body.adsLocationId;
+    const adsLocationNew = req.body.adsLocationNew;
+
+    console.log("adsLocationNew", adsLocationNew);
+
+    const adsLocationTypeId = await providedInfo.findByName('location_type', adsLocationNew.ads_location_type);
+    const adsTypeId = await providedInfo.findByName('ads_type', adsLocationNew.ads_type);
+    const imgId = await imageService.findByLink(adsLocationNew.img_link);
+
+    console.log("adsLocationTypeId", adsLocationTypeId);
+
+    const updateData = {
+        adsLocationId: adsLocationId, 
+        locationType: adsLocationTypeId.locationTypeId, 
+        adsType: adsTypeId.adsTypeId,
+        imgId:  imgId.imgId
+    };
+
+    const updatedAdsLocation = await adsLocation.patch(updateData);
+    const updateStatus = await adsLocationModificationRequest.patch({requestId: requestId, status: "Đã duyệt"});
+    return res.json({success: true, message: "Đã phê duyệt yêu cầu này thành công!"});
+}
+
+export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest };

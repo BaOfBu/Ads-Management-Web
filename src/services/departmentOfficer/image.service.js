@@ -4,6 +4,9 @@ export default {
   findAll() {
     return db('image');
   },
+  findByLink(link) {
+    return db('image').where('imgLink', link).first();
+  },
   findById(id) {
     return db('image').where('imgId', id).first();
   },

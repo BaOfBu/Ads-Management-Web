@@ -34,8 +34,8 @@ export default {
     return db('ads_location').where('adsLocationId', id).del();
   },
   patch(entity) {
-    const id = entity.districtId;
-    delete entity.districtId;
-    return db('district').where('districtId', id).update(entity);
+    const id = entity.adsLocationId;
+    delete entity.adsLocationId;
+    return db('ads_location').where('adsLocationId', id).update(entity);
   },
 }
