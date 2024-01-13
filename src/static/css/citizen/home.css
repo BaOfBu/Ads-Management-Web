@@ -350,3 +350,11 @@ input:checked + .slider:before {
     color: white;
     background: #000;
 }
+.report-content-pop-up p {
+    padding: 0;
+    margin: 0;
+}
+.report-location {
+    padding: 0;
+    margin: 0;
+}

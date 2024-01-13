@@ -133,29 +133,29 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
         formData.append("email", $("#email").val());
         formData.append("name", $("#fullname").val());
         formData.append("phone", $("#phone").val());
-        formData.append("content", $("#contentArea").val());
+        formData.append("content", tinymce.get("contentArea").getContent());
         formData.append("long", lng);
         formData.append("lat", lat);
         formData.append("reportTypeId", $("#reportType").val());
         formData.append("sendDate", sendDate);
         formData.append("adsPanelId", adsPanelId);
-        // $.ajax({
-        //     url: "http://localhost:8888/get-data/send-report",
-        //     type: "POST",
-        //     data: formData,
-        //     dataType: "json",
-        //     contentType: false,
-        //     processData: false,
-        //     success: function (data) {
-        //         if (data.status == "success") {
-        //             alert("Gửi báo cáo thành công");
-        //             window.history.back();
-        //         }
-        //     },
-        //     error: function (error) {
-        //         console.error("Error during POST request:", error);
-        //     }
-        // });
+        $.ajax({
+            url: "http://localhost:8888/get-data/send-report",
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.status == "success") {
+                    alert("Gửi báo cáo thành công");
+                    window.history.back();
+                }
+            },
+            error: function (error) {
+                console.error("Error during POST request:", error);
+            }
+        });
     } else {
         event.preventDefault();
         return;

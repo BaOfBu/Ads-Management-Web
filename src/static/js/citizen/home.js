@@ -324,8 +324,10 @@ function mouseEnterReport(el, report, popup) {
         .setHTML(
             `
                 <div class="info-popup-content">
-                    <span class="title-popup-info">${report.reportType}</span>
-                    <p>${report.content}<p>
+                    <span class="title-popup-info">${report.reportTypeName}</span>
+                    <span class="report-content-pop-up">${report.content}</span>
+                    <span class="report-location">${report.location}</span>
+                    <span class="status-popup-info">${report.status}</span>
                 </div>
                 `
         )
@@ -336,9 +338,9 @@ function createMarkerElementReport(report) {
     el.className = "marker";
     el.style.width = "30px";
     el.style.height = "30px";
-    if (report.status === "Đã xử lý") {
+    if (report.status === "Đã xử lý xong") {
         el.style.backgroundImage = 'url("/static/images/citizen/report-blue.png")';
-    } else if (report.status === "Chưa xử lý") {
+    } else if (report.status === "Đang xử lý") {
         el.style.backgroundImage = 'url("/static/images/citizen/report-red.png")';
     }
     el.style.backgroundSize = "cover";
@@ -353,13 +355,22 @@ function createMarkerReport(report) {
     el.addEventListener("mouseenter", () => mouseEnterReport(el, report, popup));
     el.addEventListener("mouseleave", () => popup.remove());
     el.addEventListener("click", () => {
-        isMarker = true;
+        resetTheInformationOfSideBar();
         toggleSidebar();
+        isMarker = true;
     });
 }
 document.getElementById("switchReport").addEventListener("change", function () {
     if (this.checked) {
-        $.getJSON(`http://localhost:8888/get-data/get-report-location`, function (data) {});
+        $.getJSON(`http://localhost:8888/get-data/get-report-location`, function (data) {
+            if (data === false) {
+                alert("Không thể tải dữ liệu từ Server");
+            } else {
+                data.forEach(report => {
+                    createMarkerReport(report);
+                });
+            }
+        });
     } else {
         marker_report.forEach(function (marker) {
             marker.remove();

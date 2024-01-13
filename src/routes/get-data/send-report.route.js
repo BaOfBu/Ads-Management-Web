@@ -59,22 +59,29 @@ router.post("/", upload.array("images", 2), async function (req, res) {
     const adsPanelId = req.body.adsPanelId;
     const uploadedFiles = req.files || [];
     const location = await getTheLocation(long, lat);
-    uploadedFiles.forEach(async file => {
+    let imgIds = [];
+    for (const file of uploadedFiles) {
         const filePath = file.path;
         let fileModify = "/" + filePath.replace(/\\/g, "/");
         const imgId = await SaveImageService.saveImage(fileModify);
-        await SaveReportService.saveReportFromEmptyPoint({
-            email: email,
-            name: name,
-            location: location,
-            content: content,
-            phone: phone,
-            sendDate: sendDate,
-            long: long,
-            lat: lat,
-            reportTypeId: reportTypeId,
-            imgId: imgId
-        });
+        imgIds.push(imgId);
+    }
+    while (imgIds.length < 2) {
+        imgIds.push(null);
+    }
+    console.log(imgIds);
+    await SaveReportService.saveReportFromEmptyPoint({
+        email: email,
+        name: name,
+        location: location,
+        content: content,
+        phone: phone,
+        sendDate: sendDate,
+        long: long,
+        lat: lat,
+        reportTypeId: reportTypeId,
+        imgId1: imgIds[0],
+        imgId2: imgIds[1]
     });
     res.json({ status: "success" });
 });

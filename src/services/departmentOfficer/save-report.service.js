@@ -10,7 +10,8 @@ export default {
             name: entity.name,
             phone: entity.phone,
             content: entity.content,
-            imgId: entity.imgId,
+            imgId1: entity.imgId1,
+            imgId2: entity.imgId2,
             sendDate: entity.sendDate,
             status: "Đang xử lý",
             adsPanelId: null
