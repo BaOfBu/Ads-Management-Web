@@ -4,4 +4,21 @@
 {{#section "css"}}
     <link rel="stylesheet" href="/static/css/citizen/home.css" />
 {{/section}}
-<h1>Trang chủ</h1>
+<div id="map-container">
+    <div id="map"></div>
+    <div id="map-control-panel">
+        <label class="switch">
+            <input type="checkbox" id="switchAds" />
+            <span class="slider round"></span>
+        </label>
+        <span class="switch-label">Bảng QC</span>
+        <label class="switch">
+            <input type="checkbox" id="switchReport" />
+            <span class="slider round"></span>
+        </label>
+        <span class="switch-label">Báo cáo vi phạm</span>
+    </div>
+    <div id="sidebar">
+        <button id="toggleSidebarButton" style="display: none;"><i class="bi bi-caret-right-fill"></i></button>
+    </div>
+</div>
