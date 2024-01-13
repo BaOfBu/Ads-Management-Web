@@ -30,4 +30,11 @@ const index = async function (req, res) {
     });
 };
 
-export default { index};
+const cancelRequest = async function(req, res){
+    const requestId = req.body.requestId;
+    const updateStatus = await adsPanelModificationRequest.patch({requestId: requestId, status: "Đã hủy"});
+    console.log("updateStatus: ", updateStatus);
+    return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
+}
+
+export default { index, cancelRequest};

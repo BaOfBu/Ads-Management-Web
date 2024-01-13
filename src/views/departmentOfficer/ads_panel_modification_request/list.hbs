@@ -1,3 +1,7 @@
+{{#section 'js'}}
+    <script src="/static/js/departmentOfficer/ads_panel_modification_request/index.js"></script>
+{{/section}}
+
 <div class="custom-container">
     <div class="card">
         <div class="custom-card">
@@ -6,54 +10,55 @@
     </div>
     <div>
         <div class="card mt-5">
-        <h5 class="card-header">Xem danh sách</h5>
-        {{#if empty}}
-            <div class="card-body">Không có dữ liệu</div>
-        {{else}}
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col" style="width: 2%">#</th>
-                    <th scope="col" style="width: 10%">Thời điểm xin</th>
-                    <th scope="col" style="width: 18%">Lí do</th>
-                    <th scope="col" style="width: 18%">Địa chỉ</th>
-                    <th scope="col" style="width: 15%">Loại bảng</th>
-                    <th scope="col" style="width: 10%">Kích thước</th>
-                    <th scope="col" style="width: 7%">Số lượng</th>
-                    <th scope="col" style="width: 10%">Trạng thái</th>
-                    <th scope="col" style="width: 10%">Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each edit_ads_panels_request}}
-                <tr>
-                    <th scope="row">{{stt}}</th>
-                    <td>{{requestTime}}</td>
-                    <td>{{requestReason}}</td>
-                    <td>{{ads_location_name}}</td>
-                    <td>{{ads_panel_type_name}}</td>
-                    <td>{{width}}m x {{height}}m</td>
-                    <td>{{quantity}}</td>
-                    <td>{{status}}</td>
-                    <td class="d-flex">
-                        <div class="d-flex justify-content-center" style="margin-right: 10px;">
-                            <a class="btn btn-sm btn-outline-info" href="ads-panel/edit?adsPanelId={{adsPanelId}}&stt={{stt}}" role="button">
-                                <img src="/static/images/departmentOfficer/icon-cancel.png" width="24" height="24" alt="edit this row">
-                            </a>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <a class="btn btn-sm btn-outline-info" href="ads-panel/edit?adsPanelId={{adsPanelId}}&stt={{stt}}" role="button">
-                                <img src="/static/images/departmentOfficer/icon-accept.png" width="24" height="24" alt="edit this row">
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-        {{/if}}
-        <div class="card-footer text-muted font-italic">
-            <span class="small">{{date}}</span>
+            <h5 class="card-header">Xem danh sách</h5>
+            {{#if empty}}
+                <div class="card-body">Không có dữ liệu</div>
+            {{else}}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 2%">#</th>
+                            <th scope="col" style="width: 10%">Thời điểm xin</th>
+                            <th scope="col" style="width: 18%">Lí do</th>
+                            <th scope="col" style="width: 18%">Địa chỉ</th>
+                            <th scope="col" style="width: 15%">Loại bảng</th>
+                            <th scope="col" style="width: 10%">Kích thước</th>
+                            <th scope="col" style="width: 7%">Số lượng</th>
+                            <th scope="col" style="width: 10%">Trạng thái</th>
+                            <th scope="col" style="width: 10%">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each edit_ads_panels_request}}
+                            <tr>
+                                <th scope="row">{{stt}}</th>
+                                <td>{{requestTime}}</td>
+                                <td>{{requestReason}}</td>
+                                <td>{{ads_location_name}}</td>
+                                <td>{{ads_panel_type_name}}</td>
+                                <td>{{width}}m x {{height}}m</td>
+                                <td>{{quantity}}</td>
+                                <td>{{status}}</td>
+                                <td class="d-flex">
+                                    <div class="d-flex justify-content-center" style="margin-right: 10px;">
+                                        <a class="btn btn-sm btn-outline-info" data-id="{{requestId}}" id="cancel-{{requestId}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-cancel.png" width="24" height="24" alt="cancel this request">
+                                        </a>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="btn btn-sm btn-outline-info" data-id="{{adsPanelId}}" id="accept-{{adsPanelId}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-accept.png" width="24" height="24" alt="accept this request">
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{/if}}
+            <div class="card-footer text-muted font-italic">
+                <span class="small">{{date}}</span>
+            </div>
         </div>
     </div>
 </div>

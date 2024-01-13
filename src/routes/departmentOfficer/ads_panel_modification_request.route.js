@@ -4,5 +4,6 @@ import adsPanelModificationRequestController from "../../controllers/departmentO
 const router = express.Router();
 
 router.get("/", adsPanelModificationRequestController.index);
+router.post("/cancel-request", adsPanelModificationRequestController.cancelRequest);
 
 export default router;

@@ -10,5 +10,10 @@ export default {
       .join('ads_panel_type', 'edit_ads_panel_request.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId')
       .join('ads_location', 'edit_ads_panel_request.adslocationId', '=', 'ads_location.adslocationId')
       .orderBy('requestTime');
+  },
+  patch(entity){
+    const id = entity.requestId;
+    delete entity.requestId;
+    return db('edit_ads_panel_request').where('requestId', id).update(entity);
   }
 }
