@@ -48,4 +48,9 @@ export default {
       .where('license_request.wardId', wardId)
       .orderBy('startDate');
   },
+  patch(entity){
+    const id = entity.licenseRequestId;
+    delete entity.licenseRequestId;
+    return db('license_request').where('licenseRequestId', id).update(entity);
+  }
 }

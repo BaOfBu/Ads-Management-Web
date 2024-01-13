@@ -49,4 +49,11 @@ const getRequestByWard = async function(req, res){
     return res.json({success: true, request: request, date: currentDateTime});   
 }
 
-export default { index, getWardByDistrict, getRequestByWard };
+const cancelRequest = async function(req, res){
+    const licenseRequestId = req.body.licenseRequestId;
+    const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã hủy"});
+    console.log("updateStatus: ", updateStatus);
+    return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
+}
+
+export default { index, getWardByDistrict, getRequestByWard, cancelRequest };
