@@ -2,11 +2,22 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import SaveReportService from "../../services/departmentOfficer/save-report.service.js";
+import SaveImageService from "../../services/departmentOfficer/save-image.service.js";
 const router = express.Router();
 // Ensure the upload directory exists
 const uploadDirectory = "static/images/citizenReport/";
 if (!fs.existsSync(uploadDirectory)) {
     fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+const accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
+
+async function getTheLocation(lng, lat) {
+    const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${accessToken}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    const features = data.features;
+    return features[0].place_name;
 }
 
 // Function to get the next available filename in the upload directory
@@ -36,20 +47,34 @@ const upload = multer({ storage: storage });
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.post("/", upload.array("images", 2), (req, res) => {
+router.post("/", upload.array("images", 2), async function (req, res) {
     const email = req.body.email;
     const name = req.body.name;
     const phone = req.body.phone;
     const content = req.body.content;
-    const status = "Chưa xử lý";
     const long = req.body.long;
     const lat = req.body.lat;
     const reportTypeId = req.body.reportTypeId;
     const sendDate = req.body.sendDate;
     const adsPanelId = req.body.adsPanelId;
     const uploadedFiles = req.files || [];
-    uploadedFiles.forEach(file => {
+    const location = await getTheLocation(long, lat);
+    uploadedFiles.forEach(async file => {
         const filePath = file.path;
+        let fileModify = "/" + filePath.replace(/\\/g, "/");
+        const imgId = await SaveImageService.saveImage(fileModify);
+        await SaveReportService.saveReportFromEmptyPoint({
+            email: email,
+            name: name,
+            location: location,
+            content: content,
+            phone: phone,
+            sendDate: sendDate,
+            long: long,
+            lat: lat,
+            reportTypeId: reportTypeId,
+            imgId: imgId
+        });
     });
     res.json({ status: "success" });
 });

@@ -78,7 +78,6 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
     let email = $("#email").val();
     let name = $("#fullname").val();
     let phone = $("#phone").val();
-    let content = $("#contentArea");
     let recaptchaResponse = grecaptcha.getResponse();
     let isValid = true;
     if (!recaptchaResponse) {
@@ -111,6 +110,7 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
             $("#notification-phone").css("display", "none");
         }
     }
+    let content = $("#contentArea").val();
     if (content.length == 0) {
         $("#notification-contentArea").css("display", "block");
         isValid = false;
