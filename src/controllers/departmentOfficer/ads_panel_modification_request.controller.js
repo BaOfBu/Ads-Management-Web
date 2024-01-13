@@ -3,11 +3,13 @@ import adsPanelModificationRequest from "../../services/departmentOfficer/ads_pa
 import adsPanel from "../../services/departmentOfficer/ads_panel.service.js";
 import adsLocation from "../../services/departmentOfficer/ads_location.service.js";
 import adsPanelType from "../../services/departmentOfficer/provided_infor.service.js";
+import ward from "../../services/departmentOfficer/ward.service.js";
+import district from "../../services/departmentOfficer/district.service.js";
 
 const index = async function (req, res) {
     let empty = false;
     const edit_ads_panels_request = await adsPanelModificationRequest.findAll();
-
+    const districts = await district.findAll();
     if(!edit_ads_panels_request || edit_ads_panels_request.length === 0){
         empty = true;
     }
@@ -23,9 +25,34 @@ const index = async function (req, res) {
     res.render("departmentOfficer/ads_panel_modification_request/list", {
         empty: empty,
         edit_ads_panels_request: edit_ads_panels_requestWithIndex,
+        districts: districts,
         date: currentDateTime
     });
 };
+
+const getWardByDistrict = async function(req, res){
+    const wards = await ward.findAllByDistrictId(req.body.districtId);
+    console.log("wards: ", wards);
+    return res.json({success: true, wards: wards});
+}
+
+const getRequestByWard = async function(req, res){
+    const requests = await adsPanelModificationRequest.findByWardId(req.body.wardId);
+    let empty = false;
+    if(!requests || requests.length === 0){
+        empty = true;
+    }
+
+    let request = requests.map((request, index) => ({
+        ...request,
+        requestTime: moment(request.requestTime).format('DD/MM/YYYY HH:mm:ss'),
+        stt: index + 1,
+    }));
+
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
+    console.log("request: ", request);
+    return res.json({success: true, request: request, date: currentDateTime});   
+}
 
 const cancelRequest = async function(req, res){
     const requestId = req.body.requestId;
@@ -56,4 +83,4 @@ const acceptRequest = async function(req, res){
     return res.json({success: true, message: "Đã phê duyệt yêu cầu này thành công!"});
 }
 
-export default { index, cancelRequest, acceptRequest};
+export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest};

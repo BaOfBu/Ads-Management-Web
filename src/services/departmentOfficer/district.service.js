@@ -2,7 +2,7 @@ import db from '../../utils/db.js';
 
 export default {
   findAll() {
-    return db('district');
+    return db('district').orderBy('name');
   },
   add(entity) {
     return db('district').insert(entity);

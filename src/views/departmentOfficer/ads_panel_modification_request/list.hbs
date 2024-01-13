@@ -8,8 +8,30 @@
             <h5 class="card-header">Danh sách các yêu cầu chỉnh sửa bảng quảng cáo được gửi từ Phường, Quận</h5> 
         </div>
     </div>
+    <div class="d-flex mt-3 justify-content-end">
+        <div class="districts" style="margin-right: 10px;">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
+            Quận
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" style="max-height: 500px; overflow-y: auto;">
+                {{#each districts}}
+                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{districtId}}">Quận {{name}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="wards">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false">
+            Phường
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownWard" style="max-height: 500px; overflow-y: auto;">
+                {{!-- {{#each wards}}
+                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{wardId}}">Phường {{name}}</a></li>
+                {{/each}} --}}
+            </ul>
+        </div>
+    </div>
     <div>
-        <div class="card mt-5">
+        <div class="list card mt-3">
             <h5 class="card-header">Xem danh sách</h5>
             {{#if empty}}
                 <div class="card-body">Không có dữ liệu</div>
@@ -19,9 +41,10 @@
                         <tr>
                             <th scope="col" style="width: 2%">#</th>
                             <th scope="col" style="width: 10%">Thời điểm xin</th>
-                            <th scope="col" style="width: 18%">Lí do</th>
-                            <th scope="col" style="width: 18%">Địa chỉ</th>
-                            <th scope="col" style="width: 15%">Loại bảng</th>
+                            <th scope="col" style="width: 12%">Lí do</th>
+                            <th scope="col" style="width: 17%">Địa chỉ</th>
+                            <th scope="col" style="width: 9%">Khu vực</th>
+                            <th scope="col" style="width: 13%">Loại bảng</th>
                             <th scope="col" style="width: 10%">Kích thước</th>
                             <th scope="col" style="width: 7%">Số lượng</th>
                             <th scope="col" style="width: 10%">Trạng thái</th>
@@ -35,6 +58,7 @@
                                 <td>{{requestTime}}</td>
                                 <td>{{requestReason}}</td>
                                 <td>{{ads_location_name}}</td>
+                                <td>Phường {{ward_name}} - Quận {{district_name}}</td>
                                 <td>{{ads_panel_type_name}}</td>
                                 <td>{{width}}m x {{height}}m</td>
                                 <td>{{quantity}}</td>
@@ -59,7 +83,7 @@
                 </table>
             {{/if}}
             <div class="card-footer text-muted font-italic">
-                <span class="small">{{date}}</span>
+                <span class="small" id="dateSpan">{{date}}</span>
             </div>
         </div>
     </div>

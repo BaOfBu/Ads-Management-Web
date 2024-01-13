@@ -2,7 +2,7 @@ import db from '../../utils/db.js';
 
 export default {
   findAll() {
-    return db('ward');
+    return db('ward').orderBy('name');
   },
   add(entity) {
     return db('ward').insert(entity);
@@ -11,7 +11,7 @@ export default {
     return db('ward').where('wardId', id).first();
   },
   findAllByDistrictId(districtId){
-    return db('ward').where('districtId', districtId);
+    return db('ward').where('districtId', districtId).orderBy('name');
   },
   findByName(name) {
     return db('ward').where('name', name).first();
