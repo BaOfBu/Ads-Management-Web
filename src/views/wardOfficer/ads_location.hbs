@@ -13,7 +13,7 @@
         <h5 class="card-header d-flex justify-content-between align-items-center p-3">
             Xem danh sách điểm đặt quảng cáo
         </h5>
-        {{#if empty}}
+        {{#if isEmpty}}
             <div class="card-body">Không có dữ liệu</div>
         {{else}}
         <table class="table table-hover">
@@ -35,7 +35,7 @@
                         <span class="d-flex justify-content-center">Tình trạng quy hoạch</span>
                     </th>
                     <th scope="col" class="col-1">
-                        <span class="d-flex justify-content-center">Chi tiết</span>
+                        <span class="d-flex justify-content-center">Bảng quảng cáo</span>
                     </th>
                     <th scope="col" class="col-2">
                         <span class="d-flex justify-content-center">Yêu cầu chỉnh sửa</span>
@@ -75,7 +75,7 @@
                             <a class="d-flex view-detail mt-1" href="ads/view-detail?adsLocationId={{adsLocationId}}" role="button">
                                 
                                 <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                                <span class="ml-1">Xem chi tiết</span>
+                                <span class="ml-1">Danh sách</span>
                             </a>
                         </div>
                     </td>

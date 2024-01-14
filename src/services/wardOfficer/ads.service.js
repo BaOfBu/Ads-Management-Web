@@ -68,4 +68,43 @@ export default {
     findAllAdsPanelType(){
       return db('ads_panel_type');
     },
+    async saveImage(entity) {
+      const [insertedId] = await db("image").insert({
+          imgLink: entity
+      });
+      return insertedId;
+    },
+    async createAdsLocationEdit(entity){
+      const insertedId = await db("edit_ads_location_request").insert({
+        AdsLocationId: entity.AdsLocationId,
+        AdsLocationTypeId : entity.AdsLocationTypeId,
+        AdsTypeId : entity.AdsTypeId,
+        ImgId : entity.ImgId,
+        RequestReason : entity.RequestReason,
+        WardId : entity.WardId,
+        Status: entity.status,
+        RequestTime: entity.RequestTime,
+        districtId: entity.districtId,
+      });
+      return insertedId;
+    },
+    findAdsLocationRaw(adsLocationId){
+      return db('ads_location').where('adsLocationId', adsLocationId).first();
+    },
+    async createAdsPanelEdit(entity){
+      const insertedId = await db("edit_ads_panel_request").insert({
+        AdsPanelId: entity.AdsPanelId,
+        AdsLocationId: entity.AdsLocationId,
+        AdsPanelTypeId : entity.AdsPanelTypeId,
+        RequestReason : entity.RequestReason,
+        WardId : entity.WardId,
+        Status: entity.status,
+        RequestTime: entity.RequestTime,
+        DistrictId: entity.districtId,
+        Height: entity.Height,
+        Width: entity.Width,
+        Quantity: entity.Quantity,
+      });
+      return insertedId;
+    },
 }
