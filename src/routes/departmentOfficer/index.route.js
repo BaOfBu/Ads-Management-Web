@@ -27,5 +27,4 @@ router.use("/ads-panel-modification-request", adsPanelModificationRoutes);
 router.use("/ads-location-modification-request", adsLocationModificationRoutes);
 router.use("/license-request", licenseRequestRoutes);
 
-
 export default router;
