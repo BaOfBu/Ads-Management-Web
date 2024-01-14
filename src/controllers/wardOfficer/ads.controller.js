@@ -107,4 +107,8 @@ const getEditAdsPanel = async function (req, res) {
 //     });
 // }
 
-export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel};
+const licenseRequest = async function(req, res){
+    res.render("wardOfficer/license_request_AdsPanelScreen");
+}
+
+export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, licenseRequest};
