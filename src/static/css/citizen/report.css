@@ -1,0 +1,86 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+}
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+}
+input,
+select,
+textarea {
+    background-color: transparent;
+    outline: none;
+}
+button {
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    border: 0;
+}
+body {
+    min-height: 100vh;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1;
+}
+.content-report {
+    display: flex;
+    flex-direction: row;
+}
+#map-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+#map {
+    width: 50vw;
+    height: 100%;
+    flex-grow: 1;
+    transition: width 0.3s ease, margin-left 0.3s ease;
+}
+.image-detail-pane {
+    object-fit: cover;
+    height: 250px;
+}
+.map-info-detail-adspanel {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+#form-citizen {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: auto;
+    width: 50%;
+    margin: 0 auto;
+    height: 100vh;
+}
+#notification-captcha,
+#notification-email,
+#notification-name,
+#notification-phone,
+#notification-contentArea {
+    color: red;
+    margin-top: 5px;
+}
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.title i {
+    font-size: 35px;
+    cursor: pointer;
+}

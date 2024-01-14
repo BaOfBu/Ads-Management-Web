@@ -8,5 +8,6 @@ function setDefaultLayoutAndPartials(req, res, next) {
 router.use(setDefaultLayoutAndPartials);
 
 router.get("/", CitizenController.index);
+router.get("/report", CitizenController.report);
 
 export default router;
