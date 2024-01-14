@@ -1,0 +1,69 @@
+{{#section 'js'}}
+    <script src="/static/js/departmentOfficer/license_request/index.js"></script>
+{{/section}}
+
+<div class="custom-container">
+    <div class="card">
+        <div class="custom-card">
+            <h5 class="card-header">Danh sách các yêu cầu cấp phép quảng cáo của phường {{ward_name}}</h5> 
+        </div>
+    </div>
+
+    <div>
+        <div class="list card mt-3">
+            <h5 class="card-header">Xem danh sách</h5>
+            {{#if empty}}
+                <div class="card-body">Không có dữ liệu</div>
+            {{else}}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 2%">#</th>
+                            <th scope="col" style="width: 10%">Địa chỉ</th>
+                            <th scope="col" style="width: 7%">Khu vực</th>
+                            <th scope="col" style="width: 8%">Loại bảng</th>
+                            <th scope="col" style="width: 9%">Kích thước</th>
+                            <th scope="col" style="width: 8%">Hình thức</th>
+                            <th scope="col" style="width: 8%">Phân loại</th>
+                            <th scope="col" style="width: 12%">Nội dung và ảnh</th>
+                            {{!-- <th scope="col" style="width: 8%">Hình ảnh</th> --}}
+                            <th scope="col" style="width: 16%">Thông tin LH</th>
+                            <th scope="col" style="width: 10%">Thời gian</th>
+                            <th scope="col" style="width: 10%">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each license_request}}
+                            <tr>
+                                <th scope="row">{{stt}}</th>
+                                <td>{{ads_location_name}}</td>
+                                <td>Phường {{ward_name}} - Quận {{district_name}}</td>
+                                <td>{{ads_panel_type_name}}</td>
+                                <td>{{width}}m x {{height}}m</td>
+                                <td>{{ads_type_name}}</td>
+                                <td>{{ads_location_type_name}}</td>
+                                <td>{{content}} - Ảnh: {{img_link}}</td>
+                                {{!-- <td>{{img_link}}</td> --}}
+                                {{!-- <td>{{nameCompany}}</td> --}}
+                                <td>Tên công ty: {{nameCompany}} - Địa chỉ: {{locationCompany}} - Email: {{emailCompany}} - Số ĐT: {{phoneCompany}}</td>
+                                <td>{{startDate}} - {{endDate}}</td>
+                                <td class="d-flex">
+                                    {{#if (equal status 'Chưa duyệt')}}
+                                        <div class="d-flex justify-content-center" style="margin-right: 10px;">
+                                            <a class="btn btn-sm btn-outline-info" data-id="{{licenseRequestId}}" id="cancel-{{licenseRequestId}}" role="button">
+                                                <img src="/static/images/departmentOfficer/icon-cancel.png" width="24" height="24" alt="cancel this request">
+                                            </a>
+                                        </div>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{/if}}
+            <div class="card-footer text-muted font-italic">
+                <span class="small" id="dateSpan">{{date}}</span>
+            </div>
+        </div>
+    </div>
+</div>

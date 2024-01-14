@@ -1,6 +1,8 @@
 import express from "express";
 import homeRoutes from "./home.route.js";
 import adsRoutes from "./ads.route.js";
+import licenseRequestRoutes from "./license_request.route.js";
+
 const router = express.Router();
 
 // Middleware to apply default settings to the response locals
@@ -12,5 +14,6 @@ router.use(setDefaultLayoutAndPartials);
 
 router.use("/",homeRoutes);
 router.use("/ads",adsRoutes);
+router.use("/license-request", licenseRequestRoutes);
 
 export default router;
