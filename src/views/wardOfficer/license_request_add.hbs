@@ -1,4 +1,5 @@
 {{#section 'js'}}
+    {{!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js">
@@ -12,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/piexif.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/sortable.min.js"></script>
 
-    <script src="/static/js/wardOfficer/license_request.js"></script>
+    <script src="/static/js/wardOfficer/license_request_add.js"></script>
 {{/section}}
 
 {{#section "css"}}
@@ -30,16 +31,16 @@
             <div class="card-body">
                 <div class="adsLocation">
                     <label for="dropdownAdsLocation">Điểm đặt quảng cáo</label>
-                    <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownAdsLocation" data-toggle="dropdown" aria-describedby="adsLocationError" aria-expanded="false" required>
-                    {{defaultAdsLocation}}
+                    <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownAdsLocation" data-toggle="dropdown" aria-describedby="adsLocationError" aria-expanded="false">
+                    {{defaultAdsLocation.location}}
                     </button>
                     <div class="input-group has-validation">
-                        <input id="selectedAdsLocation" name="adsLocationId" type="hidden" value="1"></input>
+                        <input id="selectedAdsLocation" name="adsLocationId" type="hidden" value={{defaultAdsLocation.adsLocationId}}></input>
                         <div id="adsLocationError" class="invalid-feedback">
                             Vui lòng chọn một điểm đặt.
                         </div>
                     </div>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownAdsLocation" style="max-height: 500px; overflow-y: auto;" required>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownAdsLocation" style="max-height: 500px; overflow-y: auto;">
                         {{#each adsLocations}}
                             <li><a class="dropdown-item" data-value="{{location}}" data-id="{{adsLocationId}}">{{location}}</a></li>
                         {{/each}}
@@ -48,18 +49,19 @@
 
                 <div class="adsAdsPanelType mt-1">
                     <label for="dropdownAdsPanelType">Loại bảng quảng cáo</label>
-                    <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownAdsPanelType" data-toggle="dropdown" aria-describedby="adsPanelTypeError" aria-expanded="false" required>
-                    {{defaultAdsPanelType}}
+                    <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownAdsPanelType" data-toggle="dropdown" aria-describedby="adsPanelTypeError" aria-expanded="false">
+                    {{defaultAdsPanelType.ads_panel_type_name}}
                     </button>
                     <div class="input-group has-validation">
-                        <input id="selectedAdsPanelType" name="adsPanelTypeId" type="hidden" value="1"></input>
+                        <input id="selectedAdsPanelType" name="adsPanelTypeId" type="hidden" value="{{defaultAdsPanelType.ads_panel_type_id}}"></input>
+                        <input id="selectedAdsPanel" name="adsPanelId" type="hidden" value="{{defaultAdsPanelType.adsPanelId}}"></input>
                         <div id="adsPanelTypeError" class="invalid-feedback">
                             Vui lòng chọn một loại bảng quảng cáo.
                         </div>
                     </div>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownAdsPanelType" style="max-height: 500px; overflow-y: auto;" required>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownAdsPanelType" style="max-height: 500px; overflow-y: auto;">
                         {{#each adsPanelTypes}}
-                            <li><a class="dropdown-item" data-value="{{name}}" data-id="{{adsPanelTypeId}}">{{name}}</a></li>
+                            <li><a class="dropdown-item" data-value="{{ads_panel_type_name}}" data-id="{{ads_panel_type_id}}" data-adsPanelId="{{adsPanelId}}">{{ads_panel_type_name}}</a></li>
                         {{/each}}
                     </ul>
                 </div>
@@ -69,9 +71,10 @@
                     <textarea class="form-control" name="content" id="txtContent" rows="3"></textarea>
                 </div>
 
-                <div class="form-group mb-4">
-                    <label for="image">Hình ảnh minh họa</label>
-                    <input type="file" id="image" name="image">
+                <div class="form-group mb-1">
+                    <label for="img">Hình ảnh minh họa</label>
+                    <input type="file" id="img" name="image">
+                    <input type="hidden" id="imgId" name="imgId" value="{{lengthImg}}">
                 </div>
 
                 <div class="form-group mb-4">
