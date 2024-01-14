@@ -8,4 +8,6 @@ router.get("/view-panel-detail", adsController.viewPanelDetails);
 router.get("/ads-location-edit", adsController.getEditAdsLocation);
 router.get("/ads-panel-edit", adsController.getEditAdsPanel);
 router.get("/license-request", adsController.licenseRequest);
+router.post("/license-request", adsController.handleAddNewRequest);
+
 export default router;

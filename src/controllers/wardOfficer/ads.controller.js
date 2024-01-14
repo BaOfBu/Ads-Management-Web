@@ -1,5 +1,7 @@
 import adsService from "../../services/wardOfficer/ads.service.js";
 import moment from "moment";
+import imageService from "../../services/departmentOfficer/image.service.js";
+import newLicenseRequest from "../../services/wardOfficer/license_request.service.js";
 
 const statusName = ["Đã quy hoạch","Chưa quy hoạch"];
 
@@ -115,17 +117,36 @@ const licenseRequest = async function(req, res){
 
     console.log("adsPanel: ", adsPanel);
 
-    if(adsPanel.status !== null){
+    if(adsPanel.status === 'Chưa duyệt' || adsPanel.status === 'Đã duyệt'){
         adsPanel.startDate = moment(adsPanel.startDate).format('DD/MM/YYYY');
         adsPanel.endDate = moment(adsPanel.endDate).format('DD/MM/YYYY');
+        res.render("wardOfficer/license_request_AdsPanelScreen", {
+            adsPanel: adsPanel,
+            available: available,
+        });
     }else{
         available = false;
-    }
+        const lengthImg = await imageService.findAll();
 
-    res.render("wardOfficer/license_request_AdsPanelScreen", {
-        adsPanel: adsPanel,
-        available: available
-    });
+        res.render("wardOfficer/license_request_AdsPanelScreen", {
+            adsPanel: adsPanel,
+            available: available,
+            lengthImg: lengthImg.length + 1
+        });
+    }
 }
 
-export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, licenseRequest};
+const handleAddNewRequest = async function(req, res){
+    console.log("Before: ", req.body);
+    const user = req.session.authUser;
+    delete req.body.image;
+    delete req.body.adsPanelTypeId;
+    req.body.wardId = user.wardId;
+    req.body.districtId = user.districtId;
+    req.body.status = "Chưa duyệt";
+    const request = await newLicenseRequest.add(req.body);
+    console.log("New request: ", request);
+    res.redirect(`/ward-officer/ads/license-request?adsPanelId=${req.body.adsPanelId}`);
+}
+
+export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, licenseRequest, handleAddNewRequest};

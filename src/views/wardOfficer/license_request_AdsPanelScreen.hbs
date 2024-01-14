@@ -26,7 +26,11 @@
         <form action="" method="post" id="frmAdd">
             <div class="card">
                 <h5 class="card-header">
-                Yêu cầu cấp phép quảng cáo đang chờ duyệt
+                {{#if (equal status 'Chưa duyệt')}}
+                    Yêu cầu cấp phép quảng cáo đang chờ duyệt
+                {{else}}
+                    Giấy cấp phép quảng cáo
+                {{/if}}
                 </h5>
                 <div class="card-body">
                     <div class="adsLocation">
@@ -109,14 +113,14 @@
                 <div class="card-body">
                     <div class="adsLocation">
                         <label for="adsLocation">Điểm đặt quảng cáo</label>
-                        <input type="text" id="adsLocation" class="form-control is-invalid" value="{{ads_location_name}}" style="margin-right: 10px;" readonly required>
-                        <input type="hidden" name="adsLocationId" value="{{adsLocationId}}">
+                        <input type="text" id="adsLocation" class="form-control is-invalid" value="{{adsPanel.ads_location_name}}" style="margin-right: 10px;" readonly required>
+                        <input type="hidden" name="adsLocationId" value="{{adsPanel.adsLocationId}}">
                     </div>
 
                     <div class="adsAdsPanelType mt-1">
                         <label for="adsPanelType">Loại bảng quảng cáo</label>
-                        <input type="text" id="adsPanelType" class="form-control is-invalid" value="{{ads_panel_type_name}}" style="margin-right: 10px;" readonly required>
-                        <input id="selectedAdsPanel" name="adsPanelId" type="hidden" value="{{adsPanelId}}"></input>
+                        <input type="text" id="adsPanelType" class="form-control is-invalid" value="{{adsPanel.ads_panel_type_name}}" style="margin-right: 10px;" readonly required>
+                        <input id="selectedAdsPanel" name="adsPanelId" type="hidden" value="{{adsPanel.adsPanelId}}"></input>
                     </div>
 
                     <div class="form-group">
