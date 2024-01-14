@@ -1,6 +1,7 @@
 import express from "express";
 import homeRoutes from "./home.route.js";
 import adsRoutes from "./ads.route.js";
+import reportRoutes from "./report.route.js";
 const router = express.Router();
 
 // Middleware to apply default settings to the response locals
@@ -12,5 +13,6 @@ router.use(setDefaultLayoutAndPartials);
 
 router.use("/",homeRoutes);
 router.use("/ads",adsRoutes);
+router.use("/report",reportRoutes)
 
 export default router;
