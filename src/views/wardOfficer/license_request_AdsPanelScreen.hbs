@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
 {{/section}}
 
-<div class="card custom-container mb-5">
+{{!-- <div class="card custom-container mb-5">
     <div class="custom-card-2">
         <h5 class="card-header d-flex justify-content-center" style="font-style: italic; font-size: 18px;">Hiện tại bảng quảng cáo này chưa có yêu cầu cấp phép quảng cáo đang chờ duyệt. Bạn có thể tạo yêu cầu cấp phép bằng cách điền form dưới đây!</h5> 
     </div>
@@ -130,9 +130,9 @@
             </div>
         </div>
     </form>
-</div>
+</div> --}}
 
-{{!-- <div class="custom-container">
+<div class="custom-container">
     <form action="" method="post" id="frmAdd">
         <div class="card">
             <h5 class="card-header">
@@ -141,65 +141,65 @@
             <div class="card-body">
                 <div class="adsLocation">
                     <label for="adsLocation">Điểm đặt quảng cáo</label>
-                    <input type="text" id="adsLocation" class="form-control" value="{{ads_location_name}}" style="margin-right: 10px;" readonly required>
+                    <input type="text" id="adsLocation" class="form-control" value="{{adsPanel.ads_location_name}}" style="margin-right: 10px;" readonly required>
                 </div>
 
                 <div class="adsAdsPanelType mt-1">
                     <label for="adsPanelType">Loại bảng quảng cáo</label>
-                    <input type="text" id="adsPanelType" class="form-control" value="{{ads_panel_type_name}}" style="margin-right: 10px;" readonly required>
+                    <input type="text" id="adsPanelType" class="form-control" value="{{adsPanel.ads_panel_type_name}}" style="margin-right: 10px;" readonly required>
                 </div>
 
                 <div class="form-group">
                     <label for="txtContent">Nội dung quảng cáo</label>
-                    <textarea class="form-control" name="content" id="txtContent" rows="3" value="{{content}}" readonly required></textarea>
+                    <textarea class="form-control" name="content" id="txtContent" rows="3" value="{{adsPanel.content}}" readonly required>{{adsPanel.content}}</textarea>
                 </div>
 
                 <div class="form-group mb-1">
                     <label for="img">Hình ảnh minh họa</label>
-                    <img src="{{img_link}}" alt="">
+                    <img src="{{adsPanel.img_link}}" alt="">
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="txtNameCompany">Tên công ty</label>
-                    <input type="text" name="nameCompany" id="txtNameCompany" class="form-control" value="{{nameCompany}}" style="margin-right: 10px;" readonly required>
+                    <input type="text" name="nameCompany" id="txtNameCompany" class="form-control" value="{{adsPanel.nameCompany}}" style="margin-right: 10px;" readonly required>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="txtPhoneCompany">Số điện thoại công ty</label>
-                    <input type="text" name="phoneCompany" id="txtPhoneCompany" class="form-control" value="{{phoneCompany}}" style="margin-right: 10px;" readonly required>
+                    <input type="text" name="phoneCompany" id="txtPhoneCompany" class="form-control" value="{{adsPanel.phoneCompany}}" style="margin-right: 10px;" readonly required>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="txtEmailCompany">Email của công ty</label>
-                    <input type="text" name="emailCompany" id="txtEmailCompany" class="form-control" value="{{emailCompany}}" style="margin-right: 10px;" readonly required>
+                    <input type="text" name="emailCompany" id="txtEmailCompany" class="form-control" value="{{adsPanel.emailCompany}}" style="margin-right: 10px;" readonly required>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="txtLocationCompany">Địa chỉ của công ty</label>
-                    <input type="text" name="locationCompany" id="txtLocationCompany" class="form-control" value="{{locationCompany}}" style="margin-right: 10px;" readonly required>
+                    <input type="text" name="locationCompany" id="txtLocationCompany" class="form-control" value="{{adsPanel.locationCompany}}" style="margin-right: 10px;" readonly required>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="txtStartDate">Ngày bắt đầu hợp đồng</label>
-                    <input type="text" name="startDate" id="txtStartDate" class="form-control" style="margin-right: 10px;" readonly required>
+                    <input type="text" name="startDate" id="txtStartDate" class="form-control" style="margin-right: 10px;" value="{{adsPanel.startDate}}" readonly required>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="txtEndDate">Ngày kết thúc hợp đồng</label>
-                    <input type="text" name="endDate" id="txtEndDate" class="form-control" style="margin-right: 10px;" readonly required>
+                    <input type="text" name="endDate" id="txtEndDate" class="form-control" style="margin-right: 10px;" value="{{adsPanel.endDate}}" readonly required>
                 </div>
             </div>
 
             <div class="card-footer text-muted">
-                <a class="btn btn-outline-success" href="/ward-officer/ads/view-detail?adsLocationId={{adsLocationId}}" role="button">
+                <a class="btn btn-outline-success" href="/ward-officer/ads/view-detail?adsLocationId={{adsPanel.adsLocationId}}" role="button">
                     <i class="bi bi-skip-backward-fill"></i>
                     Danh sách
                 </a>
-                <a class="btn btn-danger justify-content-center" data-id="{{licenseRequestId}}" id="cancel-{{licenseRequestId}}" role="button">
+                <a class="btn btn-danger justify-content-center" data-id="{{adsPanel.licenseRequestId}}" id="cancel-{{adsPanel.licenseRequestId}}" role="button">
                     <i class="bi bi-x-lg"></i>
                     Hủy yêu cầu
                 </a>
             </div>
         </div>
     </form>
-</div> --}}
+</div>
