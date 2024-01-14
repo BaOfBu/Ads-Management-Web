@@ -4,5 +4,8 @@ import adsLocationController from "../../controllers/departmentOfficer/ads_locat
 const router = express.Router();
 
 router.get("/", adsLocationController.index);
+router.get("/add", adsLocationController.addAdsLocation);
+router.post("/del", adsLocationController.handle_deleteAdsLocation);
+router.get("/view-detail", adsLocationController.viewDetailAdsLocation);
 
 export default router;

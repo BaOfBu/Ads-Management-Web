@@ -1,0 +1,37 @@
+<div class="custom-container">
+    <form action="" method="post">
+        <div class="card">
+            <h5 class="card-header">
+            Xem chi tiết bảng quảng cáo
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="txtStt">#</label>
+                    <input type="text" id="txtStt" class="form-control" readonly value="{{stt}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtLocation">Địa chỉ</label>
+                    <input type="text" id="txtLocation" class="form-control" readonly value="{{adsPanel.ads_location_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtAdsPanelType">Loại bảng quảng cáo</label>
+                    <input type="text" id="txtAdsPanelType" class="form-control" readonly value="{{adsPanel.ads_panel_type_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtSize">Kích thước</label>
+                    <input class="form-control" id="txtSize" readonly value="{{adsPanel.width}}m x {{adsPanel.height}}m"></input>
+                </div>
+                {{!-- <div class="form-group"> --}}
+                    {{!-- <label for="txtImage">Hình ảnh bảng quảng cáo</label> --}}
+                    {{!-- <img src="{{adsPanel.image_link}}" class="d-flex justify-content-center" alt=""> --}}
+                {{!-- </div> --}}
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-outline-success" href="/department-officer/ads-panel" role="button">
+                    <i class="bi bi-skip-backward-fill"></i>
+                    Danh sách
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

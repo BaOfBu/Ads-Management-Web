@@ -14,7 +14,7 @@ const index = async function (req, res) {
         description: district.description ? district.description.slice(0, 50) + " ..." : "",
     }));
 
-    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
     res.render("departmentOfficer/management_district/list", {
         empty: empty,
         district: districtsWithIndex,
