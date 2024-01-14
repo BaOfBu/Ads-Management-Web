@@ -4,5 +4,6 @@ import licenseRequestController from "../../controllers/wardOfficer/license_requ
 const router = express.Router();
 
 router.get("/", licenseRequestController.index);
+router.post("/cancel-request", licenseRequestController.cancelRequest);
 
 export default router;

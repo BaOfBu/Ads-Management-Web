@@ -26,4 +26,11 @@ const index = async function (req, res) {
     });
 };
 
-export default { index };
+const cancelRequest = async function(req, res){
+    const licenseRequestId = req.body.licenseRequestId;
+    const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã hủy"});
+    console.log("updateStatus: ", updateStatus);
+    return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
+}
+
+export default { index, cancelRequest };
