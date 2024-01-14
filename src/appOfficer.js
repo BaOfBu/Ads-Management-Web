@@ -16,6 +16,7 @@ import wardOfficerRoute from "./routes/wardOfficer/index.route.js";
 import districtOfficerRoute from "./routes/districtOfficer/index.route.js";
 import departmentOfficerRoute from "./routes/departmentOfficer/index.route.js";
 import accountRoute from "./routes/account/index.route.js";
+import getDataRoute from "./routes/get-data/index.route.js";
 
 import auth from "./middleware/auth.mdw.js";
 
@@ -54,7 +55,8 @@ app.engine("hbs", hbs);
 app.set("view engine", "hbs");
 app.set("views", "./views");
 app.set("trust proxy", 1);
-app.use(session({
+app.use(
+    session({
         secret: "Ads-management-web-app",
         resave: false,
         saveUninitialized: true,
@@ -75,10 +77,11 @@ app.use(cors({ origin: "http://localhost:3000" }));
 
 app.use("/static", express.static("static"));
 
-app.use("/ward-officer",auth.authWardOfficer, wardOfficerRoute);
+app.use("/ward-officer", auth.authWardOfficer, wardOfficerRoute);
+app.use("/get-data", getDataRoute);
 app.use("/district-officer", districtOfficerRoute);
-app.use("/department-officer",auth.authDepartmentOfficer ,departmentOfficerRoute);
-app.use("/",auth.authUser, accountRoute)
+app.use("/department-officer", auth.authDepartmentOfficer, departmentOfficerRoute);
+app.use("/", auth.authUser, accountRoute);
 
 app.listen(port, function serverStartedHandler() {
     console.log(`Ads Management server is running at http://localhost:${port}`);
