@@ -3,5 +3,8 @@ import getReportLocationService from "../../services/departmentOfficer/get-repor
 const getReportLocation = async function (req, res) {
     res.json(await getReportLocationService.findAllReportLocationBasic());
 };
+const getReportPanel = async function (req, res) {
+    res.json(await getReportLocationService.findAllReportLocationByLocation(req.query.id));
+};
 
-export default { getReportLocation };
+export default { getReportLocation, getReportPanel };

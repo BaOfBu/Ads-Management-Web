@@ -126,9 +126,15 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
             }
         }
         var currentDate = new Date();
-        var options = { year: "numeric", month: "2-digit", day: "2-digit" };
-        var formattedDate = new Intl.DateTimeFormat("en-US", options).format(currentDate);
-        sendDate = formattedDate.replace(/(\d+)\/(\d+)\/(\d+)/, "$3-$1-$2");
+
+        var year = currentDate.getFullYear();
+        var month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Note: January is 0-based
+        var day = String(currentDate.getDate()).padStart(2, "0");
+        var hours = String(currentDate.getHours()).padStart(2, "0");
+        var minutes = String(currentDate.getMinutes()).padStart(2, "0");
+        var seconds = String(currentDate.getSeconds()).padStart(2, "0");
+
+        var formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
         formData.append("email", $("#email").val());
         formData.append("name", $("#fullname").val());
@@ -137,7 +143,7 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
         formData.append("long", lng);
         formData.append("lat", lat);
         formData.append("reportTypeId", $("#reportType").val());
-        formData.append("sendDate", sendDate);
+        formData.append("sendDate", formattedDateTime);
         formData.append("adsPanelId", adsPanelId);
         $.ajax({
             url: "http://localhost:8888/get-data/send-report",
@@ -149,7 +155,8 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
             success: function (data) {
                 if (data.status == "success") {
                     alert("Gửi báo cáo thành công");
-                    window.history.back();
+                    // window.history.back();
+                    window.location.href = document.referrer;
                 }
             },
             error: function (error) {

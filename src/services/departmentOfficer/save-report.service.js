@@ -14,7 +14,9 @@ export default {
             imgId2: entity.imgId2,
             sendDate: entity.sendDate,
             status: "Đang xử lý",
-            adsPanelId: null
+            adsPanelId: null,
+            wardId: entity.wardId,
+            districtId: entity.districtId
         });
     },
     saveReportFromAdsPoint(entity) {
@@ -33,5 +35,9 @@ export default {
             status: "Đang xử lý",
             adsPanelId: entity.adsPanelId
         });
+    },
+    async checkReportAdsPanel(entity) {
+        const result = await db("citizen_report").where("adsPanelId", "=", entity).first();
+        return result != undefined;
     }
 };
