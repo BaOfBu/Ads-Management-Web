@@ -33,4 +33,8 @@ const cancelRequest = async function(req, res){
     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
 }
 
-export default { index, cancelRequest };
+const addNewRequest = async function(req, res){
+    res.render("wardOfficer/license_request_add");
+}
+
+export default { index, cancelRequest, addNewRequest };

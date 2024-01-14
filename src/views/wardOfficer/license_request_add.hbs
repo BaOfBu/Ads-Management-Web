@@ -1,0 +1,150 @@
+{{#section 'js'}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js">
+    </script>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/locales/vi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/buffer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/filetype.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/piexif.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/sortable.min.js"></script>
+
+    <script src="/static/js/wardOfficer/license_request.js"></script>
+{{/section}}
+
+{{#section "css"}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
+{{/section}}
+
+<div class="custom-container">
+    <form action="" method="post" id="frmAdd">
+        <div class="card">
+            <h5 class="card-header">
+            Thêm yêu cầu cấp phép quảng cáo
+            </h5>
+            <div class="card-body">
+                <div class="adsLocation">
+                    <label for="dropdownAdsLocation">Điểm đặt quảng cáo</label>
+                    <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownAdsLocation" data-toggle="dropdown" aria-describedby="adsLocationError" aria-expanded="false" required>
+                    {{defaultAdsLocation}}
+                    </button>
+                    <div class="input-group has-validation">
+                        <input id="selectedAdsLocation" name="adsLocationId" type="hidden" value="1"></input>
+                        <div id="adsLocationError" class="invalid-feedback">
+                            Vui lòng chọn một điểm đặt.
+                        </div>
+                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownAdsLocation" style="max-height: 500px; overflow-y: auto;" required>
+                        {{#each adsLocations}}
+                            <li><a class="dropdown-item" data-value="{{location}}" data-id="{{adsLocationId}}">{{location}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+
+                <div class="adsAdsPanelType mt-1">
+                    <label for="dropdownAdsPanelType">Loại bảng quảng cáo</label>
+                    <button class="form-control dropdown-toggle d-flex justify-content-between align-items-center" type="button" id="dropdownAdsPanelType" data-toggle="dropdown" aria-describedby="adsPanelTypeError" aria-expanded="false" required>
+                    {{defaultAdsPanelType}}
+                    </button>
+                    <div class="input-group has-validation">
+                        <input id="selectedAdsPanelType" name="adsPanelTypeId" type="hidden" value="1"></input>
+                        <div id="adsPanelTypeError" class="invalid-feedback">
+                            Vui lòng chọn một loại bảng quảng cáo.
+                        </div>
+                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownAdsPanelType" style="max-height: 500px; overflow-y: auto;" required>
+                        {{#each adsPanelTypes}}
+                            <li><a class="dropdown-item" data-value="{{name}}" data-id="{{adsPanelTypeId}}">{{name}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label for="txtContent">Nội dung quảng cáo</label>
+                    <textarea class="form-control" name="content" id="txtContent" rows="3"></textarea>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="image">Hình ảnh minh họa</label>
+                    <input type="file" id="image" name="image">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="txtNameCompany">Tên công ty</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="nameCompany" id="txtNameCompany" class="form-control is-invalid" style="margin-right: 10px;" aria-describedby="checkValidationEmptyName" required>
+                        <div id="checkValidationEmptyName" class="invalid-feedback">
+                            Vui lòng không để trống mục này và không được nhập quá 50 ký tự
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="txtPhoneCompany">Số điện thoại công ty</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="phoneCompany" id="txtPhoneCompany" class="form-control is-invalid" style="margin-right: 10px;" aria-describedby="checkValidationEmptyPhone" required>
+                        <div id="checkValidationEmptyPhone" class="invalid-feedback">
+                            Vui lòng nhập đúng số điện thoại
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="txtEmailCompany">Email của công ty</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="emailCompany" id="txtEmailCompany" class="form-control is-invalid" style="margin-right: 10px;" aria-describedby="checkValidationEmptyEmail" required>
+                        <div id="checkValidationEmptyEmail" class="invalid-feedback">
+                            Vui lòng nhập đúng email
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="txtLocationCompany">Địa chỉ của công ty</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="locationCompany" id="txtLocationCompany" class="form-control is-invalid" style="margin-right: 10px;" aria-describedby="checkValidationEmptyLocation" required>
+                        <div id="checkValidationEmptyLocation" class="invalid-feedback">
+                            Vui lòng không để trống mục này
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="txtStartDate">Ngày bắt đầu hợp đồng</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="startDate" id="txtStartDate" class="form-control is-invalid" style="margin-right: 10px;" aria-describedby="checkValidationStartDate" required>
+                        <div id="checkValidationStartDate" class="invalid-feedback">
+                            Vui lòng không để trống mục này
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="txtEndDate">Ngày kết thúc hợp đồng</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="endDate" id="txtEndDate" class="form-control is-invalid" style="margin-right: 10px;" aria-describedby="checkValidationEndDate" required>
+                        <div id="checkValidationEndDate" class="invalid-feedback">
+                            Vui lòng không để trống mục này
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-outline-success" href="/ward-officer/license-request" role="button">
+                    <i class="bi bi-skip-backward-fill"></i>
+                    Danh sách
+                </a>
+                <button id="submitButton" type="submit" class="btn btn-primary">
+                    <i class="bi bi-check2"></i>
+                    Tạo yêu cầu
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
