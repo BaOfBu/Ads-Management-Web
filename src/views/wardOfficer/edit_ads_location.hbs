@@ -1,1 +1,45 @@
-<h4>edit ads panel</h4>
+{{#section "js"}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
+    <script src="/static/js/wardOfficer/edit-ads-location.js"></script>  
+{{/section}}
+{{#section "css"}}
+    <link rel="stylesheet" href="/static/css/wardOfficer/edit-ads-location.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
+{{/section}}
+
+<div class="custom-container">
+    <form action="" >
+        <div class="form-group">
+            <label for="txtAddress">Địa chỉ</label>
+            <input type="text" id="txtAddress" class="form-control" readonly placeholder="{{adsLocation.location}}">
+        </div>
+        <div class="form-group">
+            <label for="txtLocationType">Loại vị trí</label>
+            <select class="custom-select" name="LocationType" id="txtLocationType">
+                {{#each locationType}}
+                <option value="{{this.locationTypeId}}">{{this.name}}</option>
+                {{/each}}
+            </select>  
+        </div>
+        <div class="form-group">
+            <label for="txtAdsType">Loại quảng cáo</label>
+            <select class="custom-select" name="AdsType" id="txtAdsType">
+                {{#each adsType}}
+                <option value="{{this.adsTypeId}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="txtStatus">Loại quảng cáo</label>
+            <select class="custom-select" name="status-select" id="txtStatus">
+                {{#each status}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="fuMain">Hình ảnh</label>
+            <input type="file" id="fuMain" name="image">
+        </div>
+    </form>
+</div>

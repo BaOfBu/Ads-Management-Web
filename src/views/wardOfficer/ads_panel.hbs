@@ -29,13 +29,13 @@
                         <span class="d-flex justify-content-center">Kích thước</span>
                     </th>
                     <th scope="col" class="col-2">
-                        <span class="d-flex justify-content-center">Bắt đầu hợp đồng</span>
-                    </th>
-                    <th scope="col" class="col-2">
-                        <span class="d-flex justify-content-center">Kết thúc hợp đồng</span>
+                        <span class="d-flex justify-content-center">Hợp đồng</span>
                     </th>
                     <th scope="col" class="col-1">
                         <span class="d-flex justify-content-center">Chi tiết</span>
+                    </th>
+                    <th scope="col" class="col-2">
+                        <span class="d-flex justify-content-center">Yêu cầu chỉnh sửa</span>
                     </th>
                     <th scope="col" class="col-2">
                         <span class="d-flex justify-content-center">Yêu cầu cấp phép</span>
@@ -62,18 +62,20 @@
                     </td>
                     <td>
                         <span class="d-flex justify-content-center">
-                            {{startDate}}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="d-flex justify-content-center">
-                            {{endDate}}
+                            {{license}}
                         </span>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <a class="btn btn-sm btn-outline-info" href="./view-panel-detail?adsPanelId={{adsPanelId}}" role="button">
                                 Xem chi tiết
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="d-flex view-detail mt-1" href="./ads-panel-edit?adsPanelId={{adsPanelId}}" role="button">
+                                <span class="ml-1">Yêu cầu</span>
                             </a>
                         </div>
                     </td>
