@@ -24,5 +24,11 @@ export default {
         .leftJoin('image as img1', 'report.imgId1', '=', 'img1.imgId')
         .leftJoin('image as img2', 'report.imgId2', '=', 'img2.imgId')
         .where('report.citizenReportId', reportId).first();
+    },
+    updateStatus(citizenReportId, status, handlingProcedureInfor) {
+        return db('citizen_report').where('citizenReportId', citizenReportId).update({
+            status: status,
+            handlingProcedureInfor: handlingProcedureInfor
+        });
     }
 }

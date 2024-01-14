@@ -1,10 +1,15 @@
+{{#section 'js'}}
+    <script src="/static/js/wardOfficer/report_detail.js"></script>
+{{/section}}
+
 <div class="custom-container">
-    <form action="" method="post">
+    <form id="formReport" action="" method="post">
         <div class="card">
-            <h5 class="card-header">
+            <h3 class="card-header">
             Xem chi tiết báo cáo
-            </h5>
+            </h3>
             <div class="card-body">
+                <input type="hidden" id="txtReportId" name="txtReportId" class="form-control" value="{{report.citizenReportId}}">
                 <div class="form-group">
                     <label for="txtAddress">Địa chỉ</label>
                     <input type="text" id="txtAddress" class="form-control" readonly value="{{report.location}}">
@@ -26,7 +31,7 @@
                     <input type="text" class="form-control" id="txtSize" readonly value="{{report.sendDate}}">
                 </div>
                     <label for="image">Hình ảnh</label>
-                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-bs-interval="false">
                         <div class="carousel-inner">
                             {{#if report.imgId1}}
                             <div class="carousel-item active">
@@ -48,7 +53,34 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
+                {{#if (equal report.status "Đang xử lí")}}
+                <h2>Cập nhật tình trạng xử lí</h2>
+                <input type="hidden" readonly id="flag" value="true">
+                <div class="form-group">
+                    <label for="txtStatus">Tình trạng xử lí</label>
+                    <select class="custom-select form-control" name="status" id="txtStatus" required>
+                        <option value="Đang xử lí" selected>Đang xử lí</option>
+                        <option value="Đã xử lí">Đã xử lí</option>
+                    </select>
                 </div>
+                <div class="form-group">
+                    <label for="txthandlingProcedureInfor">Cách thức xử lí</label>
+                    <textarea class="form-control" id="txthandlingProcedureInfor" name="handlingProcedureInfor" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                {{/if}}
+                {{#if (equal report.status "Đã xử lí")}}
+                    <input type="hidden" readonly id="flag" value="false">
+                    <div class="form-group">
+                        <label for="txtStatus">Tình trạng xử lí</label>
+                        <input class="form-control" value="Đã xử lí" id="txtStatus" readonly></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="txthandlingProcedureInfor">Cách thức xử lí</label>
+                        <textarea class="form-control" id="txthandlingProcedureInfor" name="handlingProcedureInfor" rows="3" readonly>{{report.handlingProcedureInfor}}</textarea>
+                    </div>
+                {{/if}}
+            </div>
             <div class="card-footer text-muted">
                 <a class="btn btn-outline-success" href="/ward-officer/report/" role="button">
                     <i class="bi bi-skip-backward-fill"></i>
