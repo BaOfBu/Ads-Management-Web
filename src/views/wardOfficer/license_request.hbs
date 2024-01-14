@@ -1,17 +1,23 @@
 {{#section 'js'}}
-    <script src="/static/js/departmentOfficer/license_request/index.js"></script>
+    <script src="/static/js/wardOfficer/license_request.js"></script>
 {{/section}}
 
 <div class="custom-container">
     <div class="card">
         <div class="custom-card">
-            <h5 class="card-header">Danh sách các yêu cầu cấp phép quảng cáo của phường {{ward_name}}</h5> 
+            <h5 class="card-header">Danh sách các yêu cầu cấp phép quảng cáo của phường</h5> 
         </div>
     </div>
 
     <div>
-        <div class="list card mt-3">
-            <h5 class="card-header">Xem danh sách</h5>
+        <div class="list card mt-5">
+            <h5 class="card-header d-flex justify-content-between align-items-center">
+                Xem danh sách
+                <a href="license-request/add" class="d-flex btn btn-outline-info" role="button">
+                    <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a license request">
+                    <span class="ml-1">Thêm một yêu cầu</span>
+                </a>
+            </h5>
             {{#if empty}}
                 <div class="card-body">Không có dữ liệu</div>
             {{else}}
@@ -19,17 +25,15 @@
                     <thead>
                         <tr>
                             <th scope="col" style="width: 2%">#</th>
-                            <th scope="col" style="width: 10%">Địa chỉ</th>
-                            <th scope="col" style="width: 7%">Khu vực</th>
+                            <th scope="col" style="width: 12%">Địa chỉ</th>
                             <th scope="col" style="width: 8%">Loại bảng</th>
                             <th scope="col" style="width: 9%">Kích thước</th>
                             <th scope="col" style="width: 8%">Hình thức</th>
                             <th scope="col" style="width: 8%">Phân loại</th>
                             <th scope="col" style="width: 12%">Nội dung và ảnh</th>
-                            {{!-- <th scope="col" style="width: 8%">Hình ảnh</th> --}}
-                            <th scope="col" style="width: 16%">Thông tin LH</th>
+                            <th scope="col" style="width: 22%">Thông tin LH</th>
                             <th scope="col" style="width: 10%">Thời gian</th>
-                            <th scope="col" style="width: 10%">Hành động</th>
+                            <th scope="col" style="width: 9%">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,7 +41,6 @@
                             <tr>
                                 <th scope="row">{{stt}}</th>
                                 <td>{{ads_location_name}}</td>
-                                <td>Phường {{ward_name}} - Quận {{district_name}}</td>
                                 <td>{{ads_panel_type_name}}</td>
                                 <td>{{width}}m x {{height}}m</td>
                                 <td>{{ads_type_name}}</td>
@@ -47,7 +50,7 @@
                                 {{!-- <td>{{nameCompany}}</td> --}}
                                 <td>Tên công ty: {{nameCompany}} - Địa chỉ: {{locationCompany}} - Email: {{emailCompany}} - Số ĐT: {{phoneCompany}}</td>
                                 <td>{{startDate}} - {{endDate}}</td>
-                                <td class="d-flex">
+                                <td>
                                     {{#if (equal status 'Chưa duyệt')}}
                                         <div class="d-flex justify-content-center" style="margin-right: 10px;">
                                             <a class="btn btn-sm btn-outline-info" data-id="{{licenseRequestId}}" id="cancel-{{licenseRequestId}}" role="button">
