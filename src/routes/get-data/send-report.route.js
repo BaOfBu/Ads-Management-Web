@@ -69,20 +69,36 @@ router.post("/", upload.array("images", 2), async function (req, res) {
     while (imgIds.length < 2) {
         imgIds.push(null);
     }
-    console.log(imgIds);
-    await SaveReportService.saveReportFromEmptyPoint({
-        email: email,
-        name: name,
-        location: location,
-        content: content,
-        phone: phone,
-        sendDate: sendDate,
-        long: long,
-        lat: lat,
-        reportTypeId: reportTypeId,
-        imgId1: imgIds[0],
-        imgId2: imgIds[1]
-    });
+    if (adsPanelId != "") {
+        await SaveReportService.saveReportFromAdsPoint({
+            email: email,
+            name: name,
+            location: location,
+            content: content,
+            phone: phone,
+            sendDate: sendDate,
+            long: long,
+            lat: lat,
+            reportTypeId: reportTypeId,
+            imgId1: imgIds[0],
+            imgId2: imgIds[1],
+            adsPanelId: adsPanelId
+        });
+    } else {
+        await SaveReportService.saveReportFromEmptyPoint({
+            email: email,
+            name: name,
+            location: location,
+            content: content,
+            phone: phone,
+            sendDate: sendDate,
+            long: long,
+            lat: lat,
+            reportTypeId: reportTypeId,
+            imgId1: imgIds[0],
+            imgId2: imgIds[1]
+        });
+    }
     res.json({ status: "success" });
 });
 
