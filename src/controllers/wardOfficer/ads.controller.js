@@ -1,5 +1,9 @@
 import adsService from "../../services/wardOfficer/ads.service.js";
 import moment from "moment";
+import multer from "multer";
+import fs from "fs";
+import path from "path";
+import { get } from "http";
 
 const statusName = ["Đã quy hoạch","Chưa quy hoạch"];
 
@@ -21,7 +25,8 @@ const index = async function (req, res) {
         wardName: wardName.name,
         districtName: districtName.name,
         arrayAdsLocation: adsLocationWithIndex,
-        date: currentDateTime
+        date: currentDateTime,
+        isEmpty: adsLocationWithIndex.length == 0
     });
 }
 
@@ -34,9 +39,14 @@ const viewDetails = async function (req, res) {
         ...adsPanel,
         stt: index + 1
     }));
+    //console.log("adsPanelWithIndex",adsPanelWithIndex);
+    //console.log("Length",adsPanelWithIndex.length==0);
+    const isEmpty = adsPanelWithIndex.length == 0;
+    //console.log("isEmpty",isEmpty);
     res.render("wardOfficer/ads_panel", {
         adsLocationName: adsLocationName.location,
-        adsPanel: adsPanelWithIndex
+        adsPanel: adsPanelWithIndex,
+        isEmpty: isEmpty
     })
 };
 
@@ -49,8 +59,9 @@ const viewPanelDetails = async function (req, res) {
 }
 
 const getEditAdsLocation = async function (req, res) {
+    //console.log("req.query",req.query);
     const adsLocation = await adsService.findAdsLocation(req.query.adsLocationId);
-    console.log("adsLocation",adsLocation);
+    //console.log("adsLocation nè",adsLocation);
     const LocationType = await adsService.findAllLocationTypeName();
     const adsType = await adsService.findAllAdsTypeName();
     //console.log("adsLocation",adsLocation);
@@ -65,46 +76,13 @@ const getEditAdsLocation = async function (req, res) {
 const getEditAdsPanel = async function (req, res) {
     const adsPanelType = await adsService.findAllAdsPanelType();
     const adsPanel = await adsService.findAdsPanel(req.query.adsPanelId);
-    console.log("adsPanel",adsPanel);
-    console.log("adsPanelType",adsPanelType);
+    //console.log("adsPanel",adsPanel);
+    //console.log("adsPanelType",adsPanelType);
     res.render("wardOfficer/edit_ads_panel", {
         adsPanelType : adsPanelType,
         adsPanel : adsPanel
     })
 }
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, process.cwd() + '/static/images/user/account/');
-//     },
-//     filename: function (req, file, cb) {
-//         const userID = req.session.authUser._id;
-//         const filename = userID + '.' + file.originalname.split('.').pop();
-//         req.body.image = "/static/images/ads-location/" + filename;
-//         console.log(filename);
-//         cb(null, filename);
-//     }
-// });
-
-// const upload = multer({ storage: storage });
-
-// const uploadAvatar = async function(req, res) {
-//     console.log("Đã vô upload roi ne");
-//     const userID = req.session.authUser._id;
-//     console.log("userID: ", userID);
-//     upload.single('image')(req, res, async function (err) {
-//         if (err) {
-//             console.error("error: ", err);
-//             return res.status(500).json({ error: 'Error during upload.' });
-//         } else {
-//             console.log("file name: ", req.body.image);
-//             const update = await Profile.updateMerchantInfo(userID, { image: req.body.image });
-//             console.log("Đã up ảnh thành công, ", update);
-//             //return res.json({ success: true, image: req.body.image });
-//             req.session.authUser.image = req.body.image;
-//             return res.redirect("/merchant/home");
-//         }
-//     });
-// }
 
 export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel};
