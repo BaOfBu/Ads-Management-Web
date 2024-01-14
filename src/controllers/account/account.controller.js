@@ -18,9 +18,9 @@ const getLogin = function (req, res) {
 };
 
 const postLogin = async function (req, res) {
-    console.log(req.body);
+    //console.log(req.body);
   const user = await accountService.findByUsername(req.body.username);
-  console.log(user);
+  //console.log(user);
   if (!user) {
     return res.render("account/login", {
       err_message: "Invalid username or password.",
@@ -28,7 +28,7 @@ const postLogin = async function (req, res) {
   }
 
   const ret = bcrypt.compareSync(req.body.password, user.password);
-  console.log("ret:",ret);
+  //console.log("ret:",ret);
   if (ret === false) {
     return res.render("account/login", {
       err_message: "Invalid username or password.",
@@ -48,18 +48,16 @@ const postLogin = async function (req, res) {
   if (user.role === "Department") {
     return res.redirect("/department-officer");
   }
-  return res.redirect(url);
 
 };
 
 const logout = function (req, res) {
-  // console.log("logout");
-  req.session.retUrl = req.headers.referer || "/";
+  //console.log("logout");
   req.session.auth = false;
   req.session.authUser = undefined;
   req.session.order = "";
   req.session.numberItem = 0;
-  res.redirect("/account/login");
+  res.redirect("/");
   //localStorage.removeItem("selectedDateRange");
 };
 
@@ -142,7 +140,7 @@ const getChangePassword = function (req, res) {
 }
 
 const postChangePassword = async function (req, res) {
-  console.log("post change pass",req.body);
+  //console.log("post change pass",req.body);
     try {
         const username = req.session.username;
         const password = req.body.password;
