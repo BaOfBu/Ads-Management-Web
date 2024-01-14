@@ -109,13 +109,22 @@ const getEditAdsPanel = async function (req, res) {
 
 const licenseRequest = async function(req, res){
     const adsPanelId = req.query.adsPanelId;
+    let available = true;
+
     let adsPanel = await adsService.findLicenseRequestOfAdsPanel(adsPanelId);
 
-    adsPanel.startDate = moment(adsPanel.startDate).format('DD/MM/YYYY');
-    adsPanel.endDate = moment(adsPanel.endDate).format('DD/MM/YYYY');
-    
+    console.log("adsPanel: ", adsPanel);
+
+    if(adsPanel.status !== null){
+        adsPanel.startDate = moment(adsPanel.startDate).format('DD/MM/YYYY');
+        adsPanel.endDate = moment(adsPanel.endDate).format('DD/MM/YYYY');
+    }else{
+        available = false;
+    }
+
     res.render("wardOfficer/license_request_AdsPanelScreen", {
-        adsPanel: adsPanel
+        adsPanel: adsPanel,
+        available: available
     });
 }
 
