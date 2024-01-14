@@ -7,9 +7,12 @@
 {{/section}}
 
 <div class="custom-container">
-    <form action="" >
+    <h3>Chỉnh sửa bảng quảng cáo</h3>
+    <form action="" method="post">
+        <input type="hidden" id="txtAdsPanelId" name="txtAdsPanelId" class="form-control" value={{adsPanel.adsPanelId}}>
+        <input type="hidden" id="txtAdsLocationId" name="txtAdsLocationId" class="form-control" value={{adsPanel.adsLocationId}}>
         <div class="form-group">
-            <label for="txtLocationType">Loại vị trí</label>
+            <label for="txtLocationType">Loại bảng quảng cáo</label>
             <select class="custom-select" name="adsPanelType" id="txtLocationType">
                 {{#each adsPanelType}}
                 <option value="{{this.adsPanelTypeId}}" >{{this.name}}</option>
@@ -18,19 +21,20 @@
         </div>
         <div class="form-group">
             <label for="txtQuantity">Số lượng</label>
-            <input type="text" id="txtQuantity" class="form-control"  placeholder="{{adsPanel.quantity}}">
+            <input type="text" id="txtQuantity" name="Quantity" class="form-control"  placeholder="{{adsPanel.quantity}}">
         </div>
         <div class="form-group">
             <label for="txtWidth">Chiều rộng</label>
-            <input type="text" id="txtWidth" class="form-control"  placeholder="{{adsPanel.width}}">
+            <input type="text" id="txtWidth" name="Width" class="form-control"  placeholder="{{adsPanel.width}}">
         </div>
         <div class="form-group">
             <label for="txtHeight">Chiều cao</label>
-            <input type="text" id="txtHeight" class="form-control"  value="{{adsPanel.height}}">
+            <input type="text" id="txtHeight" name="Height" class="form-control"  placeholder="{{adsPanel.height}}">
         </div>
         <div class="form-group">
-            <label for="fuMain">Hình ảnh</label>
-            <input type="file" id="fuMain" name="image" class="form-control">
+            <label for="txtRequestReason">Lí do chỉnh sửa</label>
+            <textarea class="form-control" id="txtRequestReason" name="RequestReason" rows="3"></textarea>
         </div>
+        <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
     </form>
 </div>
