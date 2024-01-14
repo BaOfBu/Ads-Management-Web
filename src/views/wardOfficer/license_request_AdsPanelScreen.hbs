@@ -89,9 +89,11 @@
                         <i class="bi bi-skip-backward-fill"></i>
                         Danh sách
                     </a>
-                    <a class="btn btn-danger justify-content-center" data-id="{{adsPanel.licenseRequestId}}" id="cancel-{{adsPanel.licenseRequestId}}" role="button">
+                    <a class="btn btn-danger justify-content-center" id="cancel-request" role="button">
                         <i class="bi bi-x-lg"></i>
                         Hủy yêu cầu
+                        <input type="hidden" id="licenseRequestId" value="{{adsPanel.licenseId}}">
+                        <input type="hidden" id="adsPanelId" value="{{adsPanel.adsPanelId}}">
                     </a>
                 </div>
             </div>

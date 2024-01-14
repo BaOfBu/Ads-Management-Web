@@ -1,18 +1,19 @@
 $('[id^="cancel-"]').on('click', function(event) {
     event.preventDefault(); 
 
+    let adsPanelId = $(this).data('value');
     let requestId = $(this).data('id');
 
-    handleCancelClick(requestId);
+    handleCancelClick(adsPanelId, requestId);
 });
 
-function handleCancelClick(requestId) {
+function handleCancelClick(adsPanelId, requestId) {
     console.log("Cancel button clicked for requestId: ", requestId);
     $.ajax({
         url: "license-request/cancel-request", 
         method: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ licenseRequestId: requestId }),
+        data: JSON.stringify({adsPanelId: adsPanelId, licenseRequestId: requestId }),
         success: function(response) {
             console.log('Request deleted successfully:', response);
             alert(response.message);

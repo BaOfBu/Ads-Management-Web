@@ -35,6 +35,7 @@ const cancelRequest = async function(req, res){
     const licenseRequestId = req.body.licenseRequestId;
     const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã hủy"});
     console.log("updateStatus: ", updateStatus);
+    const updateLicensePanel = await adsPanel.patch({adsPanelId: req.body.adsPanelId, licenseId: ""});
     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
 }
 
@@ -112,6 +113,7 @@ const handleAddNewRequest = async function(req, res){
     req.body.districtId = user.districtId;
     req.body.status = "Chưa duyệt";
     const request = await newLicenseRequest.add(req.body);
+    const adsPanel = await adsPanel.patch({adsPanelId: req.body.adsPanelId, licenseId: request.licenseRequestId});
     console.log("New request: ", request);
     res.redirect("/ward-officer/license-request");
 }

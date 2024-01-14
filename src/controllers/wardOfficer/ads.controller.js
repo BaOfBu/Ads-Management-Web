@@ -2,6 +2,7 @@ import adsService from "../../services/wardOfficer/ads.service.js";
 import moment from "moment";
 import imageService from "../../services/departmentOfficer/image.service.js";
 import newLicenseRequest from "../../services/wardOfficer/license_request.service.js";
+import adsPanel from "../../services/departmentOfficer/ads_panel.service.js";
 
 const statusName = ["Đã quy hoạch","Chưa quy hoạch"];
 
@@ -145,8 +146,16 @@ const handleAddNewRequest = async function(req, res){
     req.body.districtId = user.districtId;
     req.body.status = "Chưa duyệt";
     const request = await newLicenseRequest.add(req.body);
+    const updatAdsPanel = await adsPanel.patch({adsPanelId: req.body.adsPanelId, licenseId: request.licenseRequestId});
     console.log("New request: ", request);
     res.redirect(`/ward-officer/ads/license-request?adsPanelId=${req.body.adsPanelId}`);
 }
+
+// const cancelRequest = async function(req, res){
+//     const licenseRequestId = req.body.licenseRequestId;
+//     const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã hủy"});
+//     console.log("updateStatus: ", updateStatus);
+//     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
+// }
 
 export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, licenseRequest, handleAddNewRequest};
