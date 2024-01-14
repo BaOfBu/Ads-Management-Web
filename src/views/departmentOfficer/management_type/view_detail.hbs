@@ -1,0 +1,46 @@
+<div class="custom-container">
+    <form action="" method="post">
+        <div class="card">
+            <h5 class="card-header">
+            Xem chi tiết {{typeName}}
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="txtStt">#</label>
+                    <input type="text" id="txtStt" class="form-control" readonly value="{{stt}}">
+                </div>
+                <div class="form-group">
+                    {{#if (equal choice 'location-type')}}
+                        <label for="txtType">Loại vị trí</label>
+                        <input type="text" id="txtType" class="form-control" readonly value="{{type.name}}">
+                    {{/if}}
+
+                    {{#if (equal choice 'ads-type')}}
+                        <label for="txtType">Hình thức quảng cáo</label>
+                        <input type="text" id="txtType" class="form-control" readonly value="{{type.name}}">
+                    {{/if}} 
+                    
+                    {{#if (equal choice 'ads-panel-type')}}
+                        <label for="txtType">Loại bảng quảng cáo</label>
+                        <input type="text" id="txtType" class="form-control" readonly value="{{type.name}}">
+                    {{/if}}        
+
+                    {{#if (equal choice 'report-type')}}
+                        <label for="txtType">Hình thức báo cáo</label>
+                        <input type="text" id="txtType" class="form-control" readonly value="{{type.name}}">
+                    {{/if}}  
+                </div>
+                <div class="form-group">
+                    <label for="txtDescription">Mô tả</label>
+                    <textarea class="form-control" id="txtDescription" rows="3" readonly value="{{type.description}}">{{type.description}}</textarea>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-outline-success" href="/department-officer/provided-info/{{choice}}" role="button">
+                    <i class="bi bi-skip-backward-fill"></i>
+                    Danh sách
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

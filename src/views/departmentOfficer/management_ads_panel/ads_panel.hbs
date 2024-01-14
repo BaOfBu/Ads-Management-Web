@@ -5,18 +5,14 @@
         </div>
     </div>
     <div class="d-flex justify-content-end mt-5">
-        <button type="button" class="d-flex btn btn-outline-info">
-            <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a point">
+        {{!-- <a href="district/add" class="d-flex btn btn-outline-info" role="button">
+            <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a district">
+            <span class="ml-1">Thêm một quận</span>
+        </a> --}}
+        <a href="ads-panel/add" role="button" class="d-flex btn btn-outline-info">
+            <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a panel">
             <span class="ml-1">Thêm một bảng</span>
-        </button>
-        <button type="button" class="d-flex btn btn-outline-info ml-3">
-            <img src="/static/images/departmentOfficer/icon-delete.png" width="24" height="24" alt="delete a point">
-            <span class="ml-1">Xóa một bảng</span>
-        </button>
-        <button type="button" class="d-flex btn btn-outline-info ml-3">
-            <img src="/static/images/departmentOfficer/icon-update.png" width="24" height="24" alt="update a point">
-            <span class="ml-1">Cập nhật một bảng</span>
-        </button>
+        </a>
     </div>
     <div>
         <div class="card mt-5">
@@ -29,49 +25,41 @@
                 <tr>
                     <th scope="col" class="col-1">#</th>
                     <th scope="col" class="col-3">Địa chỉ</th>
-                    <th scope="col" class="col-4">Loại bảng quảng cáo</th>
+                    <th scope="col" class="col-3">Loại bảng quảng cáo</th>
                     <th scope="col" class="col-2">Kích thước</th>
+                    <th scope="col" class="col-1"></th>
                     <th scope="col" class="col-2"></th>
                 </tr>
             </thead>
             <tbody>
-                {{!-- <tr>
-                    <th scope="row">1</th>
-                    <td>xxxx</td>
-                    <td>Trụ màn hình điện tử LED</td>
-                    <td>2m x 3m</td>
-                    <td class="d-flex">
-                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                        <span class="ml-1">Xem chi tiết</span>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>xxxx</td>
-                    <td>Màn hình điện tử ốp tường</td>
-                    <td>4m x 6m</td>
-                    <td class="d-flex">
-                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                        <span class="ml-1">Xem chi tiết</span>
-                    </td>
-                </tr> --}}
-                {{#each ads_panel}}
+                {{#each ads_panels}}
                 <tr>
                     <th scope="row">{{stt}}</th>
-                    <td>{{location}}</td>
-                    <td>{{adsPanelType}}</td>
+                    <td>{{ads_location_name}}</td>
+                    <td>{{ads_panel_type_name}}</td>
                     <td>{{width}}m x {{height}}m</td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-sm btn-outline-info" href="ads-panel/edit?adsPanelId={{adsPanelId}}&stt={{stt}}" role="button">
+                                <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
+                            </a>
+                        </div>
+                    </td>
                     <td class="d-flex">
-                        <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                        <span class="ml-1">Xem chi tiết</span>
+                        <div>
+                            <a class="d-flex view-detail mt-1" href="ads-panel/view-detail?adsPanelId={{adsPanelId}}&stt={{stt}}" role="button">
+                                <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                                <span class="ml-1">Xem chi tiết</span>    
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
         {{/if}}
-        <div class="card-footer text-muted">
-            2 days ago
+        <div class="card-footer text-muted font-italic">
+            <span class="small">{{date}}</span>
         </div>
     </div>
 </div>
