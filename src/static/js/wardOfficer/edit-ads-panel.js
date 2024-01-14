@@ -17,7 +17,7 @@ async function uploadAvatar() {
   
     return new Promise((resolve, reject) => {
       $.ajax({
-        url: '/ward-officer/ads/upload-avatar',
+        url: '/ward-officer/ads/upload-image',
         type: 'POST',
         data: formData,
         processData: false,
