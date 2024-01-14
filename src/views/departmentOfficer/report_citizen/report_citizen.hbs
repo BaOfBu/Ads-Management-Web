@@ -1,0 +1,46 @@
+<div class="custom-container">
+    <div class="card">
+        <div class="custom-card">
+            <h5 class="card-header">Danh sách các báo cáo của người dân trong thành phố Hồ Chí Minh</h5> 
+        </div>
+    </div>
+    <div>
+        <div class="card mt-5">
+        <h5 class="card-header">Xem danh sách</h5>
+        {{#if empty}}
+            <div class="card-body">Không có dữ liệu</div>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" style="2%">#</th>
+                    <th scope="col" style="13%">Đối tượng báo cáo</th>
+                    <th scope="col" style="12%">Loại báo cáo</th>
+                    <th scope="col" style="13%">Người gửi</th>
+                    <th scope="col" style="15%">Nội dung</th>
+                    <th scope="col" style="25%">Cách thức xử lý</th>
+                    <th scope="col" style="10%">Thời gian gửi</th>
+                    <th scope="col" style="10%">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each report_citizen}}
+                <tr>
+                    <th scope="row">{{stt}}</th>
+                    <td>{{object}}</td>
+                    <td>{{report_type_name}}</td>
+                    <td>{{name}}</td>
+                    <td>{{content}}</td>
+                    <td>{{handlingProcedureInfor}}</td>
+                    <td>{{sendDate}}</td>
+                    <td>{{status}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+        <div class="card-footer text-muted font-italic">
+            <span class="small">{{date}}</span>
+        </div>
+    </div>
+</div>
