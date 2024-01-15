@@ -17,6 +17,9 @@ const index = async (req, res, next) => {
     const wardName = await adsService.findWardByWardId(user.wardId);
     const districtName = await adsService.findDistrictByDistrictId(user.districtId);
     const arrayReport = await reportService.findReportByWardId(user.wardId);
+    for(let i = 0; i < arrayReport.length; i++){
+        arrayReport[i].sendDate = moment(arrayReport[i].sendDate).format('HH:mm:ss DD-MM-YYYY');
+    }
     //console.log("arrayReport",arrayReport);
     // console.log("wardName",wardName);
     // console.log("districtName",districtName);

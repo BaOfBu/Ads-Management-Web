@@ -5,13 +5,13 @@
 <div class="custom-container">
     <div class="card">
         <div class="custom-card">
-            <h5 class="card-header d-flex justify-content-center">Danh sách báo cáo của phường {{wardName}} quận {{districtName}}</h5> 
+            <h5 class="card-header d-flex justify-content-center">Danh sách các bảng quảng cáo của phường {{wardName}} quận {{districtName}}</h5> 
         </div>
     </div>
     <div>
         <div class="card mt-5">
         <h5 class="card-header d-flex justify-content-between align-items-center p-3">
-            Xem danh sách báo cáo
+            Xem danh sách điểm đặt quảng cáo
         </h5>
         {{#if isEmpty}}
             <div class="card-body">Không có dữ liệu</div>
@@ -22,28 +22,31 @@
                     <th scope="col" class="col-1">
                         <span class="d-flex justify-content-center">#</span>
                     </th>
-                    <th scope="col" class="col-2">
-                        <span class="d-flex justify-content-center">Thông tin người gửi</span>
-                    </th>
-                    <th scope="col" class="col-2">
-                        <span class="d-flex justify-content-center">Thời gian gửi</span>
-                    </th>
-                    <th scope="col" class="col-2">
+                    <th scope="col" class="col-4">
                         <span class="d-flex justify-content-center">Địa chỉ</span>
                     </th>
                     <th scope="col" class="col-2">
-                        <span class="d-flex justify-content-center">Loại hình báo cáo</span>
+                        <span class="d-flex justify-content-center">Loại bảng quảng cáo</span>
                     </th>
                     <th scope="col" class="col-1">
-                        <span class="d-flex justify-content-center">Tình trạng</span>
+                        <span class="d-flex justify-content-center">Kích thước</span>
                     </th>
-                    <th scope="col" class="col-2">
-                        <span class="d-flex justify-content-center">Xem chi tiết</span>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Số lượng</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Chi tiết</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Y/c chỉnh sửa</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Y/c cấp phép</span>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                {{#each arrayReport}}
+                {{#each arrayAdsPanel}}
                 <tr>
                     <th scope="row">
                         <span class="d-flex justify-content-center">
@@ -52,35 +55,42 @@
                     </th>
                     <td>
                         <span class="d-flex justify-content-center">
-                            {{name}} </br> {{email}} </br> {{phone}}
+                            {{location_name}}
                         </span>
                     </td>
                     <td>
                         <span class="d-flex justify-content-center">
-                            {{sendDate}}
+                            {{ads_panel_type_name}}
                         </span>
                     </td>
                     <td>
                         <span class="d-flex justify-content-center">
-                            {{location}}
+                            {{width}}m x {{height}}m
                         </span>
                     </td>
                     <td>
                         <span class="d-flex justify-content-center">
-                            {{report_type_name}}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="d-flex justify-content-center">
-                            {{status}}
+                            {{quantity}}
                         </span>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <a class="d-flex view-detail mt-1" href="report/viewDetails?citizenReportId={{citizenReportId}}" role="button">
-                                
-                                <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                                <span class="ml-1">Chi tiết</span>
+                            <a class="d-flex view-detail mt-1" href="/ward-officer/ads-panel/view-panel-detail?adsPanelId={{adsPanelId}}" role="button">
+                                <span class="ml-1">Xem chi tiết</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="d-flex view-detail mt-1" href="/ward-officer/ads-panel/ads-panel-edit?adsPanelId={{adsPanelId}}" role="button">
+                                <span class="ml-1">Yêu cầu</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="d-flex view-detail mt-1" href="#" role="button">
+                                <span class="ml-1">Yêu cầu</span>
                             </a>
                         </div>
                     </td>

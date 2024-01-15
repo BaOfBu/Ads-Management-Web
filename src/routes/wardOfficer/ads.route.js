@@ -84,4 +84,5 @@ router.post("/ads-panel-edit", async function(req,res,next){
     //return res.json({ success: true, image: req.body.image });
     return res.redirect("/ward-officer/ads/");
 });
+
 export default router;
