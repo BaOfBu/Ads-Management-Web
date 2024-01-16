@@ -14,7 +14,9 @@ export default {
             imgId2: entity.imgId2,
             sendDate: entity.sendDate,
             status: "Đang xử lý",
-            adsPanelId: null
+            adsPanelId: null,
+            wardId: entity.wardId,
+            districtId: entity.districtId
         });
     },
     saveReportFromAdsPoint(entity) {
@@ -30,8 +32,14 @@ export default {
             imgId1: entity.imgId1,
             imgId2: entity.imgId2,
             sendDate: entity.sendDate,
+            districtId: entity.districtId,
+            wardId: entity.wardId,
             status: "Đang xử lý",
             adsPanelId: entity.adsPanelId
         });
+    },
+    async checkReportAdsPanel(entity) {
+        const result = await db("citizen_report").where("adsPanelId", "=", entity).first();
+        return result != undefined;
     }
 };

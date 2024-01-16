@@ -48,6 +48,10 @@ geocoder.on("result", function (event) {
         currentMarker.remove();
     }
     currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+    const sidebar = document.getElementById("sidebar");
+    const button = document.getElementById("toggleSidebarButton");
+    sidebar.style.width = "0px";
+    button.style.display = "none";
 });
 // Update the information for the point without marker
 function updateSideBarWithEmptyPoint() {
@@ -57,6 +61,7 @@ function updateSideBarWithEmptyPoint() {
         .then(data => {
             const sidebar = document.getElementById("sidebar");
             const features = data.features;
+            console.log(features);
             if (features.length > 0) {
                 const firstFeature = features[0];
                 const place = firstFeature.place_name;
@@ -171,6 +176,21 @@ function mouseEnterAds(el, ad, popup) {
         )
         .addTo(map);
 }
+function createMarkerAds(ad) {
+    const el = createMarkerElementAds(ad);
+    const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
+    marker_ads.push(marker);
+    // Add event listeners for hover
+    const popup = createPopup();
+    el.addEventListener("mouseenter", () => mouseEnterAds(el, ad, popup));
+    el.addEventListener("mouseleave", () => popup.remove());
+    el.addEventListener("click", () => {
+        resetTheInformationOfSideBar();
+        updateTheInformationAdsItemForSideBar(ad);
+        toggleSidebar();
+        isMarker = true;
+    });
+}
 function createMarkerElementAds(ad) {
     const el = document.createElement("div");
     el.className = "marker";
@@ -219,7 +239,7 @@ function updateTheInformationAdsItemForSideBar(ad) {
 function addReturnButtonListener(ads, data) {
     $(".return-button").click(function () {
         resetTheInformationOfSideBar();
-        $("#sidebar").html(listHtmlSideBar);
+        updateTheInformationAdsItemForSideBar(ads);
         addEvenDetailAdsPanel(ads, data);
         addReportButtonAdsListener(ads.lat, ads.long, ads.status);
     });
@@ -227,8 +247,14 @@ function addReturnButtonListener(ads, data) {
 function addReportButtonAdsListener(lat, long, status) {
     $(".report-button").on("click", function () {
         let adsPanelId = $(this).attr("ads-panel-id");
-        let newUrl = "/report?adsPanelId=" + adsPanelId + "&lat=" + lat + "&long=" + long + "&status=" + status;
-        window.location.href = newUrl;
+        $.getJSON(`http://localhost:8888/get-data/send-report/check-ads-panel-report`, { adsPanelId: adsPanelId }, function (data) {
+            if (data == false) {
+                alert("Bảng quảng cáo này bạn đã gửi báo cáo");
+            } else {
+                let newUrl = "/report?adsPanelId=" + adsPanelId + "&lat=" + lat + "&long=" + long + "&status=" + status;
+                window.location.href = newUrl;
+            }
+        });
     });
 }
 let listHtmlSideBar;
@@ -284,21 +310,6 @@ function addEvenDetailAdsPanel(ad, data) {
         addReportButtonAdsListener(ad.lat, ad.long, ad.status);
     });
 }
-function createMarkerAds(ad) {
-    const el = createMarkerElementAds(ad);
-    const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
-    marker_ads.push(marker);
-    // Add event listeners for hover
-    const popup = createPopup();
-    el.addEventListener("mouseenter", () => mouseEnterAds(el, ad, popup));
-    el.addEventListener("mouseleave", () => popup.remove());
-    el.addEventListener("click", () => {
-        resetTheInformationOfSideBar();
-        updateTheInformationAdsItemForSideBar(ad);
-        toggleSidebar();
-        isMarker = true;
-    });
-}
 document.getElementById("switchAds").addEventListener("change", function () {
     if (this.checked) {
         $.getJSON(`http://localhost:8888/get-data/get-ads-location`, function (data) {
@@ -347,30 +358,79 @@ function createMarkerElementReport(report) {
     el.style.backgroundSize = "cover";
     return el;
 }
+function returnButtonReport(data) {
+    $(".return-button-report").click(function () {
+        resetTheInformationOfSideBar();
+        updateTheInformationReportItemForSideBar(data[0]);
+        addEventDetailReportPanel(data);
+    });
+}
+let reportHtml;
 function updateTheInformationReportItemForSideBar(report) {
-    const sidebar = document.getElementById("sidebar");
-    resetTheInformationOfSideBar();
-    $("#sidebar").css("padding", "0px");
-    let reportDetailItem = document.createElement("div");
-    reportDetailItem.id = "report-detail-item";
-    const carouselItems = [];
-    if (report.imgId1 != null) {
-        carouselItems.push(`
+    // Empty point
+    if (report.adsPanelId == null) {
+        addEventDetailReportPanel(report);
+        return;
+    }
+    // Ads panel
+    $.getJSON(`http://localhost:8888/get-data/get-report-location/get-report-panel`, { id: report.adsLocationId }, function (data) {
+        if (data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+                const dateObject = new Date(data[i].date);
+                const formattedDate = dateObject.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
+                let adsDetailItem = document.createElement("div");
+                adsDetailItem.id = "ads-detail-item";
+                adsDetailItem.innerHTML = `
+                            <h5 style="color:#176B87;font-size:22px;margin-top:20px;"><b>Thông tin bảng quảng cáo</b></h5>
+                            <h5 id="ads-detail-item-title"><b>${data[i].ads_panel_type_name}</b></h5>
+                            <p id="ads-detail-item-address">${data[i].location}</p>
+                            <p id="ads-detail-item-size">Kích thước: <strong>${data[i].ads_panel_width}m * ${data[i].ads_panel_height}m</strong></p>
+                            <p id="ads-detail-item-number">Số lượng: <strong>${data[i].ads_panel_quantity} trụ/bảng</strong></p>
+                            <p id="ads-detail-item-ads-type">Hình thức: <strong>${data[i].ads_type}</strong></p>
+                            <p id="ads-detai-item-location-type">Phân loại: <strong>${data[i].location_type}</strong></p>
+                            <h5 style="color:#176B87;font-size:22px;margin-top:20px;"><b>Thông tin báo cáo</b></h5>
+                            <h5 id="ads-detail-item-title"><b>${data[i].reportTypeName}</b></h5>
+                            <p id="ads-detail-item-size"><strong>Nội dung</strong></p>
+                            ${data[i].content}
+                            <p><strong>Ngày gửi</strong>: ${formattedDate}</p>
+                            <p><strong>Trạng thái</strong>: ${data[i].status}</p>
+                            <div id="button-pane">
+                                <button class="more-information" report-detail-item=${i}><i class="bi bi-info-circle"></i></button>
+                            </div>
+                        `;
+                sidebar.appendChild(adsDetailItem);
+                addEventDetailReportPanel(data);
+                reportHtml = $("#sidebar").html();
+            }
+        } else {
+        }
+    });
+}
+function addEventDetailReportPanel(data) {
+    if (data.adsPanelId == null && data.length == undefined) {
+        const sidebar = document.getElementById("sidebar");
+        resetTheInformationOfSideBar();
+        $("#sidebar").css("padding", "0px");
+        let reportDetailItem = document.createElement("div");
+        reportDetailItem.id = "report-detail-item";
+        const carouselItems = [];
+        if (data.imgId1 != null) {
+            carouselItems.push(`
             <div class="carousel-item active">
-                <img src="${report.imgId1}" class="d-block w-100 image-detail-pane" alt="Image 1">
+                <img src="${data.imgId1}" class="d-block w-100 image-detail-pane" alt="Image 1">
             </div>
         `);
-    }
-    if (report.imgId2 != null) {
-        carouselItems.push(`
-            <div class="carousel-item ${!report.imgId1 ? "active" : ""}">
-                <img src="${report.imgId2}" class="d-block w-100 image-detail-pane" alt="">
+        }
+        if (data.imgId2 != null) {
+            carouselItems.push(`
+            <div class="carousel-item ${!data.imgId1 ? "active" : ""}">
+                <img src="${data.imgId2}" class="d-block w-100 image-detail-pane" alt="">
             </div>
         `);
-    }
-    const dateObject = new Date(report.date);
-    const formattedDate = dateObject.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
-    reportDetailItem.innerHTML = `
+        }
+        const dateObject = new Date(data.date);
+        const formattedDate = dateObject.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
+        reportDetailItem.innerHTML = `
         <div class="image-detail">
             <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -387,17 +447,72 @@ function updateTheInformationReportItemForSideBar(report) {
             </div>
         </div>
         <div class ="report-content">   
-            <span class="title-popup-info-report">${report.reportTypeName}</span>
+            <span class="title-popup-info-report">${data.reportTypeName}</span>
             <span class="report-content-pop-up"><b>Nội dung</b></span>
-            <span class="report-content-pop-up">${report.content}</span>
+            <span class="report-content-pop-up">${data.content}</span>
             <span class="report-content-pop-up"><b>Địa chỉ</b></span>
-            <span class="report-location">${report.location}</span>
-            <span class="status-popup-info-report"><b>Trạng thái</b>: ${report.status}</span>
+            <span class="report-location">${data.location}</span>
+            <span class="status-popup-info-report"><b>Trạng thái</b>: ${data.status}</span>
             <span class="status-popup-info-report"><b>Ngày gửi</b>: ${formattedDate}</span>
-        </div>
-      
-    `;
-    sidebar.appendChild(reportDetailItem);
+        </div>`;
+        sidebar.appendChild(reportDetailItem);
+    } else {
+        $(".more-information").click(function () {
+            var reportId = $(this).attr("report-detail-item");
+            const sidebar = document.getElementById("sidebar");
+            resetTheInformationOfSideBar();
+            $("#sidebar").css("padding", "0px");
+            let reportDetailItem = document.createElement("div");
+            reportDetailItem.id = "report-detail-item";
+            const carouselItems = [];
+            if (data[reportId].imgId1 != null) {
+                carouselItems.push(`
+                <div class="carousel-item active">
+                    <img src="${data[reportId].imgId1}" class="d-block w-100 image-detail-pane" alt="Image 1">
+                </div>
+            `);
+            }
+            if (data[reportId].imgId2 != null) {
+                carouselItems.push(`
+                <div class="carousel-item ${!data[reportId].imgId1 ? "active" : ""}">
+                    <img src="${data[reportId].imgId2}" class="d-block w-100 image-detail-pane" alt="">
+                </div>
+            `);
+            }
+            const dateObject = new Date(data[reportId].date);
+            const formattedDate = dateObject.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
+            reportDetailItem.innerHTML = `
+            <div class="image-detail">
+                <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        ${carouselItems.join("")}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class ="report-content">   
+                <span class="title-popup-info-report">${data[reportId].reportTypeName}</span>
+                <span class="report-content-pop-up"><b>Nội dung</b></span>
+                <span class="report-content-pop-up">${data[reportId].content}</span>
+                <span class="report-content-pop-up"><b>Địa chỉ</b></span>
+                <span class="report-location">${data[reportId].location}</span>
+                <span class="status-popup-info-report"><b>Trạng thái</b>: ${data[reportId].status}</span>
+                <span class="status-popup-info-report"><b>Ngày gửi</b>: ${formattedDate}</span>
+                <button class="return-button-report" >
+                    <i class="bi bi-arrow-return-left"></i>Trở về
+                </button>
+            </div>`;
+            sidebar.appendChild(reportDetailItem);
+            returnButtonReport(data);
+        });
+    }
 }
 function createMarkerReport(report) {
     const el = createMarkerElementReport(report);

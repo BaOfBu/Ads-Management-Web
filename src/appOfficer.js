@@ -47,7 +47,10 @@ const hbs = engine({
         },
         json: function (context) {
             return JSON.stringify(context);
-        }
+        },
+        console: function (value) {
+            console.log(value);
+        },
     }
 });
 
