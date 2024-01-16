@@ -1,5 +1,6 @@
 import citizenReport from "../../services/departmentOfficer/citizen_report.service.js";
 import district from "../../services/departmentOfficer/district.service.js";
+import ward from "../../services/departmentOfficer/ward.service.js";
 import moment from "moment";
 
 const index = async function (req, res) {
@@ -30,6 +31,25 @@ const index = async function (req, res) {
     });
 };
 
+const getWardByDistrict = async function(req, res){
+    const wards = await ward.findAllByDistrictId(req.body.districtId);
+    console.log("wards: ", wards);
+    return res.json({success: true, wards: wards});
+}
 
+const getReportByWard = async function(req, res){
+    const reports = await citizenReport.findAllByWard(req.body.wardId);
 
-export default { index };
+    let report = reports.map((report, index) => ({
+        ...report,
+        object: (report.adsPanelId === null)? 'Địa điểm' : 'Bảng quảng cáo', 
+        sendDate: moment(report.sendDate).format('DD/MM/YYYY'),
+        stt: index + 1,
+    }));
+
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
+    console.log("report: ", report);
+    return res.json({success: true, report: report, date: currentDateTime});   
+}
+
+export default { index, getWardByDistrict, getReportByWard };

@@ -1,3 +1,7 @@
+{{#section 'js'}}
+    <script src="/static/js/departmentOfficer/citizen_report/index.js"></script>
+{{/section}}
+
 <div class="custom-container">
     <div class="card">
         <div class="custom-card">
@@ -24,7 +28,7 @@
         </div>
     </div>
     <div>
-        <div class="card mt-5">
+        <div class="list card mt-3">
         <h5 class="card-header">Xem danh sách</h5>
         {{#if empty}}
             <div class="card-body">Không có dữ liệu</div>
@@ -59,7 +63,7 @@
         </table>
         {{/if}}
         <div class="card-footer text-muted font-italic">
-            <span class="small">{{date}}</span>
+            <span class="small" id="dateSpan">{{date}}</span>
         </div>
     </div>
 </div>

@@ -4,5 +4,7 @@ import citizenReportController from "../../controllers/departmentOfficer/citizen
 const router = express.Router();
 
 router.get("/", citizenReportController.index);
+router.post("/get-ward-by-district", citizenReportController.getWardByDistrict);
+router.post("/get-report-by-ward", citizenReportController.getReportByWard);
 
 export default router;
