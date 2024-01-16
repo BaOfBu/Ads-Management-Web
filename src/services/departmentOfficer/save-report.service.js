@@ -32,6 +32,8 @@ export default {
             imgId1: entity.imgId1,
             imgId2: entity.imgId2,
             sendDate: entity.sendDate,
+            districtId: entity.districtId,
+            wardId: entity.wardId,
             status: "Đang xử lý",
             adsPanelId: entity.adsPanelId
         });

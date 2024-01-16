@@ -46,8 +46,9 @@ async function getDistrictId(lng, lat) {
     const features = data.features;
     for (const context of features[0].context) {
         if (context.text.includes("Quận")) {
-            const numericPart = context.text.replace(/\D/g, "");
-            return getDistrictService.findByDistrictName(numericPart);
+            const index = context.text.indexOf("Quận");
+            const contentAfterQuan = index !== -1 ? context.text.slice(index + 4).trim() : context.text.trim();
+            return getDistrictService.findByDistrictName(contentAfterQuan);
         }
     }
     return getDistrictService.findByDistrictName(features[0].context[2].replace(/\D/g, ""));
@@ -95,6 +96,7 @@ router.post("/", upload.array("images", 2), async function (req, res) {
     const location = await getTheLocation(long, lat);
     const districtId = await getDistrictId(long, lat);
     const wardId = await getWardId(long, lat, Number(districtId));
+    console.log(wardId);
     let imgIds = [];
     for (const file of uploadedFiles) {
         const filePath = file.path;
@@ -113,8 +115,8 @@ router.post("/", upload.array("images", 2), async function (req, res) {
             content: content,
             phone: phone,
             sendDate: sendDate,
-            wardId: null,
-            districtId: null,
+            wardId: wardId,
+            districtId: districtId,
             long: long,
             lat: lat,
             reportTypeId: reportTypeId,
