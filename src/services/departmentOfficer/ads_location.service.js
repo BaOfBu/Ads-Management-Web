@@ -48,6 +48,9 @@ export default {
   findByName(name){
     return db('ads_location').where('location', name).first();
   },
+  add(entity) {
+    return db('ads_location').insert(entity);
+  },
   del(id) {
     return db('ads_location').where('adsLocationId', id).del();
   },

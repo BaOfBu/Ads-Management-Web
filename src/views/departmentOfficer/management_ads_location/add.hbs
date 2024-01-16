@@ -1,8 +1,9 @@
 {{#section 'js'}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     {{!-- To get lat, long --}}
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    {{!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
 
     {{!-- To get image --}}
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -26,35 +27,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
 
     {{!-- My css --}}
-    <link rel="stylesheet" href="/static/css/departmentOfficer/map.css">
+    <link rel="stylesheet" href="/static/css/departmentOfficer/district.css">
 
 {{/section}}
 
-<div id="mapModal" class="">
-    <div class="modal-content">
-        <h5 class="modal-title" id="mapModalLabel">Chọn điểm đặt quảng cáo</h5>
-        {{!-- <div id="map"></div> --}}
-        <div class="card-footer text-muted d-flex justify-content-end">
-            <button id="backButton" class="btn btn-outline-success" type="button">
-                <i class="bi bi-skip-backward-fill"></i>
-                Quay lại
-            </button>
-            <button id="submitButton" type="submit" class="btn btn-primary btn-ml">
-                <i class="bi bi-check2"></i>
-                Lưu
-            </button>
+<div class="custom-container">
+    <div class="card" style="display: none;" id="errorLocation">
+        <div class="custom-card-2">
+            <h5 class="card-header d-flex justify-content-center" style="font-style: italic; font-size: 16px;">Thêm địa điểm đặt quảng cáo không thành công. Vui lòng chọn vị trí trên bản đồ.</h5> 
         </div>
     </div>
-</div>
-<div class="custom-container">
-    
 
-    <form action="" method="post" id="frmAdd">
-            {{!-- <div id="map" style="width: 100%; height: 300px"></div> --}}
-            
+    <div class="card" style="display: none;" id="errorImage">
+        <div class="custom-card-2">
+            <h5 class="card-header d-flex justify-content-center" style="font-style: italic; font-size: 16px;">Thêm địa điểm đặt quảng cáo không thành công. Vui lòng thêm hình ảnh điểm đặt quảng cáo.</h5> 
+        </div>
+    </div>
+
+    <form action="" method="post" id="frmAdd">  
             <div class="card-body">
-                <div id="map"></div>
-                <div class="form-group">
+                <div id="map" style="height: 400px;"></div>
+                <div class="form-group mt-3">
                     <label for="txtCoordinates" class="form-label">Toạ độ</label>
                     <div class="input-group">
                         <input type="text" name="coordinate" id="txtCoordinates" class="form-control" placeholder="Nhấn vào bản đồ để chọn nơi đặt quảng cáo" autofocus readonly required>
@@ -62,82 +55,35 @@
                 </div>
                 <div class="form-group">
                     <label for="txtLocation">Địa chỉ điểm đặt quảng cáo</label>
-                    <div class="input-group has-validation">
-                        <input type="text" name="location" id="txtLocation" class="form-control is-invalid" readonly required>
-                    </div>
+                     <input type="text" name="location" id="txtLocation" class="form-control" readonly required>
                 </div>
-                {{!-- <div class="form-group">
-                    <div class="ward mr-5">
-                        <label for="dropdownWard">Phường</label>
-                        <button class="form-control dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-describedby="districtError" aria-expanded="false" required>
-                        Phường
-                        </button>
-                        <div class="input-group has-validation">
-                            <input id="selectedWard" name="ward" type="hidden" value="1"></input>
-                            <div id="districtError" class="invalid-feedback">
-                                Vui lòng chọn một quận.
-                            </div>
-                        </div>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownWard" required>
-                            {{#each district}}
-                                <li><a class="dropdown-item" data-value="{{name}}">{{name}}</a></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                </div> --}}
 
-                <div class="form-group">
-                    <div class="d-flex">
-                        <div class="ward mr-5">
-                            <label for="dropdownWard">Phường</label>
-                            <button class="form-control dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-describedby="districtError" aria-expanded="false" required>
-                            Phường
-                            </button>
-                            <div class="input-group has-validation">
-                                <input id="selectedWard" name="ward" type="hidden" value="1"></input>
-                                <div id="districtError" class="invalid-feedback">
-                                    Vui lòng chọn một quận.
-                                </div>
-                            </div>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownWard" required>
-                                {{!-- {{#each district}}
-                                    <li><a class="dropdown-item" data-value="{{name}}">{{name}}</a></li>
-                                {{/each}} --}}
-                            </ul>
-                        </div>
-
+                <div class="d-flex mt-3">
+                    <div class="form-group">
                         <div class="typeLocation mr-5">
                             <label for="dropdownTypeLocation">Loại vị trí</label>
-                            <button class="form-control dropdown-toggle" type="button" id="dropdownTypeLocation" data-toggle="dropdown" aria-describedby="typeLocationError" aria-expanded="false" required>
-                            Đất công/Công viên/Hành lang/...
+                            <button class="form-control dropdown-toggle" type="button" id="dropdownTypeLocation" data-toggle="dropdown" aria-expanded="false">
+                            Đất công
                             </button>
-                            <div class="input-group has-validation">
-                                <input id="selectedTypeLocation" name="typeLocation" type="hidden" value="1"></input>
-                                <div id="typeLocationError" class="invalid-feedback">
-                                    Vui lòng chọn một loại vị trí.
-                                </div>
-                            </div>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownTypeLocation" required>
+                            <input id="selectedTypeLocation" name="locationType" type="hidden" value="1"></input>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownTypeLocation"  style="max-height: 500px; overflow-y: auto;">
                                 {{#each typeLocation}}
-                                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{locationType}}">{{name}}</a></li>
+                                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{locationTypeId}}">{{name}}</a></li>
                                 {{/each}}
                             </ul>
                         </div>
+                    </div>
 
+                    <div class="form-group">
                         <div class="typeAdsPanel mr-5">
                             <label for="dropdownAdsPanel">Hình thức quảng cáo</label>
-                            <button class="form-control dropdown-toggle" type="button" id="dropdownAdsPanel" data-toggle="dropdown" aria-describedby="typeAdsPanelError" aria-expanded="false" required>
+                            <button class="form-control dropdown-toggle" type="button" id="dropdownAdsPanel" data-toggle="dropdown" aria-expanded="false">
                             Cổ động chính trị
                             </button>
-                            <div class="input-group has-validation">
-                                <input id="selectedTypeAdsPanel" name="typeAdsPanel" type="hidden" value="1"></input>
-                                <div id="typeAdsPanelError" class="invalid-feedback">
-                                    Vui lòng chọn một loại vị trí.
-                                </div>
-                            </div>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownAdsPanel" required>
+                            <input id="selectedTypeAdsPanel" name="adsType" type="hidden" value="1"></input>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownAdsPanel"  style="max-height: 500px; overflow-y: auto;">
                                 {{#each typeAdsPanel}}
-                                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{adsType}}"="">{{name}}</a></li>
+                                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{adsTypeId}}">{{name}}</a></li>
                                 {{/each}}
                             </ul>
                         </div>
@@ -145,38 +91,13 @@
                 </div>
 
                 <div class="form-group mb-1">
-                    <label for="img">Hình ảnh bảng quảng cáo</label>
-                    <input type="file" id="img" name="image">
+                    <label for="img">Hình ảnh điểm đặt bảng quảng cáo</label>
+                    <input type="file" id="image" name="image">
                     <input type="hidden" id="imgId" name="imgId" value="{{lengthImg}}">
                 </div>
 
+                <input type="hidden" name="wardId" id="wardId" value="wardId">
                 <input type="hidden" id="adsLocationId" value="{{adsLocationId}}">
-                {{!-- <div class="form-group">
-                    <div class="typeAdsPanel mr-5">
-                        <label for="dropdownAdsPanel">Hình thức quảng cáo</label>
-                        <button class="form-control dropdown-toggle" type="button" id="dropdownAdsPanel" data-toggle="dropdown" aria-describedby="typeAdsPanelError" aria-expanded="false" required>
-                        Cổ động chính trị
-                        </button>
-                        <div class="input-group has-validation">
-                            <input id="selectedTypeAdsPanel" name="typeAdsPanel" type="hidden" value="1"></input>
-                            <div id="typeAdsPanelError" class="invalid-feedback">
-                                Vui lòng chọn một loại vị trí.
-                            </div>
-                        </div>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownAdsPanel" required>
-                            {{#each typeAdsPanel}}
-                                <li><a class="dropdown-item" data-value="{{name}}" data-id="{{adsType}}"="">{{name}}</a></li>
-                            {{/each}}
-                        </ul>
-                    </div>
-                </div> --}}
-
-
-
-                {{!-- <div class="form-group">
-                    <label for="txtDescription">Mô tả</label>
-                    <textarea class="form-control" name="description" id="txtDescription" rows="3"></textarea>
-                </div> --}}
             </div>
             <div class="card-footer text-muted">
                 <a class="btn btn-outline-success" href="/department-officer/ads-location" role="button">

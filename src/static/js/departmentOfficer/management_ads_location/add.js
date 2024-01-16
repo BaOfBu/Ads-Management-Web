@@ -1,194 +1,400 @@
-let modal = document.getElementById('mapModal');
+$(document).ready(function () {
+    $('.typeLocation .dropdown-menu .dropdown-item:first').addClass('active');
+    $('.typeAdsPanel .dropdown-menu .dropdown-item:first').addClass('active');
+
+    mapboxgl.accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
+
+    const map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v12?locale=vi",
+        center: [106.68223, 10.762649],
+        zoom: 18,
+        projection: "globe"
+    });
+
+    let currentMarker = null;
+
+    navigator.geolocation.getCurrentPosition(position => {
+        const userLocation = [position.coords.longitude, position.coords.latitude];
+        map.setCenter(userLocation);
+        if (currentMarker) {
+            currentMarker.remove();
+        }
+        currentMarker = new mapboxgl.Marker().setLngLat(userLocation).addTo(map);
+    });
+
+    map.addControl(new mapboxgl.FullscreenControl());
+
+    map.addControl(new mapboxgl.NavigationControl());
+
+    let geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        placeholder: "Tìm kiếm theo địa chỉ",
+        zoom: 15,
+        marker: false,
+        language: "vi"
+    });
+    map.addControl(geocoder, "top-left");
+
+    $('#image').fileinput({
+        dropZoneEnabled: false,
+        maxFileCount: 1,
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        language: 'vi',
+    });
+
+    async function uploadImage() {
+        let fileInput = $("#image")[0].files[0];
+        if (!fileInput) {
+        console.error('No file selected.');
+        return;
+        }
+
+        const filename = $('#imgId').val() + '.' + fileInput.name.split(".").pop();
+
+        const newFile = new File([fileInput], filename, { type: fileInput.type, lastModified: fileInput.lastModified });
+
+        const formData = new FormData();
+        formData.append('image', newFile);
+        formData.append('imgId', $('#imgId').val());
+    
+        return new Promise((resolve, reject) => {
+        $.ajax({
+            url: '/department-officer/ads-location/upload-image',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                console.log("data: ", data);
+                resolve(data);
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                reject(error);
+            }
+        });
+        });
+    }
+
+    $("#submitButton").on("click", async function(event) {
+        let isValid = true; 
+        event.preventDefault();
+    
+        if(!$('#txtCoordinates').val()){
+            isValid = false;
+            $('#errorLocation').show();
+            $('#errorImage').hide();
+        }
+        if(!$('#image').val() && isValid){
+            isValid = false;
+            $('#errorImage').show();
+            $('#errorLocation').hide();
+        }
+        // if(isEmpty($('#txtWidth').val())){
+        //     $('#txtWidth').addClass('is-invalid');
+        //     $('#checkValidationEmptyWidth').show();
+        //     if(isValid) $('#txtWidth').focus();
+        //     isValid = false;
+        // }
+
+        // if(isEmpty($('#txtHeight').val())){
+        //     $('#txtHeight').addClass('is-invalid');
+        //     $('#checkValidationEmptyHeight').show();
+        //     if(isValid) $('#txtHeight').focus();
+        //     isValid = false;
+        // }
+
+        if(isValid){
+            try {
+                await uploadImage();
+                console.log("Upload thành công");
+                $("#frmAdd").submit();
+                alert("Đã thêm điểm đặt bảng quảng cáo thành công!!!");
+            } catch (error) {
+                // console.error('Error during image upload:', error);
+            }
+        }else{
+            event.preventDefault();
+        } 
+        
+    });
+    geocoder.on("result", function (event) {
+        var coordinates = event.result.geometry.coordinates;
+        if (currentMarker) {
+            currentMarker.remove();
+        }
+        currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+        let selectedCoordinates = currentMarker.getLngLat();
+        $('#txtCoordinates').val(selectedCoordinates.lat + ', ' + selectedCoordinates.lng);
+        $.ajax({
+            url: "/department-officer/ads-location/get-address", 
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ lat: selectedCoordinates.lat, long: selectedCoordinates.lng }),
+            success: function(response) {
+                $('#txtLocation').val(response.location);
+                $('#wardId').val(response.wardId);
+                console.log("wardId: ", response.wardId);
+                console.log("districtId: ", response.districtId);
+            },
+            error: function(error) {
+            }
+        });
+    });
+
+    map.on("click", function (e) {
+        let coordinates = e.lngLat;
+        if (currentMarker) {
+            currentMarker.remove();
+        }
+        currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+        let selectedCoordinates = currentMarker.getLngLat();
+        $('#txtCoordinates').val(selectedCoordinates.lat + ', ' + selectedCoordinates.lng);
+        $.ajax({
+            url: "/department-officer/ads-location/get-address", 
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ lat: selectedCoordinates.lat, long: selectedCoordinates.lng }),
+            success: function(response) {
+                $('#txtLocation').val(response.location);
+                $('#wardId').val(response.wardId);
+                console.log("wardId: ", response.wardId);
+                console.log("districtId: ", response.districtId);
+            },
+            error: function(error) {
+            }
+        });
+    });
+
+    $(".typeLocation ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
+        event.preventDefault();
+        console.log("Đã vô");
+
+        let selectedValue = $(this).data("value");
+        let selectedId = $(this).data("id");
+
+        console.log("selectedTypeLocation: ", selectedValue);
+        $("#selectedTypeLocation").val(selectedId);
+        $("#dropdownTypeLocation").text(selectedValue);
+        $("#dropdownTypeLocation").removeClass("is-invalid");
+        $('.typeLocation .dropdown-menu .dropdown-item').removeClass('active');
+        $(this).addClass('active');
+        $("#typeLocationError").hide();
+    });
+
+    $(".typeAdsPanel ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
+        event.preventDefault();
+        console.log("Đã vô");
+
+        let selectedValue = $(this).data("value");
+        let selectedId = $(this).data("id");
+
+        console.log("selectedTypeAdsPanel: ", selectedValue);
+        $("#selectedTypeAdsPanel").val(selectedId);
+        $("#dropdownAdsPanel").text(selectedValue);
+        $("#dropdownAdsPanel").removeClass("is-invalid");
+        $('.typeAdsPanel .dropdown-menu .dropdown-item').removeClass('active');
+        $(this).addClass('active');
+        $("#typeAdsPanelError").hide();
+    });
+});
+
+// let modal = document.getElementById('mapModal');
+
+// modal.style.display = 'none';
+// mapboxgl.accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
+
+// const map = new mapboxgl.Map({
+//     container: "map",
+//     style: "mapbox://styles/mapbox/streets-v12?locale=vi",
+//     center: [106.68223, 10.762649],
+//     zoom: 18,
+//     projection: "globe"
+// });
+
 // let currentMarker = null;
 
-modal.style.display = 'none';
-mapboxgl.accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
+// navigator.geolocation.getCurrentPosition(position => {
+//     const userLocation = [position.coords.longitude, position.coords.latitude];
+//     map.setCenter(userLocation);
+//     if (currentMarker) {
+//         currentMarker.remove();
+//     }
+//     currentMarker = new mapboxgl.Marker().setLngLat(userLocation).addTo(map);
+// });
 
-const map = new mapboxgl.Map({
-    container: "map",
-    style: "mapbox://styles/mapbox/streets-v12?locale=vi",
-    center: [106.68223, 10.762649],
-    zoom: 18,
-    projection: "globe"
-});
+// map.addControl(new mapboxgl.FullscreenControl());
 
-// Global variable
-let currentMarker = null;
+// map.addControl(new mapboxgl.NavigationControl());
 
-// User Location
-navigator.geolocation.getCurrentPosition(position => {
-    const userLocation = [position.coords.longitude, position.coords.latitude];
-    map.setCenter(userLocation);
-    if (currentMarker) {
-        currentMarker.remove();
-    }
-    currentMarker = new mapboxgl.Marker().setLngLat(userLocation).addTo(map);
-});
+// let geocoder = new MapboxGeocoder({
+//     accessToken: mapboxgl.accessToken,
+//     mapboxgl: mapboxgl,
+//     placeholder: "Tìm kiếm theo địa chỉ",
+//     zoom: 15,
+//     marker: false,
+//     language: "vi"
+// });
+// map.addControl(geocoder, "top-left");
 
-// Fullscreen Controll
-map.addControl(new mapboxgl.FullscreenControl());
-
-// Compass Controll
-map.addControl(new mapboxgl.NavigationControl());
-
-// Auto Geocoding Search
-var geocoder = new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken,
-    mapboxgl: mapboxgl,
-    placeholder: "Tìm kiếm theo địa chỉ",
-    zoom: 15,
-    marker: false,
-    language: "vi"
-});
-map.addControl(geocoder, "top-left");
-
-// Listen for the 'result' event when a location is selected
-geocoder.on("result", function (event) {
-    var coordinates = event.result.geometry.coordinates;
-    if (currentMarker) {
-        currentMarker.remove();
-    }
-    currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
-});
-
-// Listen click the point in the map
-map.on("click", function (e) {
-    let coordinates = e.lngLat;
-    if (currentMarker) {
-        currentMarker.remove();
-    }
-    currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
-    var selectedCoordinates = currentMarker.getLngLat();
-    $('#txtCoordinates').val(selectedCoordinates.lat + ', ' + selectedCoordinates.lng);
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${selectedCoordinates.lng},${selectedCoordinates.lat}.json?access_token=${mapboxgl.accessToken}&language=vi`)
-    .then(response => response.json())
-    .then(data => {
-        const address = data.features[0].place_name;
-        console.log("Địa chỉ:", address);
-        $('#txtLocation').val(address);
-    });
-});
-
-$(".typeLocation ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
-    event.preventDefault();
-    console.log("Đã vô");
-
-    let selectedValue = $(this).data("value");
-    let selectedId = $(this).data("id");
-
-    console.log("selectedTypeLocation: ", selectedValue);
-    $("#selectedWaselectedTypeLocationrd").val(selectedId);
-    $("#dropdownTypeLocation").text(selectedValue);
-    $("#dropdownTypeLocation").removeClass("is-invalid");
-    $("#typeLocationError").hide();
-});
-
-$(".typeAdsPanel ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
-    event.preventDefault();
-    console.log("Đã vô");
-
-    let selectedValue = $(this).data("value");
-    let selectedId = $(this).data("id");
-
-    console.log("selectedTypeAdsPanel: ", selectedValue);
-    $("#selectedTypeAdsPanel").val(selectedId);
-    $("#dropdownAdsPanel").text(selectedValue);
-    $("#dropdownAdsPanel").removeClass("is-invalid");
-    $("#typeAdsPanelError").hide();
-});
-
-$('#image').fileinput({
-    dropZoneEnabled: false,
-    maxFileCount: 1,
-    allowedFileExtensions: ['jpg', 'png', 'gif'],
-    language: 'vi',
-  });
-  
-  async function uploadAvatar() {
-    const fileInput = $("#image")[0].files[0];
-    if (!fileInput) {
-      console.error('No file selected.');
-      return;
-    }
-  
-    const formData = new FormData();
-    formData.append('image', fileInput);
-    formData.append('adsLocationId', $("#adsLocationId").val());
-  
-    return new Promise((resolve, reject) => {
-      $.ajax({
-        url: '/upload-image-ads-location',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            delete req.body.image;
-            console.log(data);
-            resolve(data);
-        },
-        error: function(error) {
-            console.error('Error:', error);
-            reject(error);
-        }
-      });
-    });
-}
-
-
-
-// $("#txtLocation").on("change", function (event) {
-//     event.preventDefault();
-//     let address = $('#txtLocation');
-//     let district = 1;
-
-//     // $('.ward ul.dropdown-menu').empty();
-//     $.getJSON(`/department-officer/management-officer/list-ward?district=${district}`, function (data) {
-//         if(data != false){
-//             for (let p of data) {
-//                 let newItem = '<li><a class="dropdown-item" data-value="' + p.name + '">' + p.name + '</a></li>';
-//                 console.log(newItem);
-//                 $(".ward ul.dropdown-menu").append(newItem);
-//             }
-//         }else{
-//             $("#selectedWard").val("");
-//             $("#dropdownWard").text("Phường");
-//             $("#wardError").hide();
-//         }  
+// geocoder.on("result", function (event) {
+//     var coordinates = event.result.geometry.coordinates;
+//     if (currentMarker) {
+//         currentMarker.remove();
+//     }
+//     currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+//     let selectedCoordinates = currentMarker.getLngLat();
+//     $('#txtCoordinates').val(selectedCoordinates.lat + ', ' + selectedCoordinates.lng);
+//     $.ajax({
+//         url: "/department-officer/ads-location/get-address", 
+//         method: 'POST',
+//         contentType: 'application/json',
+//         data: JSON.stringify({ lat: selectedCoordinates.lat, long: selectedCoordinates.lng }),
+//         success: function(response) {
+//             $('#txtLocation').val(response.location);
+//             console.log("wardId: ", response.wardId);
+//             console.log("districtId: ", response.districtId);
+//         },
+//         error: function(error) {
+//         }
 //     });
 // });
 
-// $(".ward ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
+// map.on("click", function (e) {
+//     let coordinates = e.lngLat;
+//     if (currentMarker) {
+//         currentMarker.remove();
+//     }
+//     currentMarker = new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+//     let selectedCoordinates = currentMarker.getLngLat();
+//     $('#txtCoordinates').val(selectedCoordinates.lat + ', ' + selectedCoordinates.lng);
+//     $.ajax({
+//         url: "/department-officer/ads-location/get-address", 
+//         method: 'POST',
+//         contentType: 'application/json',
+//         data: JSON.stringify({ lat: selectedCoordinates.lat, long: selectedCoordinates.lng }),
+//         success: function(response) {
+//             $('#txtLocation').val(response.location);
+//             console.log("wardId: ", response.wardId);
+//             console.log("districtId: ", response.districtId);
+//         },
+//         error: function(error) {
+//         }
+//     });
+// });
+
+// $(".typeLocation ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
 //     event.preventDefault();
 //     console.log("Đã vô");
 
 //     let selectedValue = $(this).data("value");
-//     console.log("selectedWard: ", selectedValue);
-//     $("#selectedWard").val(selectedValue);
-//     $("#dropdownWard").text(selectedValue);
-//     $("#dropdownWard").removeClass("is-invalid");
-//     $("#wardError").hide();
+//     let selectedId = $(this).data("id");
+
+//     console.log("selectedTypeLocation: ", selectedValue);
+//     $("#selectedWaselectedTypeLocationrd").val(selectedId);
+//     $("#dropdownTypeLocation").text(selectedValue);
+//     $("#dropdownTypeLocation").removeClass("is-invalid");
+//     $("#typeLocationError").hide();
 // });
 
+// $(".typeAdsPanel ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
+//     event.preventDefault();
+//     console.log("Đã vô");
 
+//     let selectedValue = $(this).data("value");
+//     let selectedId = $(this).data("id");
 
-// $('#submitButton').on('click', function(){
-//     var selectedCoordinates = currentMarker.getLngLat();
-//     $('#txtCoordinates').val(selectedCoordinates.lng + ', ' + selectedCoordinates.lat);
-//     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${selectedCoordinates.lng},${selectedCoordinates.lat}.json?access_token=${mapboxgl.accessToken}&language=vi`)
-//         .then(response => response.json())
-//         .then(data => {
-//             const address = data.features[0].place_name;
-//             console.log("Địa chỉ:", address);
-//             $('#txtLocation').val(address);
-//         });
-//     modal.style.display = 'none';
+//     console.log("selectedTypeAdsPanel: ", selectedValue);
+//     $("#selectedTypeAdsPanel").val(selectedId);
+//     $("#dropdownAdsPanel").text(selectedValue);
+//     $("#dropdownAdsPanel").removeClass("is-invalid");
+//     $("#typeAdsPanelError").hide();
 // });
 
-// $('#chooseCoordinate').click(function () {
-//     modal.style.display = 'block';
-// });
+// $('#image').fileinput({
+//     dropZoneEnabled: false,
+//     maxFileCount: 1,
+//     allowedFileExtensions: ['jpg', 'png', 'gif'],
+//     language: 'vi',
+//   });
+  
+// async function uploadAvatar() {
+//     const fileInput = $("#image")[0].files[0];
+//     if (!fileInput) {
+//       console.error('No file selected.');
+//       return;
+//     }
+  
+//     const formData = new FormData();
+//     formData.append('image', fileInput);
+//     formData.append('adsLocationId', $("#adsLocationId").val());
+  
+//     return new Promise((resolve, reject) => {
+//       $.ajax({
+//         url: '/upload-image-ads-location',
+//         type: 'POST',
+//         data: formData,
+//         processData: false,
+//         contentType: false,
+//         success: function(data) {
+//             delete req.body.image;
+//             console.log(data);
+//             resolve(data);
+//         },
+//         error: function(error) {
+//             console.error('Error:', error);
+//             reject(error);
+//         }
+//       });
+//     });
+// }
 
-// $('#backButton').click(function (){
-//     modal.style.display = 'none';
+// $("#submitButton").on("click", async function(event) {
+//     let isValid = true; 
+//     event.preventDefault();
+//     // if (isEmpty($('#dropdownAdsLocation').val())) {
+//     //   $('#dropdownAdsLocation').addClass("is-invalid");
+//     //   $("#adsLocationError").show();
+//     //   $('#dropdownAdsLocation').focus();
+//     //   isValid = false;
+//     //   return;
+//     // }
+  
+//     // if (isEmpty($("#dropdownAdsPanelType").val())) {
+//     //   $("#dropdownAdsPanelType").addClass("is-invalid");
+//     //   $("#adsPanelTypeError").show();
+//     //   if(isValid) $('#dropdownAdsPanelType').focus();
+//     //   isValid = false;
+//     //   return;
+//     // }
+  
+//     // if(isEmpty($('#txtWidth').val())){
+//     //     $('#txtWidth').addClass('is-invalid');
+//     //     $('#checkValidationEmptyWidth').show();
+//     //     if(isValid) $('#txtWidth').focus();
+//     //     isValid = false;
+//     // }
+
+//     // if(isEmpty($('#txtHeight').val())){
+//     //     $('#txtHeight').addClass('is-invalid');
+//     //     $('#checkValidationEmptyHeight').show();
+//     //     if(isValid) $('#txtHeight').focus();
+//     //     isValid = false;
+//     // }
+
+//     if(isValid){
+//         try {
+//             // await uploadImage();
+//             // console.log("Upload thành công");
+//             $("#frmAdd").submit();
+//             alert("Đã thêm điểm đặt bảng quảng cáo thành công!!!");
+//         } catch (error) {
+//             // console.error('Error during image upload:', error);
+//         }
+//     }else{
+//         event.preventDefault();
+//     } 
+    
 // });
