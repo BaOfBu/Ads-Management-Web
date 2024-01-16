@@ -45,6 +45,7 @@ async function getDistrictId(lng, lat) {
     const data = await response.json();
     const features = data.features;
     for (const context of features[0].context) {
+        console.log(context.text);
         if (context.text.includes("Quận")) {
             const index = context.text.indexOf("Quận");
             const contentAfterQuan = index !== -1 ? context.text.slice(index + 4).trim() : context.text.trim();
