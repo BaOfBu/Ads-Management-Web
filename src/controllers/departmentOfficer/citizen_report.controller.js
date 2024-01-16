@@ -2,6 +2,7 @@ import citizenReport from "../../services/departmentOfficer/citizen_report.servi
 import district from "../../services/departmentOfficer/district.service.js";
 import ward from "../../services/departmentOfficer/ward.service.js";
 import moment from "moment";
+import providedInfo from "../../services/departmentOfficer/provided_infor.service.js";
 
 const index = async function (req, res) {
     let empty = false;
@@ -38,7 +39,18 @@ const getWardByDistrict = async function(req, res){
 }
 
 const getReportByWard = async function(req, res){
-    const reports = await citizenReport.findAllByWard(req.body.wardId);
+    let reports;
+    console.log("districtId: ", req.body.districtId);
+    if(req.body.wardId === -1){
+        if(req.body.districtId === -1 || req.body.districtId === "-1"){
+            console.log("Đã vô đây");
+            reports = await citizenReport.findAll();   
+        }else{
+            reports = await citizenReport.findAllByDistrict(req.body.districtId);
+        }  
+    }else{
+        reports = await citizenReport.findAllByWard(req.body.wardId);
+    }
 
     let report = reports.map((report, index) => ({
         ...report,
@@ -49,7 +61,38 @@ const getReportByWard = async function(req, res){
 
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
     console.log("report: ", report);
-    return res.json({success: true, report: report, date: currentDateTime});   
+
+    let totalProcessing = 0;
+    let totalProcessed = 0;
+    let totalReportType = {};
+    let totalPoint = 0;
+    let totalPanel = 0;
+
+    let reportType = await providedInfo.findAll('report_type');
+    for(let i = 0; i < reportType.length; i++){
+        totalReportType[reportType[i].name] = 0;
+    }
+
+    for(let i = 0; i < report.length; i++){
+        if(report[i].status === 'Đang xử lý') {
+            totalProcessing++;
+        }else if(report[i].status === 'Đã xử lý xong'){
+            totalProcessed++;
+        }
+
+        totalReportType[report[i].report_type_name] = totalReportType[report[i].report_type_name] + 1;
+        
+        if(report[i].adsPanelId === null){
+            totalPoint++;
+        }else{
+            totalPanel++;
+        }
+    }
+
+    console.log(totalReportType);
+
+    return res.json({success: true, report: report, date: currentDateTime, totalReport: report.length, totalProcessing: totalProcessing, 
+        totalProcessed: totalProcessed, totalReportType: totalReportType, totalPoint: totalPoint, totalPanel: totalPanel});   
 }
 
 export default { index, getWardByDistrict, getReportByWard };

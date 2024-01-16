@@ -8,7 +8,30 @@
 {{/section}}
 
 
-<div class="custom-container">
+    <div class="custom-container">
+        <div class="d-flex mt-3 justify-content-end">
+        <div class="districts" style="margin-right: 10px;">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
+            Tất cả quận
+            </button>
+            <input type="hidden" id="selectedDicstrictId" value="-1">
+            <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" style="max-height: 500px; overflow-y: auto;">
+                <li><a class="dropdown-item active" data-value="Tất cả quận" data-id="-1">Tất cả quận</a></li>
+                {{#each districts}}
+                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{districtId}}">Quận {{name}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="wards">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false">
+            Tất cả phường
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownWard" style="max-height: 500px; overflow-y: auto;">
+                <li><a class="dropdown-item active" data-value="Tất cả phường" data-id="-1">Tất cả phường</a></li>
+            </ul>
+        </div>
+    </div>
+
     <div class="overview">
         <input type="hidden" id="merchantId" value="{{merchantId}}">
         <h2>Tổng quan số lượng báo cáo vi phạm</h2>
@@ -16,15 +39,15 @@
         <div class="dashboard mt-3">
             <div class="info-card d-flex flex-column align-items-center">
                 <h5>Tổng số báo cáo vi phạm</h5>
-                <h3 id="total-revenue"></h3>
+                <h3 id="total-report"></h3>
             </div>
             <div class="info-card d-flex flex-column align-items-center">
                 <h5>Số báo cáo đang xử lý</h5>
-                <h3 id="total-order"></h3>
+                <h3 id="total-processing"></h3>
             </div>
             <div class="info-card d-flex flex-column align-items-center">
                 <h5>Số báo cáo đã xử lý</h5>
-                <h3 id="total-customer"></h3>
+                <h3 id="total-processed"></h3>
             </div>
         </div>
     </div>
@@ -43,32 +66,13 @@
         </div>
     </div>
 
-    <div class="card mt-3">
+    <div class="card mt-5">
         <div class="custom-card">
-            <h5 class="card-header">Danh sách các báo cáo của người dân trong thành phố Hồ Chí Minh</h5> 
-        </div>
-    </div>
-    <div class="d-flex mt-3 justify-content-end">
-        <div class="districts" style="margin-right: 10px;">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
-            Quận
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" style="max-height: 500px; overflow-y: auto;">
-                {{#each districts}}
-                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{districtId}}">Quận {{name}}</a></li>
-                {{/each}}
-            </ul>
-        </div>
-        <div class="wards">
-            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false">
-            Phường
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownWard" style="max-height: 500px; overflow-y: auto;">
-            </ul>
+            <h5 class="card-header">Danh sách các báo cáo của người dân</h5> 
         </div>
     </div>
     <div>
-        <div class="list card mt-3">
+        <div class="list card mt-5">
         <h5 class="card-header">Xem danh sách</h5>
         {{#if empty}}
             <div class="card-body">Không có dữ liệu</div>
