@@ -111,4 +111,61 @@ $(document).ready(function() {
             console.log("tbody: ", $('tbody'));
         }
     }
+
+    let dataReportType = {
+        labels: ['Dữ liệu 1', 'Dữ liệu 2', 'Dữ liệu 3'],
+        datasets: [{
+            data: [30, 40, 30], 
+            backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(255, 205, 86, 0.7)'],
+            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    let optionsReportType = {
+        responsive: true,
+        maintainAspectRatio: false
+    };
+
+    let ctxReportType = $('#chartReportType')[0].getContext('2d');
+    let chartReportType = new Chart(ctxReportType, {
+        type: 'pie',
+        data: dataReportType,
+        options: optionsReportType
+    });
+
+    let dataObject = {
+        labels: ['Dữ liệu 1', 'Dữ liệu 2', 'Dữ liệu 3'],
+        datasets: [
+            {
+                label: 'Số báo cáo điểm vi phạm',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                data: [10, 20, 30]
+            },
+            {
+                label: 'Số báo cáo bảng vi phạm',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: [15, 25, 35]
+            }
+        ]
+    };
+
+    let optionsObject = {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+
+    let ctxObject = $('#chartObject');
+    let chartObject = new Chart(ctxObject, {
+        type: 'bar',
+        data: dataObject,
+        options: optionsObject
+    });
 });
