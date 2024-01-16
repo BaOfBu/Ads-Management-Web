@@ -5,11 +5,15 @@ import imageService from "../../services/departmentOfficer/image.service.js";
 import getWardService from "../../services/departmentOfficer/get-ward.service.js";
 import getDistrictService from "../../services/departmentOfficer/get-district.service.js";
 import providedInfo from "../../services/departmentOfficer/provided_infor.service.js";
+import district from "../../services/departmentOfficer/district.service.js";
+import ward from "../../services/departmentOfficer/ward.service.js";
 
 const index = async function (req, res) {
     const empty = false;
     const ads_locations = await adsLocation.findAll();
     console.log("List ads_locations: ", ads_locations);
+
+    const districts = await district.findAll();
 
     if(!ads_locations || ads_locations.length === 0){
         empty = true;
@@ -29,8 +33,39 @@ const index = async function (req, res) {
         empty: empty,
         ads_locations: ads_locationsWithIndex,
         date: currentDateTime,
+        districts: districts
     });
 };
+
+const getWardByDistrict = async function(req, res){
+    const wards = await ward.findAllByDistrictId(req.body.districtId);
+    console.log("wards: ", wards);
+    return res.json({success: true, wards: wards});
+}
+
+const getListByWard = async function(req, res){
+    let ads_locations;
+    console.log("districtId: ", req.body.districtId);
+    if(req.body.wardId === -1){
+        if(req.body.districtId === -1 || req.body.districtId === "-1"){
+            console.log("Đã vô đây");
+            ads_locations = await adsLocation.findAll();   
+        }else{
+            ads_locations = await adsLocation.findAllByDistrict(req.body.districtId);
+        }  
+    }else{
+        ads_locations = await adsLocation.findAllByWard(req.body.wardId);
+    }
+
+    let ads_location = ads_locations.map((location, index) => ({
+        ...location,
+        stt: index + 1,
+    }));
+
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
+
+    return res.json({success: true, list: ads_location, date: currentDateTime});   
+}
 
 const addAdsLocation = async function(req, res){
     const typeLocation = await providedInfo.findAll('location_type');
@@ -45,15 +80,6 @@ const addAdsLocation = async function(req, res){
         lengthImg: image.length + 1
     });
 }
-
-// async function getTheLocation(lng, lat) {
-//     const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${accessToken}&language=vi`;
-//     const response = await fetch(apiUrl);
-//     const data = await response.json();
-//     const features = data.features;
-//     console.log("features: ", features);
-//     return features[0].place_name;
-// }
 
 async function getWardId(features, districtId) {
 //     const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${accessToken}`;
@@ -119,36 +145,6 @@ const getAddress = async function(req, res){
 
     return res.json({location: location, districtId: districtId, wardId: wardId});
 }
-
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, process.cwd() + '/static/images/ads-location/');
-//     },
-//     filename: function (req, file, cb) {
-//         const filename = req.body.adsLocationId + '.' + file.originalname.split('.').pop();
-//         req.body.image = '/static/images/ads-location/' + filename;
-//         console.log(filename);
-//         cb(null, filename);
-//     }
-// });
-
-// const upload = multer({ storage: storage });
-
-// const uploadImage = async function(req, res) {
-//     console.log("Đã vô upload");
-    
-//     upload.single('image')(req, res, async function (err) {
-//         if (err) {
-//             console.error("error: ", err);
-//             return res.status(500).json({ error: 'Error during upload.' });
-//         } else {
-//             console.log("file name: ", req.body.image);
-//             const update = await Profile.updateUserInfo(userID, { image: req.body.image });
-//             console.log("Đã up ảnh thành công, ", update);
-//             return res.json({ success: true, image: req.body.image });
-//         }
-//     });
-// }
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -217,4 +213,4 @@ const viewDetailAdsLocation= async function (req, res){
     });
 }
 
-export default { index, addAdsLocation, getAddress, uploadImage, handle_deleteAdsLocation,  viewDetailAdsLocation, handle_addAdsLocation };
+export default { index, addAdsLocation, getWardByDistrict, getListByWard, getAddress, uploadImage, handle_deleteAdsLocation,  viewDetailAdsLocation, handle_addAdsLocation };

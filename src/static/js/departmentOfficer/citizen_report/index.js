@@ -202,56 +202,6 @@ $(document).ready(function() {
         }
     }
 
-    // function displayStatisticsbyWard(totalReport, totalProcessing, totalProcessed, totalReportType, totalPoint, totalPanel){
-    //     $("#total-report").text(totalReport);
-    //     $("#total-processing").text(totalProcessing);
-    //     $("#total-processed").text(totalProcessed);
-
-    //     let dataReportType = {
-    //         labels: Object.keys(totalReportType),
-    //         datasets: [{
-    //             data: Object.values(totalReportType), 
-    //             backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(255, 205, 86, 0.7)', 'rgba(54, 162, 235, 0.7)'],
-    //             borderColor: ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 205, 86, 1)', 'rgba(54, 162, 235, 1)'],
-    //             borderWidth: 1
-    //         }]
-    //     };
-    
-    //     let optionsReportType = {
-    //         responsive: true,
-    //         maintainAspectRatio: false
-    //     };
-    
-    //     let ctxReportType = $('#chartReportType')[0].getContext('2d');
-    //     let chartReportType = new Chart(ctxReportType, {
-    //         type: 'pie',
-    //         data: dataReportType,
-    //         options: optionsReportType
-    //     });
-
-    //     let dataObject = {
-    //         labels: ["Số báo cáo điểm vi phạm", "Số báo cáo bảng vi phạm"],
-    //         datasets: [{
-    //             data: [totalPoint, totalPanel], 
-    //             backgroundColor: ['rgba(75, 192, 192, 0.7)', 'rgba(255, 99, 132, 0.7)'],
-    //             borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-    //             borderWidth: 1
-    //         }]
-    //     };
-    
-    //     let optionsObject = {
-    //         responsive: true,
-    //         maintainAspectRatio: false
-    //     };
-    
-    //     let ctxObject = $('#chartObject')[0].getContext('2d');
-    //     let chartObject = new Chart(ctxObject, {
-    //         type: 'pie',
-    //         data: dataObject,
-    //         options: optionsObject
-    //     });
-    // }
-
     function updateChartObjectData(data){
         dataObject.datasets[0].data = data;
         console.log(dataObject.datasets[0].data );

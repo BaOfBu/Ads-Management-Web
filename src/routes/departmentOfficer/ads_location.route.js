@@ -10,5 +10,7 @@ router.get("/view-detail", adsLocationController.viewDetailAdsLocation);
 router.post("/get-address", adsLocationController.getAddress);
 router.post("/upload-image", adsLocationController.uploadImage);
 router.post("/add", adsLocationController.handle_addAdsLocation);
+router.post("/get-ward-by-district", adsLocationController.getWardByDistrict);
+router.post("/get-list-by-ward", adsLocationController.getListByWard);
 
 export default router;
