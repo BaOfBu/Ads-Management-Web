@@ -51,6 +51,7 @@ const getRequestByWard = async function(req, res){
 }
 
 const cancelRequest = async function(req, res){
+    console.log("cancel body: ", req.body);
     const licenseRequestId = req.body.licenseRequestId;
     const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã hủy"});
     console.log("updateStatus: ", updateStatus);
@@ -67,4 +68,22 @@ const acceptRequest = async function(req, res){
     return res.json({success: true, message: "Đã phê duyệt yêu cầu này thành công!"});
 }
 
-export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest };
+const viewDetail = async function(req, res){
+    console.log("query of view detail: ", req.query);
+    const licenseRequestId = req.query.licenseRequestId;
+    const stt = req.query.stt;
+
+    const license_request = await licenseRequest.findById(licenseRequestId);
+    console.log("license_request: ", license_request);
+
+    license_request.startDate = moment(license_request.startDate).format('DD/MM/YYYY');
+    license_request.endDate = moment(license_request.endDate).format('DD/MM/YYYY'),
+
+    console.log("license_request: ", license_request);
+    res.render("departmentOfficer/license_request/view_detail", {
+        stt: stt,
+        license_request: license_request,
+    });
+}
+
+export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest, viewDetail };

@@ -71,7 +71,7 @@
                                 <td class="d-flex">
                                     {{#if (equal status 'Chưa duyệt')}}
                                         <div class="d-flex justify-content-center" style="margin-right: 10px;">
-                                            <a class="btn btn-sm btn-outline-info" data-id="{{licenseRequestId}}" id="cancel-{{licenseRequestId}}" role="button">
+                                            <a class="btn btn-sm btn-outline-info" data-id="{{licenseRequestId}}" data-value="{{adsPanelId}}" id="cancel-{{licenseRequestId}}" role="button">
                                                 <img src="/static/images/departmentOfficer/icon-cancel.png" width="24" height="24" alt="cancel this request">
                                             </a>
                                         </div>
@@ -84,7 +84,7 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <a class="d-flex view-detail mt-1" href="district/view-detail?districtId={{districtId}}" role="button">
+                                        <a class="d-flex view-detail mt-1" href="license-request/view-detail?licenseRequestId={{licenseRequestId}}&stt={{stt}}" role="button">
                                             <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
                                             <span class="ml-1">Xem chi tiết</span>
                                         </a>
