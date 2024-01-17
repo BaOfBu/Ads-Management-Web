@@ -1,0 +1,52 @@
+<nav class="fixed-top navbar navbar-expand-lg navbar-light bg-light shadow">
+  <div class="custom-container">
+    <div class="row">
+      <a class="navbar-brand" href="/">
+        <div class="d-flex align-items-center">
+          <img src="/static/images/departmentOfficer/icon-department.png" alt="icon-department">
+          <span class="custom-font-color">Cán bộ Quận</span>
+        </div>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-link">
+            <a class="custom-font-color" href="/district-officer/ads">Điểm đặt quảng cáo<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-link">
+            <a class="custom-font-color" href="/district-officer/ads-panel">Bảng quảng cáo<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-link">
+            <a class="custom-font-color" href="/district-officer/report">Báo cáo<span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav">
+          {{#if auth}}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+              Hello, <b>{{authUser.name}}!</b>
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/account/profile">
+                <i class="bi bi-person"></i>
+                Profile
+              </a>
+              <div class="dropdown-divider"></div>
+              <form id="frmLogout" action="/logout" method="post"></form>
+              <a class="dropdown-item" href="javascript: $('#frmLogout').submit()">
+                <i class="bi bi-box-arrow-in-left"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,52 @@
+{{#section "js"}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
+    <script src="/static/js/wardOfficer/edit-ads-location.js"></script>  
+{{/section}}
+{{#section "css"}}
+    <link rel="stylesheet" href="/static/css/wardOfficer/edit-ads-location.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
+{{/section}}
+
+<div class="custom-container">
+    <h3>Chỉnh sửa điểm đặt quảng cáo</h3>
+    <form id="formAdsLocationEdit" method="post" enctype="multipart/form-data">
+        <input type="hidden" id="txtAdsLocationId" name="txtAdsLocationId" class="form-control" value={{adsLocation.adsLocationId}}>
+        <div class="form-group">
+            <label for="txtAddress">Địa chỉ</label>
+            <input type="text" id="txtAddress" class="form-control" readonly placeholder="{{adsLocation.location}}">
+        </div>
+        <div class="form-group">
+            <label for="txtLocationType">Loại vị trí</label>
+            <select class="custom-select" name="LocationType" id="txtLocationType" required>
+                {{#each locationType}}
+                    <option value={{this.locationTypeId}}>{{this.name}}</option>
+                {{/each}}
+            </select>  
+        </div>
+        <div class="form-group">
+            <label for="txtAdsType">Loại quảng cáo</label>
+            <select class="custom-select" name="AdsType" id="txtAdsType" required>
+                {{#each adsType}}
+                <option value="{{this.adsTypeId}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="txtStatus">Loại quảng cáo</label>
+            <select class="custom-select" name="status-select" id="txtStatus" required>
+                {{#each status}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="txtRequestReason">Lí do chỉnh sửa</label>
+            <textarea class="form-control" id="txtRequestReason" name="RequestReason" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fuMain">Hình ảnh</label>
+            <input type="file" id="fuMain" name="image" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+    </form>
+</div>
