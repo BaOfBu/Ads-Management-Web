@@ -7,7 +7,7 @@ const map = new mapboxgl.Map({
     container: "map",
     style: "mapbox://styles/mapbox/streets-v12",
     center: [106.68223, 10.762649],
-    zoom: 18,
+    zoom: 16,
     projection: "globe"
 });
 
@@ -197,7 +197,8 @@ function createGeoJSONFeature(ad) {
 }
 function createMarkerAds(ad) {
     const el = createMarkerElementAds(ad);
-    const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
+    // const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
+    const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]);
     marker_ads.push(marker);
     const geoJSONFeature = createGeoJSONFeature(ad);
     adsGeoJSON.features.push(geoJSONFeature);
@@ -212,6 +213,137 @@ function createMarkerAds(ad) {
         isMarker = true;
     });
 }
+let clustersVisible = null;
+function addCluster() {
+    // removeCluster();
+    // map.on("load", function () {
+    map.addSource("earthquakes-daquyhoach", {
+        type: "geojson",
+        data: {
+            type: "FeatureCollection",
+            features: adsGeoJSON.features.filter(feature => feature.properties.status === "Đã quy hoạch") || []
+        },
+        cluster: true,
+        clusterMaxZoom: 13,
+        clusterRadius: 50
+    });
+
+    map.addSource("earthquakes-chuaquyhoach", {
+        type: "geojson",
+        data: {
+            type: "FeatureCollection",
+            features: adsGeoJSON.features.filter(feature => feature.properties.status === "Chưa quy hoạch") || []
+        },
+        cluster: true,
+        clusterMaxZoom: 13,
+        clusterRadius: 50
+    });
+    // Cluster layer for "Đã quy hoạch" status
+    map.addLayer({
+        id: "clusters-daquyhoach",
+        type: "circle",
+        source: "earthquakes-daquyhoach",
+        filter: ["has", "point_count"],
+        paint: {
+            "circle-color": "#5169d6",
+            "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40]
+        }
+    });
+    // Cluster layer for "Chưa quy hoạch" status
+    map.addLayer({
+        id: "clusters-chuaquyhoach",
+        type: "circle",
+        source: "earthquakes-chuaquyhoach",
+        filter: ["has", "point_count"],
+        paint: {
+            "circle-color": "#4b4b4d",
+            "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40]
+        }
+    });
+    // Cluster count for "Đã quy hoạch" status
+    map.addLayer({
+        id: "cluster-count-daquyhoach",
+        type: "symbol",
+        source: "earthquakes-daquyhoach",
+        filter: ["has", "point_count"],
+        layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12
+        },
+        paint: {
+            "text-color": "#ffffff"
+        }
+    });
+    // Cluster count for "Chưa quy hoạch" status
+    map.addLayer({
+        id: "cluster-count-chuaquyhoach",
+        type: "symbol",
+        source: "earthquakes-chuaquyhoach",
+        filter: ["has", "point_count"],
+        layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12
+        },
+        paint: {
+            "text-color": "#ffffff"
+        }
+    });
+    // });
+}
+
+function removeCluster() {
+    clustersVisible = null;
+    adsGeoJSON.features = [];
+    var clusterLayerIds = ["clusters-daquyhoach", "clusters-chuaquyhoach", "cluster-count-daquyhoach", "cluster-count-chuaquyhoach"];
+    var clusterSourceIds = ["earthquakes-daquyhoach", "earthquakes-chuaquyhoach"];
+
+    clusterLayerIds.forEach(function (layerId) {
+        if (map.getLayer(layerId)) {
+            map.removeLayer(layerId);
+        }
+    });
+
+    clusterSourceIds.forEach(function (sourceId) {
+        if (map.getSource(sourceId)) {
+            map.removeSource(sourceId);
+        }
+    });
+}
+// Add an event listener for map load
+function updateClusterVisibility() {
+    var currentZoom = map.getZoom();
+    if (currentZoom <= 13) {
+        if (clustersVisible == null) {
+            map.on("load", addCluster());
+        }
+        marker_ads.forEach(function (marker) {
+            marker.remove();
+        });
+        map.setLayoutProperty("clusters-daquyhoach", "visibility", "visible");
+        map.setLayoutProperty("clusters-chuaquyhoach", "visibility", "visible");
+        map.setLayoutProperty("cluster-count-daquyhoach", "visibility", "visible");
+        map.setLayoutProperty("cluster-count-chuaquyhoach", "visibility", "visible");
+        // map.setLayoutProperty("unclustered-point", "visibility", "visible");
+        clustersVisible = true;
+    } else {
+        // removeCluster();
+        if (clustersVisible == null) {
+            map.on("load", addCluster());
+        }
+        map.setLayoutProperty("clusters-daquyhoach", "visibility", "none");
+        map.setLayoutProperty("clusters-chuaquyhoach", "visibility", "none");
+        map.setLayoutProperty("cluster-count-daquyhoach", "visibility", "none");
+        map.setLayoutProperty("cluster-count-chuaquyhoach", "visibility", "none");
+        // map.setLayoutProperty("unclustered-point", "visibility", "none");
+        clustersVisible = false;
+        marker_ads.forEach(function (marker) {
+            marker.addTo(map);
+        });
+    }
+}
+
 function createMarkerElementAds(ad) {
     const el = document.createElement("div");
     el.className = "marker";
@@ -344,7 +476,6 @@ function addEvenDetailAdsPanel(ad, data) {
         }
     });
 }
-
 document.getElementById("switchAds").addEventListener("change", function () {
     if (this.checked) {
         $.getJSON(`http://localhost:8888/get-data/get-ads-location`, function (data) {
@@ -354,16 +485,19 @@ document.getElementById("switchAds").addEventListener("change", function () {
                 data.forEach(ad => {
                     createMarkerAds(ad);
                 });
+                updateClusterVisibility();
+                map.on("zoom", function () {
+                    updateClusterVisibility();
+                });
             }
         });
         // addCluster();
     } else {
         marker_ads.forEach(function (marker) {
             marker.remove();
-            adsGeoJSON.remove();
         });
-        adsGeoJSON = [];
         marker_ads = [];
+        removeCluster();
     }
 });
 
@@ -594,6 +728,11 @@ function resetTheInformationOfSideBar() {
 }
 // Button to return the user location
 document.getElementById("return-location").addEventListener("click", function () {
+    resetTheInformationOfSideBar();
+    const sidebar = document.getElementById("sidebar");
+    const button = document.getElementById("toggleSidebarButton");
+    sidebar.style.width = "0px";
+    button.style.display = "none";
     navigator.geolocation.getCurrentPosition(position => {
         const userLocation = [position.coords.longitude, position.coords.latitude];
         map.setCenter(userLocation);
@@ -608,80 +747,3 @@ document.getElementById("return-location").addEventListener("click", function ()
         speed: 1.5
     });
 });
-/*
-map.on("load", function () {
-    // Separate sources for each status type
-    map.addSource("earthquakes-daquyhoach", {
-        type: "geojson",
-        data: {
-            type: "FeatureCollection",
-            features: adsGeoJSON.features.filter(feature => feature.properties.status === "Đã quy hoạch") || []
-        },
-        cluster: true,
-        clusterMaxZoom: 14,
-        clusterRadius: 50
-    });
-
-    map.addSource("earthquakes-chuaquyhoach", {
-        type: "geojson",
-        data: {
-            type: "FeatureCollection",
-            features: adsGeoJSON.features.filter(feature => feature.properties.status === "Chưa quy hoạch") || []
-        },
-        cluster: true,
-        clusterMaxZoom: 14,
-        clusterRadius: 50
-    });
-
-    // Cluster layer for "Đã quy hoạch" status
-    map.addLayer({
-        id: "clusters-daquyhoach",
-        type: "circle",
-        source: "earthquakes-daquyhoach",
-        filter: ["has", "point_count"],
-        paint: {
-            "circle-color": "#5169d6",
-            "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40]
-        }
-    });
-
-    // Cluster layer for "Chưa quy hoạch" status
-    map.addLayer({
-        id: "clusters-chuaquyhoach",
-        type: "circle",
-        source: "earthquakes-chuaquyhoach",
-        filter: ["has", "point_count"],
-        paint: {
-            "circle-color": "#4b4b4d",
-            "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40]
-        }
-    });
-
-    // Cluster count for both status types
-    map.addLayer({
-        id: "cluster-count",
-        type: "symbol",
-        source: "earthquakes-daquyhoach",
-        filter: ["has", "point_count"],
-        layout: {
-            "text-field": "{point_count_abbreviated}",
-            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-            "text-size": 12
-        }
-    });
-
-    // Unclustered points layer for both status types
-    map.addLayer({
-        id: "unclustered-point",
-        type: "circle",
-        source: "earthquakes-daquyhoach",
-        filter: ["!", ["has", "point_count"]],
-        paint: {
-            "circle-color": "#11b4da",
-            "circle-radius": 6,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": "#fff"
-        }
-    });
-});
-*/
