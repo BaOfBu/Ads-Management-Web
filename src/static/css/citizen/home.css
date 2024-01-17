@@ -335,7 +335,8 @@ input:checked + .slider:before {
 .detail-ads-information {
     padding: 25px;
 }
-.return-button {
+.return-button,
+.return-button-report {
     align-self: flex-start;
     margin-left: 10px;
     cursor: pointer;
@@ -347,9 +348,13 @@ input:checked + .slider:before {
     font-size: 14px;
     font-weight: 500;
 }
-.return-button:hover {
+.return-button:hover,
+.return-button-report:hover {
     color: white;
     background: #000;
+}
+.return-button-report {
+    margin-left: 0;
 }
 .report-content-pop-up p {
     padding: 0;
