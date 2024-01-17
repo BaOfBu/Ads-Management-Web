@@ -52,12 +52,19 @@ export default {
       .where('ads_panel.adsLocationId', id).orderBy('ads_panel.adsPanelId');
     },
     findAdsPanel(adsPanelId){
-      return db('ads_panel').select(
-        'ads_panel.*',
+      const res = db('ads_panel').select(
         'ads_panel_type.name as ads_panel_type_name',
+        'license_request.status as license_status',
+        'image.imgLink as license_imgId_link',
+        'license_request.*',
+        'ads_panel.*',
       )
       .join('ads_panel_type', 'ads_panel.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId')
+      .leftJoin('license_request', 'ads_panel.adsPanelId', '=', 'license_request.adsPanelId')
+      .leftJoin('image', 'license_request.imgId', '=', 'image.imgId')
       .where('ads_panel.adsPanelId', adsPanelId).first();
+      //console.log("res",res);
+      return res;
     },
     findAllLocationTypeName(){
       return db('location_type');

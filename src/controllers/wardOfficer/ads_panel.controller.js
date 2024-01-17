@@ -23,7 +23,12 @@ const index = async (req, res, next) => {
 const viewPanelDetails = async function (req, res) {
     //console.log("req.query.adsPanelId",req.query.adsPanelId);
     const ads_panel = await adsService.findAdsPanel(req.query.adsPanelId);
-    //console.log("ads_panel",ads_panel);
+    console.log("ads_panel",ads_panel);
+    if(ads_panel.licenseId != null){
+        ads_panel.startDate = moment(ads_panel.startDate).format('DD/MM/YYYY');
+        ads_panel.endDate = moment(ads_panel.endDate).format('DD/MM/YYYY');    
+    }    
+    console.log("ads_panel",ads_panel);
     res.render("wardOfficer/ads_panel_detail", {
         adsPanel: ads_panel
     })

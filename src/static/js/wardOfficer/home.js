@@ -205,7 +205,7 @@ function updateTheInformationAdsItemForSideBar(ad) {
                 <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
                 <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
                 <div id="button-pane">
-                    <button class="more-information" ads-panel-id=${data[i].adsPanelId}><i class="bi bi-info-circle"></i></button>
+                    <button class="more-information" ads-panel-id=${data[i].adsPanelId} index=${i}><i class="bi bi-info-circle"></i></button>
                     <button class="report-button" ads-panel-id="${data[i].adsPanelId}">
                         <i class="bi bi-exclamation-octagon-fill"></i>
                         BÁO CÁO VI PHẠM
@@ -238,6 +238,7 @@ let listHtmlSideBar;
 function addEvenDetailAdsPanel(ad, data) {
     $(".more-information").click(function () {
         var adsPanelId = $(this).attr("ads-panel-id");
+        var index = $(this).attr("index");
         listHtmlSideBar = $("#sidebar").html();
         ads = ad;
         console.log(data);
@@ -265,10 +266,10 @@ function addEvenDetailAdsPanel(ad, data) {
             </div>
         </div>
         <div class = "detail-ads-information">
-            <h5 id="ads-detail-item-title"><b>${data[adsPanelId - 1].adsPanelType}</b></h5>
+            <h5 id="ads-detail-item-title"><b>${data[index].adsPanelType}</b></h5>
             <p id="ads-detail-item-address">${ad.location}</p>
-            <p id="ads-detail-item-size">Kích thước: <strong>${data[adsPanelId - 1].width}m * ${data[adsPanelId - 1].height}m</strong></p>
-            <p id="ads-detail-item-number">Số lượng: <strong>${data[adsPanelId - 1].quantity} trụ/bảng</strong></p>
+            <p id="ads-detail-item-size">Kích thước: <strong>${data[index].width}m * ${data[index].height}m</strong></p>
+            <p id="ads-detail-item-number">Số lượng: <strong>${data[index].quantity} trụ/bảng</strong></p>
             <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
             <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
             <p id="expired-date-item">Ngày hết hạn: <b>31/12/2024</b></p>
