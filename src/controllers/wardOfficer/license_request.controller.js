@@ -110,8 +110,8 @@ const handleAddNewRequest = async function (req, res) {
     delete req.body.adsPanelTypeId;
     req.body.wardId = user.wardId;
     req.body.districtId = user.districtId;
-    req.body.emailSender = user.email;
     req.body.status = "Chưa duyệt";
+    console.log(req.body);
     const request = await newLicenseRequest.add(req.body);
     const adsPanel = await adsPanel.patch({ adsPanelId: req.body.adsPanelId, licenseId: request.licenseRequestId });
     console.log("New request: ", request);

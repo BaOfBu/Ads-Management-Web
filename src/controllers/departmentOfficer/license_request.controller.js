@@ -220,7 +220,6 @@ const getRequestByWard = async function (req, res) {
 const cancelRequest = async function (req, res) {
     const user = req.session.authUser;
     console.log("cancel body: ", req.body);
-    console.log(user.email);
     const licenseRequestId = req.body.licenseRequestId;
     const updateStatus = await licenseRequest.patch({ licenseRequestId: licenseRequestId, status: "Đã hủy" });
     console.log("updateStatus: ", updateStatus);
