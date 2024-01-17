@@ -95,7 +95,6 @@ function generatePagination(ads_locations, districtId, wardId, pageCurrent){
             }
         }    
     }
-    // console.log("pagination: ", pageNumbers);
 
     let list = ads_locations;
     if(total > offset){
@@ -106,7 +105,7 @@ function generatePagination(ads_locations, districtId, wardId, pageCurrent){
     if(Number(page) === 1) isFirstPage = true;
 
     let isLastPage = false;
-    if(Number(page) === nPages) isLastPage = true;
+    if(Number(page) === nPages || nPages === 0) isLastPage = true;
 
     const pagination = {
         list: list,
@@ -114,8 +113,6 @@ function generatePagination(ads_locations, districtId, wardId, pageCurrent){
         isFirstPage: isFirstPage,
         isLastPage: isLastPage
     };
-
-    // console.log("pagination: ", pagination);
 
     return pagination;
 }
@@ -131,6 +128,7 @@ const index = async function (req, res) {
     const wards = await ward.findAllByDistrictId(districtCurrent);
     let districtName = "Tất cả quận";
     let wardName = "Tất cả phường";
+
     if (districtCurrent !== -1 && districtCurrent !== "-1"){
         const tmpDistrict = await providedInfo.findById('district', 'districtId', districtCurrent);
         districtName = "Quận " + tmpDistrict.name;
@@ -139,7 +137,7 @@ const index = async function (req, res) {
         const tmpWard = await providedInfo.findById('ward', 'wardId', wardCurrent);
         wardName = "Phường " + tmpWard.name;
     } 
-    // console.log("ads_locations: ", ads_locations);
+
     if(!ads_locations || ads_locations.length === 0){
         empty = true;
     }
