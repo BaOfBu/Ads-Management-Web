@@ -16,9 +16,9 @@
     <div class="d-flex mt-3 justify-content-end">
         <div class="districts" style="margin-right: 10px;">
             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
-            Tất cả quận
+            {{districtName}}
             </button>
-            <input type="hidden" id="selectedDicstrictId" value="-1">
+            <input type="hidden" id="selectedDistrictId" value="{{districtId}}">
             <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" style="max-height: 500px; overflow-y: auto;">
                 <li><a class="dropdown-item active" data-value="Tất cả quận" data-id="-1">Tất cả quận</a></li>
                 {{#each districts}}
@@ -28,10 +28,14 @@
         </div>
         <div class="wards">
             <button class="btn btn-info dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false">
-            Tất cả phường
+            {{wardName}}
             </button>
+            <input type="hidden" id="selectedWardId" value="{{wardId}}">
             <ul class="dropdown-menu" aria-labelledby="dropdownWard" style="max-height: 500px; overflow-y: auto;">
-                <li><a class="dropdown-item active" data-value="Tất cả phường" data-id="-1">Tất cả phường</a></li>
+                <li><a class="dropdown-item active" href="ads-location?districtId={{districtId}}&wardId=-1&page=1" data-value="Tất cả phường" data-id="-1">Tất cả phường</a></li>
+                {{#each wards}}
+                    <li><a class="dropdown-item" href="ads-location?districtId={{districtId}}&wardId={{wardId}}&page=1" data-value="{{name}}" data-id="{{wardId}}">Phường {{name}}</a></li>
+                {{/each}}
             </ul>
         </div>
     </div>
@@ -70,7 +74,7 @@
                         <td>Phường {{ward_name}} - Quận {{district_name}}</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <a class="btn btn-sm btn-outline-info" href="district/edit?adsLocationId={{adsLocationId}}" role="button">
+                                <a class="btn btn-sm btn-outline-info" href="ads-location/edit?adsLocationId={{adsLocationId}}&stt={{stt}}" role="button">
                                     <img src="/static/images/departmentOfficer/icon-edit.png" width="24" height="24" alt="edit this row">
                                 </a>
                             </div>
@@ -92,4 +96,38 @@
             <span class="small">{{date}}</span>
         </div>
     </div>
+    <nav aria-label="Page navigation example" class="justify-content-center mt-5" id="pagination">
+        <ul class="pagination justify-content-center">
+            {{#if isFirstPage}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Trang trước</a>
+                </li>
+            {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="#" id="previousPage">Trang trước</a>
+                </li>
+            {{/if}}
+
+            {{#each pageNumbers}}
+                {{#if isActive}}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{value}}</a>
+                </li>
+                {{else}}
+                <a class="page-link" href="{{#if (equal value '..')}}#pagination{{else}}ads-location?districtId={{districtId}}&wardId={{wardId}}&page={{value}}{{/if}}">{{value}}</a>
+                {{/if}}
+            {{/each}}
+
+            {{#if isLastPage}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Trang sau</a>
+                </li>
+            {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="#" id="nextPage">Trang sau</a>
+                </li>
+            {{/if}}
+        </ul>
+    </nav>
+    <input type="hidden" id="page" value="{{page}}">
 </div>

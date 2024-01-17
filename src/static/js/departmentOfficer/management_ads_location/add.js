@@ -78,7 +78,7 @@ $(document).ready(function () {
         });
     }
 
-    $("#submitButton").on("click", async function(event) {
+    $("#submitButton").on("click", function(event) {
         let isValid = true; 
         event.preventDefault();
     
@@ -86,25 +86,53 @@ $(document).ready(function () {
             isValid = false;
             $('#errorLocation').show();
             $('#errorImage').hide();
+            $('#errorAvailable').hide();
         }
         if(!$('#image').val() && isValid){
             isValid = false;
             $('#errorImage').show();
             $('#errorLocation').hide();
+            $('#errorAvailable').hide();
         }
 
+        // event.preventDefault();
+
         if(isValid){
-            try {
-                await uploadImage();
-                console.log("Upload thành công");
-                $("#frmAdd").submit();
-                alert("Đã thêm điểm đặt bảng quảng cáo thành công!!!");
-            } catch (error) {
-                console.log('Error during image upload:', error);
-            }
-        }else{
-            event.preventDefault();
-        } 
+            $.ajax({
+                url: "/department-officer/ads-location/is-available", 
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ location: $('#txtLocation').val() }),
+                success: async function(response) {
+                    if(response.ads_location) {
+                        console.log("length lớn: ", response);
+                        isValid = false;
+                        $('#errorAvailable').show();
+                        $('#errorLocation').hide();
+                        $('#errorImage').hide();
+                        event.preventDefault();
+                    }else{
+                        if(isValid){
+                            try {
+                                await uploadImage();
+                                console.log("Upload thành công");
+                                $("#frmAdd").submit();
+                                alert("Đã thêm điểm đặt bảng quảng cáo thành công!!!");
+                            } catch (error) {
+                                console.log('Error during image upload:', error);
+                            }
+                        }else{
+                            event.preventDefault();
+                        } 
+                    }
+                },
+                error: function(error) {
+                    console.log('Lỗi trong quá trình xác nhận địa chỉ có hợp lệ không:', error);
+                }
+            });
+        }
+
+        
         
     });
 
@@ -124,6 +152,7 @@ $(document).ready(function () {
             success: function(response) {
                 $('#txtLocation').val(response.location);
                 $('#wardId').val(response.wardId);
+                $('#districtId').val(response.districtId);
                 console.log("wardId: ", response.wardId);
                 console.log("districtId: ", response.districtId);
             },
@@ -148,6 +177,7 @@ $(document).ready(function () {
             success: function(response) {
                 $('#txtLocation').val(response.location);
                 $('#wardId').val(response.wardId);
+                $('#districtId').val(response.districtId);
                 console.log("wardId: ", response.wardId);
                 console.log("districtId: ", response.districtId);
             },

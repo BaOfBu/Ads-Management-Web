@@ -3,7 +3,6 @@
     {{!-- To get lat, long --}}
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-    {{!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
 
     {{!-- To get image --}}
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -15,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/sortable.min.js"></script>
 
     {{!-- My script --}}
-    <script src="/static/js/departmentOfficer/management_ads_location/add.js"></script>
+    <script src="/static/js/departmentOfficer/management_ads_location/edit.js"></script>
 {{/section}}
 
 {{#section 'css'}}
@@ -37,31 +36,23 @@
             <h5 class="card-header d-flex justify-content-center" style="font-style: italic; font-size: 16px;">Thêm địa điểm đặt quảng cáo không thành công. Điểm đặt quảng cáo này đã có. Vui lòng chọn điểm đặt quảng cáo khác.</h5> 
         </div>
     </div>
-
-    <div class="card" style="display: none;" id="errorLocation">
-        <div class="custom-card-2">
-            <h5 class="card-header d-flex justify-content-center" style="font-style: italic; font-size: 16px;">Thêm địa điểm đặt quảng cáo không thành công. Vui lòng chọn vị trí trên bản đồ.</h5> 
-        </div>
-    </div>
-
-    <div class="card" style="display: none;" id="errorImage">
-        <div class="custom-card-2">
-            <h5 class="card-header d-flex justify-content-center" style="font-style: italic; font-size: 16px;">Thêm địa điểm đặt quảng cáo không thành công. Vui lòng thêm hình ảnh điểm đặt quảng cáo.</h5> 
-        </div>
-    </div>
-
-    <form action="" method="post" id="frmAdd">  
+    
+    <form action="" method="post" id="frmEdit">  
             <div class="card-body">
                 <div id="map" style="height: 400px;"></div>
                 <div class="form-group mt-3">
+                    <label for="txtStt">#</label>
+                    <input type="text" id="txtStt" class="form-control" readonly value="{{stt}}">
+                </div>
+                <div class="form-group mt-3">
                     <label for="txtCoordinates" class="form-label">Toạ độ</label>
                     <div class="input-group">
-                        <input type="text" name="coordinate" id="txtCoordinates" class="form-control" placeholder="Nhấn vào bản đồ để chọn nơi đặt quảng cáo" autofocus readonly required>
+                        <input type="text" name="coordinate" value="{{adsLocation.lat}}, {{adsLocation.long}}" id="txtCoordinates" class="form-control" placeholder="Nhấn vào bản đồ để chọn nơi đặt quảng cáo" autofocus readonly required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="txtLocation">Địa chỉ điểm đặt quảng cáo</label>
-                     <input type="text" name="location" id="txtLocation" class="form-control" readonly required>
+                     <input type="text" name="location" value="{{adsLocation.location}}" id="txtLocation" class="form-control" readonly required>
                 </div>
 
                 <div class="d-flex mt-3">
@@ -69,9 +60,9 @@
                         <div class="typeLocation mr-5">
                             <label for="dropdownTypeLocation">Loại vị trí</label>
                             <button class="form-control dropdown-toggle" type="button" id="dropdownTypeLocation" data-toggle="dropdown" aria-expanded="false">
-                            Đất công
+                            {{adsLocation.location_type_name}}
                             </button>
-                            <input id="selectedTypeLocation" name="locationType" type="hidden" value="1"></input>
+                            <input id="selectedTypeLocation" name="locationType" type="hidden" value="{{adsLocation.locationType}}"></input>
                             <ul class="dropdown-menu" aria-labelledby="dropdownTypeLocation"  style="max-height: 500px; overflow-y: auto;">
                                 {{#each typeLocation}}
                                     <li><a class="dropdown-item" data-value="{{name}}" data-id="{{locationTypeId}}">{{name}}</a></li>
@@ -84,9 +75,9 @@
                         <div class="typeAdsPanel mr-5">
                             <label for="dropdownAdsPanel">Hình thức quảng cáo</label>
                             <button class="form-control dropdown-toggle" type="button" id="dropdownAdsPanel" data-toggle="dropdown" aria-expanded="false">
-                            Cổ động chính trị
+                            {{adsLocation.ads_type_name}}
                             </button>
-                            <input id="selectedTypeAdsPanel" name="adsType" type="hidden" value="1"></input>
+                            <input id="selectedTypeAdsPanel" name="adsType" type="hidden" value="{{adsLocation.adsType}}"></input>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAdsPanel"  style="max-height: 500px; overflow-y: auto;">
                                 {{#each typeAdsPanel}}
                                     <li><a class="dropdown-item" data-value="{{name}}" data-id="{{adsTypeId}}">{{name}}</a></li>
@@ -98,23 +89,29 @@
 
                 <div class="form-group mb-1">
                     <label for="img">Hình ảnh điểm đặt bảng quảng cáo</label>
+                    <img src="{{adsLocation.image_link}}" class="d-flex justify-content-center mb-3" alt="">
                     <input type="file" id="image" name="image">
-                    <input type="hidden" id="imgId" name="imgId" value="{{lengthImg}}">
+                    <input type="hidden" id="imgId" name="imgId" value="{{adsLocation.imgId}}">
                 </div>
 
-                <input type="hidden" name="districtId" id="districtId" value="{{districtId}}">
-                <input type="hidden" name="wardId" id="wardId" value="{{wardId}}">
-                <input type="hidden" id="adsLocationId" value="{{adsLocationId}}">
+                <input type="hidden" name="wardId" id="wardId" value="{{adsLocation.wardId}}">
+                <input type="hidden" name="districtId" id="districtId" value="{{adsLocation.districtId}}">
+                <input type="hidden" id="adsLocationId" name="adsLocationId" value="{{adsLocation.adsLocationId}}">
             </div>
             <div class="card-footer text-muted">
                 <a class="btn btn-outline-success" href="/department-officer/ads-location" role="button">
                     <i class="bi bi-skip-backward-fill"></i>
                     Danh sách
                 </a>
-                <button id="submitButton" type="submit" class="btn btn-primary">
+                <button id="btnDelete" type="submit" class="btn btn-danger" formaction="/department-officer/ads-location/del">
+                    <i class="bi bi-trash-fill"></i>
+                    Xóa
+                </button>
+                <button id="submitButton" type="submit" class="btn btn-primary" formaction="/department-officer/ads-location/patch">
                     <i class="bi bi-check2"></i>
                     Lưu
                 </button>
+                <input type="hidden" id="action" value="noAction">
             </div>
         </div>
     </form>
