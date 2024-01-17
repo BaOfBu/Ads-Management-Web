@@ -67,6 +67,12 @@ body {
     color: var(--blue-bold-color);
 }
 
+.custom-card-2{
+    background-color: #FFF6F6;
+    border: 1px solid #FFDFDF;
+    color: #CD6688;
+}
+
 span{
     color: var(--black-color);
 }

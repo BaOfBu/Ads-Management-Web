@@ -79,6 +79,27 @@ export default {
       //console.log("res",res);
       return res;
     },
+    findLicenseRequestOfAdsPanel(adsPanelId){
+      return db('ads_panel').select(
+        'ads_panel.*',
+        'ads_location.location as ads_location_name',
+        'ads_panel_type.name as ads_panel_type_name',
+        'image.imgLink as img_link',
+        'license_request.content as content',
+        'license_request.nameCompany as nameCompany',
+        'license_request.phoneCompany as phoneCompany',
+        'license_request.emailCompany as emailCompany',
+        'license_request.locationCompany as locationCompany',
+        'license_request.startDate as startDate',
+        'license_request.endDate as endDate',
+        'license_request.status as status',
+      )
+      .leftJoin('ads_location', 'ads_panel.adsLocationId', 'ads_location.adsLocationId')
+      .leftJoin('ads_panel_type', 'ads_panel.adsPanelTypeId', 'ads_panel_type.adsPanelTypeId')
+      .leftJoin('license_request', 'ads_panel.licenseId', 'license_request.licenseRequestId')
+      .leftJoin('image', 'license_request.imgId', 'image.imgId')
+      .where('ads_panel.adsPanelId', adsPanelId).first();
+    },
     findAllLocationTypeName(){
       return db('location_type');
     },

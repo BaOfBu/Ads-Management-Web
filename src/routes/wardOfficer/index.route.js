@@ -1,6 +1,8 @@
 import express from "express";
 import homeRoutes from "./home.route.js";
 import adsRoutes from "./ads.route.js";
+import licenseRequestRoutes from "./license_request.route.js";
+
 import reportRoutes from "./report.route.js";
 import adsPanelRoutes from "./adspanel.route.js";
 import licenseRequestRoutes from "./license-request.route.js";
@@ -15,6 +17,7 @@ router.use(setDefaultLayoutAndPartials);
 
 router.use("/",homeRoutes);
 router.use("/ads",adsRoutes);
+router.use("/license-request", licenseRequestRoutes);
 router.use("/report",reportRoutes)
 router.use("/ads-panel",adsPanelRoutes);
 router.use("/license-request",licenseRequestRoutes);

@@ -1,5 +1,8 @@
 import adsService from "../../services/wardOfficer/ads.service.js";
 import moment from "moment";
+import imageService from "../../services/departmentOfficer/image.service.js";
+import newLicenseRequest from "../../services/wardOfficer/license_request.service.js";
+import adsPanel from "../../services/departmentOfficer/ads_panel.service.js";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
@@ -111,4 +114,52 @@ const getEditAdsPanel = async function (req, res) {
 }
 
 
-export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, postAdsLocation};
+const licenseRequest = async function(req, res){
+    const adsPanelId = req.query.adsPanelId;
+    let available = true;
+
+    let adsPanel = await adsService.findLicenseRequestOfAdsPanel(adsPanelId);
+
+    console.log("adsPanel: ", adsPanel);
+
+    if(adsPanel.status === 'Chưa duyệt' || adsPanel.status === 'Đã duyệt'){
+        adsPanel.startDate = moment(adsPanel.startDate).format('DD/MM/YYYY');
+        adsPanel.endDate = moment(adsPanel.endDate).format('DD/MM/YYYY');
+        res.render("wardOfficer/license_request_AdsPanelScreen", {
+            adsPanel: adsPanel,
+            available: available,
+        });
+    }else{
+        available = false;
+        const lengthImg = await imageService.findAll();
+
+        res.render("wardOfficer/license_request_AdsPanelScreen", {
+            adsPanel: adsPanel,
+            available: available,
+            lengthImg: lengthImg.length + 1
+        });
+    }
+}
+
+const handleAddNewRequest = async function(req, res){
+    console.log("Before: ", req.body);
+    const user = req.session.authUser;
+    delete req.body.image;
+    delete req.body.adsPanelTypeId;
+    req.body.wardId = user.wardId;
+    req.body.districtId = user.districtId;
+    req.body.status = "Chưa duyệt";
+    const request = await newLicenseRequest.add(req.body);
+    const updatAdsPanel = await adsPanel.patch({adsPanelId: req.body.adsPanelId, licenseId: request.licenseRequestId});
+    console.log("New request: ", request);
+    res.redirect(`/ward-officer/ads/license-request?adsPanelId=${req.body.adsPanelId}`);
+}
+
+// const cancelRequest = async function(req, res){
+//     const licenseRequestId = req.body.licenseRequestId;
+//     const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã hủy"});
+//     console.log("updateStatus: ", updateStatus);
+//     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
+// }
+
+export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, postAdsLocation, licenseRequest, handleAddNewRequest};
