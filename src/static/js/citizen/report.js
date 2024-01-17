@@ -69,7 +69,8 @@ if (sts == "Đã quy hoạch") {
 
 // Return icon
 $(".icon-back").on("click", function () {
-    window.history.back();
+    // window.history.back();
+    window.location.href = document.referrer;
 });
 
 // Form

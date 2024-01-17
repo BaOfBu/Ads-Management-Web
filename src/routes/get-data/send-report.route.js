@@ -32,8 +32,9 @@ async function getWardId(lng, lat, districtId) {
     const features = data.features;
     for (const context of features[0].context) {
         if (context.text.includes("Phường")) {
-            const numericPart = context.text.replace(/\D/g, "");
-            return await getWardService.findByWardName(numericPart, districtId);
+            const index = context.text.indexOf("Phường");
+            const contentAfterQuan = index !== -1 ? context.text.slice(index + 6).trim() : context.text.trim();
+            return await getWardService.findByWardName(contentAfterQuan, districtId);
         }
     }
     return await getWardService.findByWardName(features[0].context[0].text, districtId);
@@ -45,13 +46,14 @@ async function getDistrictId(lng, lat) {
     const data = await response.json();
     const features = data.features;
     for (const context of features[0].context) {
+        console.log(context.text);
         if (context.text.includes("Quận")) {
             const index = context.text.indexOf("Quận");
             const contentAfterQuan = index !== -1 ? context.text.slice(index + 4).trim() : context.text.trim();
             return getDistrictService.findByDistrictName(contentAfterQuan);
         }
     }
-    return getDistrictService.findByDistrictName(features[0].context[2].replace(/\D/g, ""));
+    return getDistrictService.findByDistrictName(features[0].context[2].text);
 }
 
 let currentIndex = -1;
