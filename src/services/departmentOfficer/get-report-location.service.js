@@ -47,7 +47,7 @@ export default {
             .leftJoin("image as img1", "citizen_report.imgId1", "=", "img1.imgId")
             .leftJoin("image as img2", "citizen_report.imgId2", "=", "img2.imgId")
             .where("ads_location.wardId", wardId);
-=======
+    },
     async findAllReportLocationByLocation(adsLocationId) {
         return db("citizen_report")
             .select(

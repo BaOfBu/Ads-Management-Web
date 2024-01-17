@@ -13,8 +13,7 @@ export default {
         .join('ads_panel_type', 'ads_panel.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId')
         .where('ads_location.wardId', wardId).orderBy('ads_panel.adsPanelId');
     },
-
-    findAllAdsPanelByWardIdAndKeyword(wardId, keyword){
+    findAllAdsPanelByDistrictId(districtId){
         return db('ads_panel').select(
             'ads_panel.*',
             'ads_location.location as location_name',
@@ -24,6 +23,20 @@ export default {
         )
         .join('ads_location', 'ads_panel.adsLocationId', '=', 'ads_location.adsLocationId')
         .join('ads_panel_type', 'ads_panel.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId')
-        .where('ads_location.wardId', wardId).andWhere('ads_location.location', 'like', `%${keyword}%`).orderBy('ads_panel.adsPanelId');
+        .join('ward', 'ads_location.wardId', '=', 'ward.wardId')
+        .where('ward.districtId', districtId).orderBy('ads_panel.adsPanelId'); 
+    },
+    findAllAdsPanelByDistrictIdAndKeyword(keyword,wards){
+        return db('ads_panel').select(
+            'ads_panel.*',
+            'ads_location.location as location_name',
+            'ads_panel_type.name as ads_panel_type_name',
+            'ads_location.adsLocationId as ads_location_id',
+            'ads_panel.adsPanelId as ads_panel_id',
+        )
+        .join('ads_location', 'ads_panel.adsLocationId', '=', 'ads_location.adsLocationId')
+        .join('ads_panel_type', 'ads_panel.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId')
+        .join('ward', 'ads_location.wardId', '=', 'ward.wardId')
+        .whereIn('ads_location.wardId', wards).andWhere('ads_location.location', 'like', `%${keyword}%`).orderBy('ads_panel.adsPanelId');
     }
 }
