@@ -13,7 +13,7 @@ export default {
             imgId1: entity.imgId1,
             imgId2: entity.imgId2,
             sendDate: entity.sendDate,
-            status: "Đang xử lý",
+            status: "Chưa xử lý",
             adsPanelId: null,
             wardId: entity.wardId,
             districtId: entity.districtId
@@ -34,7 +34,7 @@ export default {
             sendDate: entity.sendDate,
             districtId: entity.districtId,
             wardId: entity.wardId,
-            status: "Đang xử lý",
+            status: "Chưa xử lý",
             adsPanelId: entity.adsPanelId
         });
     },

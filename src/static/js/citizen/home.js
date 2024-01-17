@@ -1,20 +1,17 @@
 // Access the map
 const accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
 mapboxgl.accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
-
 // Initialize the map
 const map = new mapboxgl.Map({
     container: "map",
     style: "mapbox://styles/mapbox/streets-v12",
     center: [106.68223, 10.762649],
-    zoom: 18,
+    zoom: 16,
     projection: "globe"
 });
-
 // Global variable
 let currentMarker = null;
 let isMarker = false;
-
 // User Location
 navigator.geolocation.getCurrentPosition(position => {
     const userLocation = [position.coords.longitude, position.coords.latitude];
@@ -24,13 +21,10 @@ navigator.geolocation.getCurrentPosition(position => {
     }
     currentMarker = new mapboxgl.Marker().setLngLat(userLocation).addTo(map);
 });
-
 // Fullscreen Controll
 map.addControl(new mapboxgl.FullscreenControl());
-
 // Compass Controll
 map.addControl(new mapboxgl.NavigationControl());
-
 // Auto Geocoding Search
 var geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
@@ -40,7 +34,6 @@ var geocoder = new MapboxGeocoder({
     marker: false
 });
 map.addControl(geocoder, "top-left");
-
 // Listen for the 'result' event when a location is selected
 geocoder.on("result", function (event) {
     var coordinates = event.result.geometry.coordinates;
@@ -116,8 +109,7 @@ function updateSideBarWithEmptyPoint() {
 }
 function addReportButtonForEmptyLocation() {
     $(".report-button").on("click", function () {
-        let newUrl =
-            "/report?adsPanelId=" + "" + "&lat=" + currentMarker._lngLat.lat + "&long=" + currentMarker._lngLat.lng + "&status=" + status;
+        let newUrl = "/report?adsPanelId=" + "" + "&lat=" + currentMarker._lngLat.lat + "&long=" + currentMarker._lngLat.lng + "&status=";
         window.location.href = newUrl;
     });
 }
@@ -137,7 +129,6 @@ map.on("click", function (e) {
         toggleSidebar();
     }
 });
-
 // Function default for Switch
 function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
@@ -176,10 +167,32 @@ function mouseEnterAds(el, ad, popup) {
         )
         .addTo(map);
 }
+let adsGeoJSON = {
+    type: "FeatureCollection",
+    features: []
+};
+function createGeoJSONFeature(ad) {
+    return {
+        type: "Feature",
+        geometry: {
+            type: "Point",
+            coordinates: [ad.long, ad.lat]
+        },
+        properties: {
+            ads_type_name: ad.ads_type_name,
+            location_type_name: ad.location_type_name,
+            location: ad.location,
+            status: ad.status
+        }
+    };
+}
 function createMarkerAds(ad) {
     const el = createMarkerElementAds(ad);
-    const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
+    // const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]).addTo(map);
+    const marker = new mapboxgl.Marker(el).setLngLat([ad.long, ad.lat]);
     marker_ads.push(marker);
+    const geoJSONFeature = createGeoJSONFeature(ad);
+    adsGeoJSON.features.push(geoJSONFeature);
     // Add event listeners for hover
     const popup = createPopup();
     el.addEventListener("mouseenter", () => mouseEnterAds(el, ad, popup));
@@ -190,6 +203,129 @@ function createMarkerAds(ad) {
         toggleSidebar();
         isMarker = true;
     });
+}
+let clustersVisibleAds = null;
+function addClusterAds() {
+    map.addSource("earthquakes-daquyhoach", {
+        type: "geojson",
+        data: {
+            type: "FeatureCollection",
+            features: adsGeoJSON.features.filter(feature => feature.properties.status === "Đã quy hoạch") || []
+        },
+        cluster: true,
+        clusterMaxZoom: 13,
+        clusterRadius: 50
+    });
+
+    map.addSource("earthquakes-chuaquyhoach", {
+        type: "geojson",
+        data: {
+            type: "FeatureCollection",
+            features: adsGeoJSON.features.filter(feature => feature.properties.status === "Chưa quy hoạch") || []
+        },
+        cluster: true,
+        clusterMaxZoom: 13,
+        clusterRadius: 50
+    });
+    // Cluster layer for "Đã quy hoạch" status
+    map.addLayer({
+        id: "clusters-daquyhoach",
+        type: "circle",
+        source: "earthquakes-daquyhoach",
+        filter: ["has", "point_count"],
+        paint: {
+            "circle-color": "#5169d6",
+            "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40]
+        }
+    });
+    // Cluster layer for "Chưa quy hoạch" status
+    map.addLayer({
+        id: "clusters-chuaquyhoach",
+        type: "circle",
+        source: "earthquakes-chuaquyhoach",
+        filter: ["has", "point_count"],
+        paint: {
+            "circle-color": "#4b4b4d",
+            "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40]
+        }
+    });
+    // Cluster count for "Đã quy hoạch" status
+    map.addLayer({
+        id: "cluster-count-daquyhoach",
+        type: "symbol",
+        source: "earthquakes-daquyhoach",
+        filter: ["has", "point_count"],
+        layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12
+        },
+        paint: {
+            "text-color": "#ffffff"
+        }
+    });
+    // Cluster count for "Chưa quy hoạch" status
+    map.addLayer({
+        id: "cluster-count-chuaquyhoach",
+        type: "symbol",
+        source: "earthquakes-chuaquyhoach",
+        filter: ["has", "point_count"],
+        layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12
+        },
+        paint: {
+            "text-color": "#ffffff"
+        }
+    });
+}
+function removeClusterAds() {
+    clustersVisibleAds = null;
+    adsGeoJSON.features = [];
+    var clusterLayerIds = ["clusters-daquyhoach", "clusters-chuaquyhoach", "cluster-count-daquyhoach", "cluster-count-chuaquyhoach"];
+    var clusterSourceIds = ["earthquakes-daquyhoach", "earthquakes-chuaquyhoach"];
+    clusterLayerIds.forEach(function (layerId) {
+        if (map.getLayer(layerId)) {
+            map.removeLayer(layerId);
+        }
+    });
+    clusterSourceIds.forEach(function (sourceId) {
+        if (map.getSource(sourceId)) {
+            map.removeSource(sourceId);
+        }
+    });
+}
+// Add an event listener for map load
+function updateClusterVisibility() {
+    var currentZoom = map.getZoom();
+    if (currentZoom <= 13) {
+        if (clustersVisibleAds == null) {
+            map.on("load", addClusterAds());
+        }
+        marker_ads.forEach(function (marker) {
+            marker.remove();
+        });
+        map.setLayoutProperty("clusters-daquyhoach", "visibility", "visible");
+        map.setLayoutProperty("clusters-chuaquyhoach", "visibility", "visible");
+        map.setLayoutProperty("cluster-count-daquyhoach", "visibility", "visible");
+        map.setLayoutProperty("cluster-count-chuaquyhoach", "visibility", "visible");
+        // map.setLayoutProperty("unclustered-point", "visibility", "visible");
+        clustersVisibleAds = true;
+    } else {
+        if (clustersVisibleAds == null) {
+            map.on("load", addClusterAds());
+        }
+        map.setLayoutProperty("clusters-daquyhoach", "visibility", "none");
+        map.setLayoutProperty("clusters-chuaquyhoach", "visibility", "none");
+        map.setLayoutProperty("cluster-count-daquyhoach", "visibility", "none");
+        map.setLayoutProperty("cluster-count-chuaquyhoach", "visibility", "none");
+        // map.setLayoutProperty("unclustered-point", "visibility", "none");
+        clustersVisibleAds = false;
+        marker_ads.forEach(function (marker) {
+            marker.addTo(map);
+        });
+    }
 }
 function createMarkerElementAds(ad) {
     const el = document.createElement("div");
@@ -211,6 +347,7 @@ function updateTheInformationAdsItemForSideBar(ad) {
     const sidebar = document.getElementById("sidebar");
     $.getJSON(`http://localhost:8888/get-data/get-ads-panel`, { entity: ad.adsLocationId }, function (data) {
         if (data.length > 0) {
+            console.log(data);
             for (let i = 0; i < data.length; i++) {
                 let adsDetailItem = document.createElement("div");
                 adsDetailItem.id = "ads-detail-item";
@@ -222,7 +359,7 @@ function updateTheInformationAdsItemForSideBar(ad) {
                 <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
                 <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
                 <div id="button-pane">
-                    <button class="more-information" ads-panel-id=${data[i].adsPanelId}><i class="bi bi-info-circle"></i></button>
+                    <button class="more-information" ads-panel-id=${data[i].adsPanelId} index=${i}><i class="bi bi-info-circle"></i></button>
                     <button class="report-button" ads-panel-id="${data[i].adsPanelId}">
                         <i class="bi bi-exclamation-octagon-fill"></i>
                         BÁO CÁO VI PHẠM
@@ -233,6 +370,14 @@ function updateTheInformationAdsItemForSideBar(ad) {
             }
             addEvenDetailAdsPanel(ad, data);
             addReportButtonAdsListener(ad.lat, ad.long, ad.status);
+        } else {
+            let adsDetailItem = document.createElement("div");
+            adsDetailItem.id = "no-ads-detail-item";
+            adsDetailItem.innerHTML = `
+            <h4 class="mb-3"> <b>Địa điểm chưa có bảng đặt quảng cáo</b> </h4>
+            <img src="/static/images/citizen/no-ads-panel.jpg"></img>
+            `;
+            sidebar.appendChild(adsDetailItem);
         }
     });
 }
@@ -260,54 +405,51 @@ function addReportButtonAdsListener(lat, long, status) {
 let listHtmlSideBar;
 function addEvenDetailAdsPanel(ad, data) {
     $(".more-information").click(function () {
+        var index = $(this).attr("index");
         var adsPanelId = $(this).attr("ads-panel-id");
-        listHtmlSideBar = $("#sidebar").html();
-        ads = ad;
-        resetTheInformationOfSideBar();
-        $("#sidebar").css("padding", "0px");
-        $("#sidebar").html(`
-        <div class="image-detail">
-            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                    <img src="/static/images/citizen/test.jpg" class="d-block w-100 image-detail-pane" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                    <img src="/static/images/citizen/test-2.jpg" class="d-block w-100 image-detail-pane" alt="...">
+        if (data[index].status != "Đã duyệt" || data[index].licenseId == null) {
+            alert("Bảng quảng cáo hiện chưa có cấp phép quảng cáo");
+            return;
+        } else {
+            endDate = new Date(data[index].endDate).toLocaleDateString("en-GB");
+            listHtmlSideBar = $("#sidebar").html();
+            ads = ad;
+            resetTheInformationOfSideBar();
+            $("#sidebar").css("padding", "0px");
+            $("#sidebar").html(`
+            <div class="image-detail">
+                <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                        <img src="${data[index].img}" class="d-block w-100 image-detail-pane" alt="...">
+                        </div>
+                        </div>
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
-        </div>
-        <div class = "detail-ads-information">
-            <h5 id="ads-detail-item-title"><b>${data[adsPanelId - 1].adsPanelType}</b></h5>
-            <p id="ads-detail-item-address">${ad.location}</p>
-            <p id="ads-detail-item-size">Kích thước: <strong>${data[adsPanelId - 1].width}m * ${data[adsPanelId - 1].height}m</strong></p>
-            <p id="ads-detail-item-number">Số lượng: <strong>${data[adsPanelId - 1].quantity} trụ/bảng</strong></p>
-            <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
-            <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
-            <p id="expired-date-item">Ngày hết hạn: <b>31/12/2024</b></p>
-            <div id="button-pane">
-                <button class="report-button" ads-panel-id="${adsPanelId}">
-                    <i class="bi bi-exclamation-octagon-fill"></i>
-                    BÁO CÁO VI PHẠM
-                </button>
-                <button class="return-button" >
-                    <i class="bi bi-arrow-return-left"></i>
-                    Trở về
-                </button>
+            <div class = "detail-ads-information">
+                <h5 id="ads-detail-item-title"><b>${data[index].adsPanelType}</b></h5>
+                <p id="ads-detail-item-address">${ad.location}</p>
+                <p id="ads-detail-item-size">Kích thước: <strong>${data[index].width}m * ${data[index].height}m</strong></p>
+                <p id="ads-detail-item-number">Số lượng: <strong>${data[index].quantity} trụ/bảng</strong></p>
+                <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
+                <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
+                <p id="expired-date-item">Ngày hết hạn: <b>${endDate}</b></p>
+                <div id="button-pane">
+                    <button class="report-button" ads-panel-id="${adsPanelId}">
+                        <i class="bi bi-exclamation-octagon-fill"></i>
+                        BÁO CÁO VI PHẠM
+                    </button>
+                    <button class="return-button" >
+                        <i class="bi bi-arrow-return-left"></i>
+                        Trở về
+                    </button>
+                </div>
             </div>
-        </div>
-        `);
-        addReturnButtonListener(ad, data);
-        addReportButtonAdsListener(ad.lat, ad.long, ad.status);
+            `);
+            addReturnButtonListener(ad, data);
+            addReportButtonAdsListener(ad.lat, ad.long, ad.status);
+        }
     });
 }
 document.getElementById("switchAds").addEventListener("change", function () {
@@ -319,6 +461,10 @@ document.getElementById("switchAds").addEventListener("change", function () {
                 data.forEach(ad => {
                     createMarkerAds(ad);
                 });
+                updateClusterVisibility();
+                map.on("zoom", function () {
+                    updateClusterVisibility();
+                });
             }
         });
     } else {
@@ -326,10 +472,27 @@ document.getElementById("switchAds").addEventListener("change", function () {
             marker.remove();
         });
         marker_ads = [];
+        removeClusterAds();
     }
 });
 // Listen on the Switch Report
+let reportGeoJson = {
+    type: "FeatureCollection",
+    features: []
+};
 let marker_report = [];
+function createGeoJSONFeature(report) {
+    return {
+        type: "Feature",
+        geometry: {
+            type: "Point",
+            coordinates: [report.long, report.lat]
+        },
+        properties: {
+            status: report.status
+        }
+    };
+}
 function mouseEnterReport(el, report, popup) {
     popup
         .setLngLat([report.long, report.lat])
@@ -360,6 +523,7 @@ function createMarkerElementReport(report) {
 }
 function returnButtonReport(data) {
     $(".return-button-report").click(function () {
+        console.log("object");
         resetTheInformationOfSideBar();
         updateTheInformationReportItemForSideBar(data[0]);
         addEventDetailReportPanel(data);
@@ -372,7 +536,7 @@ function updateTheInformationReportItemForSideBar(report) {
         addEventDetailReportPanel(report);
         return;
     }
-    // Ads panel
+    // report panel
     $.getJSON(`http://localhost:8888/get-data/get-report-location/get-report-panel`, { id: report.adsLocationId }, function (data) {
         if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
@@ -393,7 +557,7 @@ function updateTheInformationReportItemForSideBar(report) {
                             <p id="ads-detail-item-size"><strong>Nội dung</strong></p>
                             ${data[i].content}
                             <p><strong>Ngày gửi</strong>: ${formattedDate}</p>
-                            <p><strong>Trạng thái</strong>: ${data[i].status}</p>
+                            <p><strong>Trạng thái: ${data[i].status}</strong></p>
                             <div id="button-pane">
                                 <button class="more-information" report-detail-item=${i}><i class="bi bi-info-circle"></i></button>
                             </div>
@@ -438,11 +602,11 @@ function addEventDetailReportPanel(data) {
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
+                    <span class="visually-hidden"></span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
+                    <span class="visually-hidden"></span>
                 </button>
             </div>
         </div>
@@ -452,8 +616,9 @@ function addEventDetailReportPanel(data) {
             <span class="report-content-pop-up">${data.content}</span>
             <span class="report-content-pop-up"><b>Địa chỉ</b></span>
             <span class="report-location">${data.location}</span>
-            <span class="status-popup-info-report"><b>Trạng thái</b>: ${data.status}</span>
+            <span class="status-popup-info-report"><b>Trạng thái: ${data.status}</b></span>
             <span class="status-popup-info-report"><b>Ngày gửi</b>: ${formattedDate}</span>
+            ${data.handlingProcedureInfor ? `<span class=""><b>Giải quyết</b>: ${data.handlingProcedureInfor}</span>` : ""}
         </div>`;
         sidebar.appendChild(reportDetailItem);
     } else {
@@ -489,11 +654,11 @@ function addEventDetailReportPanel(data) {
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
+                        <span class="visually-hidden"></span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
+                        <span class="visually-hidden"></span>
                     </button>
                 </div>
             </div>
@@ -503,8 +668,13 @@ function addEventDetailReportPanel(data) {
                 <span class="report-content-pop-up">${data[reportId].content}</span>
                 <span class="report-content-pop-up"><b>Địa chỉ</b></span>
                 <span class="report-location">${data[reportId].location}</span>
-                <span class="status-popup-info-report"><b>Trạng thái</b>: ${data[reportId].status}</span>
+                <span class="status-popup-info-report"><b>Trạng thái: ${data[reportId].status}</b></span>
                 <span class="status-popup-info-report"><b>Ngày gửi</b>: ${formattedDate}</span>
+                ${
+                    data[reportId].handlingProcedureInfor
+                        ? `<span class=""><b>Giải quyết</b>: ${data[reportId].handlingProcedureInfor}</span>`
+                        : ""
+                }
                 <button class="return-button-report" >
                     <i class="bi bi-arrow-return-left"></i>Trở về
                 </button>
@@ -552,3 +722,24 @@ function resetTheInformationOfSideBar() {
     $("#sidebar").css("padding-top", "30px");
     $("#sidebar").html("");
 }
+// Button to return the user location
+document.getElementById("return-location").addEventListener("click", function () {
+    resetTheInformationOfSideBar();
+    const sidebar = document.getElementById("sidebar");
+    const button = document.getElementById("toggleSidebarButton");
+    sidebar.style.width = "0px";
+    button.style.display = "none";
+    navigator.geolocation.getCurrentPosition(position => {
+        const userLocation = [position.coords.longitude, position.coords.latitude];
+        map.setCenter(userLocation);
+        if (currentMarker) {
+            currentMarker.remove();
+        }
+        currentMarker = new mapboxgl.Marker().setLngLat(userLocation).addTo(map);
+    });
+    map.flyTo({
+        center: map.getCenter(),
+        zoom: map.getZoom(),
+        speed: 1.5
+    });
+});
