@@ -345,7 +345,9 @@ function createMarkerElementReport(report) {
     el.className = "marker";
     el.style.width = "30px";
     el.style.height = "30px";
-    if (report.status === "Đã xử lý xong") {
+    console.log(report.status);
+    if (report.status == "Đã xử lý xong") {
+        console.log("Đã xử lý xong");
         el.style.backgroundImage = 'url("/static/images/citizen/report-blue.png")';
     } else if (report.status === "Đang xử lý") {
         el.style.backgroundImage = 'url("/static/images/citizen/report-red.png")';
@@ -422,11 +424,11 @@ function createMarkerReport(report) {
 }
 document.getElementById("switchReport").addEventListener("change", function () {
     if (this.checked) {
-        $.getJSON(`http://localhost:8888/get-data/get-report-location`, function (data) {
+        $.getJSON(`http://localhost:8888/get-data/get-report-location/byWard`,{wardId:userWardId}, function (data) {
             if (data === false) {
                 alert("Không thể tải dữ liệu từ Server");
             } else {
-                //console.log(data);
+                console.log(data);
                 data.forEach(report => {
                     createMarkerReport(report);
                 });

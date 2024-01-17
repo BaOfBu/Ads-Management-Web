@@ -59,7 +59,7 @@ router.post("/ads-location-edit", uploadAdsLocation.array("image"),async functio
     const ads_location_edit = await adsService.createAdsLocationEdit(entity);
     //const update = await adsService.updateMerchantInfo(userID, { image: req.body.image });
     //return res.json({ success: true, image: req.body.image });
-    return res.redirect("/ward-officer/ads");
+    return res.redirect("/district-officer/ads");
 });
 
 router.post("/ads-panel-edit", async function(req,res,next){
@@ -83,7 +83,7 @@ router.post("/ads-panel-edit", async function(req,res,next){
     const ads_panel_edit = await adsService.createAdsPanelEdit(entity);
     //const update = await adsService.updateMerchantInfo(userID, { image: req.body.image });
     //return res.json({ success: true, image: req.body.image });
-    return res.redirect("/ward-officer/ads/");
+    return res.redirect("/district-officer/ads/");
 });
 
 export default router;

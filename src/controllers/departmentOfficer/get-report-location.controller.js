@@ -4,4 +4,8 @@ const getReportLocation = async function (req, res) {
     res.json(await getReportLocationService.findAllReportLocationBasic());
 };
 
-export default { getReportLocation };
+const getReportLocationByWard = async function (req, res) {
+    res.json(await getReportLocationService.findAllReportLocationByWard(req.query.wardId));
+};
+
+export default { getReportLocation, getReportLocationByWard };
