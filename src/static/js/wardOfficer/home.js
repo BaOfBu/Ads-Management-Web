@@ -194,7 +194,6 @@ function updateTheInformationAdsItemForSideBar(ad) {
     const sidebar = document.getElementById("sidebar");
     $.getJSON(`http://localhost:8888/get-data/get-ads-panel/byWard`, { entity: ad.adsLocationId, wardId: userWardId }, function (data) {
         if (data.length > 0) {
-            console.log(data);
             for (let i = 0; i < data.length; i++) {
                 let adsDetailItem = document.createElement("div");
                 adsDetailItem.id = "ads-detail-item";
@@ -213,6 +212,14 @@ function updateTheInformationAdsItemForSideBar(ad) {
             }
             addEvenDetailAdsPanel(ad, data);
             addReportButtonAdsListener(ad.lat, ad.long, ad.status);
+        } else {
+            let adsDetailItem = document.createElement("div");
+            adsDetailItem.id = "no-ads-detail-item";
+            adsDetailItem.innerHTML = `
+            <h4 class="mb-3"> <b>Địa điểm chưa có bảng đặt quảng cáo</b> </h4>
+            <img src="/static/images/citizen/no-ads-panel.jpg"></img>
+            `;
+            sidebar.appendChild(adsDetailItem);
         }
     });
 }
@@ -257,15 +264,19 @@ function addEvenDetailAdsPanel(ad, data) {
         resetTheInformationOfSideBar();
         $("#sidebar").css("padding", "0px");
         $("#sidebar").html(`
-        <div class="image-detail">
-            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                    <img src="${newData[index].img}" class="d-block w-100 image-detail-pane" alt="...">
+        ${
+            newData[index].img !== "Không có"
+                ? `<div class="image-detail">
+                <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="${newData[index].img}" class="d-block w-100 image-detail-pane" alt="...">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div>`
+                : ""
+        }
         <div class = "detail-ads-information">
             <h5 id="ads-detail-item-title"><b>${newData[index].adsPanelType}</b></h5>
             <p id="ads-detail-item-address">${ad.location}</p>
