@@ -144,11 +144,13 @@ const licenseRequest = async function(req, res){
 const handleAddNewRequest = async function(req, res){
     console.log("Before: ", req.body);
     const user = req.session.authUser;
+    console.log("user: ", user);
     delete req.body.image;
     delete req.body.adsPanelTypeId;
     req.body.wardId = user.wardId;
     req.body.districtId = user.districtId;
     req.body.status = "Chưa duyệt";
+    req.body.senderEmail = user.email;
 
     const splitStartDate = req.body.startDate.split("/");
     const tempStart = splitStartDate[2] + '-' + splitStartDate[1] + '-' + splitStartDate[0];
