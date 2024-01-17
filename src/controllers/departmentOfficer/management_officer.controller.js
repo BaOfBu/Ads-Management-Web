@@ -78,5 +78,13 @@ const handle_register = async function(req, res){
     res.render("departmentOfficer/management_officer/management_officer", {
         district: district
     });
+
 }
-export default { index, register, list_ward, isAvaiable, handle_register};
+
+const list_officer = async function(req, res){
+    res.render("departmentOfficer/management_officer/list", {
+        empty: false
+    });
+}
+
+export default { index, register, list_ward, isAvaiable, handle_register, list_officer};

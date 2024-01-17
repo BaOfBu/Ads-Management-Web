@@ -8,5 +8,6 @@ router.get("/register", managementOfficerController.register);
 router.get("/list-ward", managementOfficerController.list_ward);
 router.get("/is-available", managementOfficerController.isAvaiable);
 router.post("/register", managementOfficerController.handle_register);
+router.get("/list-officer", managementOfficerController.list_officer);
 
 export default router;
