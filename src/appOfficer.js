@@ -82,7 +82,7 @@ app.use("/static", express.static("static"));
 
 app.use("/ward-officer", auth.authWardOfficer, wardOfficerRoute);
 app.use("/get-data", getDataRoute);
-app.use("/district-officer", districtOfficerRoute);
+app.use("/district-officer",auth.authDistrictOfficer, districtOfficerRoute);
 app.use("/department-officer", auth.authDepartmentOfficer, departmentOfficerRoute);
 app.use("/", auth.authUser, accountRoute);
 

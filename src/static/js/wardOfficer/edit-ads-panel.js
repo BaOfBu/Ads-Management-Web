@@ -1,35 +1,23 @@
-$('#fuMain').fileinput({
-    dropZoneEnabled: false,
-    maxFileCount: 1,
-    allowedFileExtensions: ['jpg', 'png', 'gif'],
-    language: 'vi',
-});
-
-async function uploadAvatar() {
-    const fileInput = $("#fuMain")[0].files[0];
-    if (!fileInput) {
-      console.error('No file selected.');
-      return;
+$('#formAdsPanelEdit').on("submit",function (e) {
+    e.preventDefault();
+    const form = $(this);
+    const width = $('#txtWidth').val();
+    const height = $('#txtHeight').val();
+    const Quantity = $('#txtQuantity').val();
+    console.log(width);
+    console.log(height);
+    console.log(Quantity);
+    if(width === '' || height === '' || Quantity === ''){
+        alert('Vui lòng nhập đầy đủ thông tin');
+        return;
     }
-  
-    const formData = new FormData();
-    formData.append('image', fileInput);
-  
-    return new Promise((resolve, reject) => {
-      $.ajax({
-        url: '/ward-officer/ads/upload-image',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            console.log(data);
-            resolve(data);
-        },
-        error: function(error) {
-            console.error('Error:', error);
-            reject(error);
-        }
-      });
-    });
-  }
+    if(width <= 0 || height <= 0 || Quantity <= 0){
+        alert('Vui lòng nhập thông tin hợp lệ');
+        return;
+    }
+    if(isNaN(width) || isNaN(height) || isNaN(Quantity)){
+        alert('Vui lòng nhập thông tin hợp lệ');
+        return;
+    }
+    $('#formAdsPanelEdit').unbind('submit').submit();
+});
