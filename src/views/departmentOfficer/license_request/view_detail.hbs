@@ -1,0 +1,85 @@
+<div class="custom-container">
+    <form action="" method="post">
+        <div class="card">
+            <h5 class="card-header">
+            Xem chi tiết yêu cầu cấp phép
+            </h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="txtStt">#</label>
+                    <input type="text" id="txtStt" class="form-control" readonly value="{{stt}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtLocation">Địa chỉ</label>
+                    <input type="text" id="txtLocation" class="form-control" readonly value="{{license_request.ads_location_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtWard">Phường</label>
+                    <input class="form-control" id="txtWard" readonly value="{{license_request.ward_name}}"></input>
+                </div>
+                <div class="form-group">
+                    <label for="txtDistrict">Quận</label>
+                    <input class="form-control" id="txtDistrict" readonly value="{{license_request.district_name}}"></input>
+                </div>
+                <div class="form-group">
+                    <label for="txtAdsPanelTypeType">Loại bảng quảng cáo</label>
+                    <input type="text" id="txtAdsPanelTypeType" class="form-control" readonly value="{{license_request.ads_panel_type_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtSize">Kích thước</label>
+                    <input type="text" id="txtSize" class="form-control" readonly value="{{license_request.width}}m x {{license_request.height}}m">
+                </div>
+                <div class="form-group">
+                    <label for="txtAdsType">Hình thức quảng cáo</label>
+                    <input type="text" id="txtAdsType" class="form-control" readonly value="{{license_request.ads_type_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtAdsLocationTypeName">Phân loại</label>
+                    <input type="text" id="txtAdsLocationTypeName" class="form-control" readonly value="{{license_request.ads_location_type_name}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtContent">Nội dung</label>
+                    <input type="text" id="txtContent" class="form-control" readonly value="{{license_request.content}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtImage">Hình ảnh minh họa</label>
+                    <img src="{{license_request.img_link}}" class="d-flex justify-content-center" alt="">
+                </div>
+                <div class="form-group">
+                    <label for="txtNameCompany">Tên công ty</label>
+                    <input type="text" id="txtNameCompany" class="form-control" readonly value="{{license_request.nameCompany}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtEmailCompany">Hình thức quảng cáo</label>
+                    <input type="text" id="txtEmailCompany" class="form-control" readonly value="{{license_request.emailCompany}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtPhoneCompany">Hình thức quảng cáo</label>
+                    <input type="text" id="txtPhoneCompany" class="form-control" readonly value="{{license_request.phoneCompany}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtLocationCompany">Hình thức quảng cáo</label>
+                    <input type="text" id="txtLocationCompany" class="form-control" readonly value="{{license_request.locationCompany}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtStartDate">Thời gian bắt đầu</label>
+                    <input type="text" id="txtStartDate" class="form-control" readonly value="{{license_request.startDate}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtEndDate">Thời gian kết thúc</label>
+                    <input type="text" id="txtEndDate" class="form-control" readonly value="{{license_request.endDate}}">
+                </div>
+                <div class="form-group">
+                    <label for="txtStatus">Trạng thái</label>
+                    <input type="text" id="txtStatus" class="form-control" readonly value="{{license_request.status}}">
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-outline-success" href="/department-officer/license-request" role="button">
+                    <i class="bi bi-skip-backward-fill"></i>
+                    Danh sách
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

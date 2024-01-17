@@ -63,7 +63,7 @@ const viewDetails = async function (req, res) {
     const ads_panel = await adsService.findAllAdsPanelByAdsLocationId(req.query.adsLocationId);
     const adsLocationName = await adsService.findAdsLocationName(req.query.adsLocationId);
     //console.log("ads_panel",ads_panel);
-    //console.log("adsLocationName",adsLocationName);
+    console.log("adsLocationName",adsLocationName);
     const adsPanelWithIndex = ads_panel.map((adsPanel, index) => ({
         ...adsPanel,
         stt: index + 1
@@ -106,8 +106,7 @@ const getEditAdsLocation = async function (req, res) {
 const getEditAdsPanel = async function (req, res) {
     const adsPanelType = await adsService.findAllAdsPanelType();
     const adsPanel = await adsService.findAdsPanel(req.query.adsPanelId);
-    //console.log("adsPanel",adsPanel);
-    //console.log("adsPanelType",adsPanelType);
+
     res.render("wardOfficer/edit_ads_panel", {
         adsPanelType : adsPanelType,
         adsPanel : adsPanel
@@ -137,7 +136,7 @@ const licenseRequest = async function(req, res){
         res.render("wardOfficer/license_request_AdsPanelScreen", {
             adsPanel: adsPanel,
             available: available,
-            lengthImg: lengthImg.length + 1
+            lengthImg: lengthImg[lengthImg.length - 1].imgId + 1
         });
     }
 }
@@ -150,17 +149,20 @@ const handleAddNewRequest = async function(req, res){
     req.body.wardId = user.wardId;
     req.body.districtId = user.districtId;
     req.body.status = "Chưa duyệt";
+
+    const splitStartDate = req.body.startDate.split("/");
+    const tempStart = splitStartDate[2] + '-' + splitStartDate[1] + '-' + splitStartDate[0];
+    req.body.startDate = new Date(tempStart + ' 00:00:00');
+
+    const splitEndDate = req.body.endDate.split("/");
+    const tempEnd = splitEndDate[2] + '-' + splitEndDate[1] + '-' + splitEndDate[0];
+    req.body.endDate = new Date(tempEnd + ' 00:00:00');
+
     const request = await newLicenseRequest.add(req.body);
-    const updatAdsPanel = await adsPanel.patch({adsPanelId: req.body.adsPanelId, licenseId: request.licenseRequestId});
-    console.log("New request: ", request);
+
+    console.log("request: ", request[0]);
+    const updatAdsPanel = await adsPanel.patch({adsPanelId: req.body.adsPanelId, licenseId: request[0]});
     res.redirect(`/ward-officer/ads/license-request?adsPanelId=${req.body.adsPanelId}`);
 }
-
-// const cancelRequest = async function(req, res){
-//     const licenseRequestId = req.body.licenseRequestId;
-//     const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã hủy"});
-//     console.log("updateStatus: ", updateStatus);
-//     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
-// }
 
 export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, postAdsLocation, licenseRequest, handleAddNewRequest};
