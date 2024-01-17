@@ -173,99 +173,36 @@ $(document).ready(function () {
     $("#btnDelete").on("click", function() {
         $("#action").val("del");
         $("#frmEdit").submit();
-        alert(`Bạn đã xóa bảng quảng cáo này thành công!`);
+        alert("Bạn đã xóa bảng quảng cáo này thành công!");
     });
-
-    $("#submitButton").on("click", async function() {
-        try {
-            await uploadImage();
-            $("#action").val("patch");
-            $("#frmEdit").submit();
-            alert("Đã thay đổi thông tin điểm đặt bảng quảng cáo thành công!!!");
-        } catch (error) {
-            console.error('Lỗi trong quá trình tải ảnh lên:', error);
-            alert('Có lỗi trong quá trình tải ảnh lên. Vui lòng thử lại.');
-        }
-    });
-    //     // let isValid = true; 
     
-    //     // if(!$('#txtCoordinates').val()){
-    //     //     isValid = false;
-    //     //     $('#errorLocation').show();
-    //     //     $('#errorImage').hide();
-    //     // }
-    //     // if(!$('#image').val() && isValid){
-    //     //     isValid = false;
-    //     //     $('#errorImage').show();
-    //     //     $('#errorLocation').hide();
-    //     // }
-
-    //     // if(isValid){
-    //     //     $.ajax({
-    //     //         url: "/department-officer/ads-location/is-available", 
-    //     //         method: 'POST',
-    //     //         contentType: 'application/json',
-    //     //         data: JSON.stringify({ location: $('#txtLocation').val() }),
-    //     //         success: async function(response) {
-    //     //             if(response.ads_location) {
-    //     //                 console.log("length lớn: ", response);
-    //     //                 isValid = false;
-    //     //                 $('#errorAvailable').show();
-    //     //                 event.preventDefault();
-    //     //             }else{
-    //     //                 if(isValid){
-    //     //                     try {
-    //     //                         await uploadImage();
-    //     //                         $("#action").val("patch");
-    //     //                         $("#frmEdit").submit();
-    //     //                         alert("Đã thay đổi thông tin điểm đặt bảng quảng cáo thành công!!!");
-    //     //                     } catch (error) {
-    //     //                         console.error('Lỗi trong quá trình tải ảnh lên:', error);
-    //     //                         alert('Có lỗi trong quá trình tải ảnh lên. Vui lòng thử lại.');
-    //     //                     }
-    //     //                 }else{
-    //     //                     event.preventDefault();
-    //     //                 } 
-    //     //             }
-    //     //         },
-    //     //         error: function(error) {
-    //     //             console.log('Lỗi trong quá trình xác nhận địa chỉ có hợp lệ không:', error);
-    //     //         }
-    //     //     });
-    //     // }
-
-    //     $.ajax({
-    //         url: "/department-officer/ads-location/is-available", 
-    //         method: 'POST',
-    //         contentType: 'application/json',
-    //         data: JSON.stringify({ location: $('#txtLocation').val() }),
-    //         success: async function(response) {
-    //             if(response.ads_location) {
-    //                 console.log("length lớn: ", response);
-    //                 $('#txtLocation').val("unvalid");
-    //                 alert("Thay đổi thông tin địa điểm đặt quảng cáo không thành công. Điểm đặt quảng cáo này đã có. Vui lòng chọn điểm đặt quảng cáo khác.!!!");
-    //             }else{
-    //                 console.log("length undefined: ", response);
-    //                 if(isValid){
-    //                     try {
-    //                         await uploadImage();
-    //                         $("#action").val("patch");
-    //                         $("#frmEdit").submit();
-    //                         alert("Đã thay đổi thông tin điểm đặt bảng quảng cáo thành công!!!");
-    //                     } catch (error) {
-    //                         console.error('Lỗi trong quá trình tải ảnh lên:', error);
-    //                         alert('Có lỗi trong quá trình tải ảnh lên. Vui lòng thử lại.');
-    //                     }
-    //                 }else{
-    //                     event.preventDefault();
-    //                 } 
-    //             }
-    //         },
-    //         error: function(error) {
-    //             console.log('Lỗi trong quá trình xác nhận địa chỉ có hợp lệ không:', error);
-    //         }
-    //     });
-    // });
-
-
+    $("#submitButton").on("click", function() {
+        $.ajax({
+            url: "/department-officer/ads-location/is-available", 
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ location: $('#txtLocation').val() }),
+            success: async function(response) {
+                if(response.ads_location === undefined || response.ads_location.adsLocationId.toString() === $('#adsLocationId').val()) {
+                    try {
+                        await uploadImage();
+                        console.log("Upload thành công");
+                        $("#action").val("patch");
+                        $("#frmEdit").submit();
+                        alert("Đã thay đổi thông tin điểm đặt bảng quảng cáo thành công!!!");
+                        window.location.reload();
+                    } catch (error) {
+                        console.log('Error during image upload:', error);
+                    }
+                    
+                } else {
+                    alert("Thay đổi thông tin địa điểm đặt quảng cáo không thành công. Điểm đặt quảng cáo này đã có. Vui lòng chọn điểm đặt quảng cáo khác.!!!");
+                    window.location.reload();
+                }
+            },
+            error: function(error) {
+                console.log('Lỗi trong quá trình xác nhận địa chỉ có hợp lệ không:', error);
+            }
+        });
+    });
 });

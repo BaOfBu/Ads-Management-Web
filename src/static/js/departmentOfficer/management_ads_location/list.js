@@ -47,7 +47,6 @@ $(document).ready(function () {
 
     function populateWardsDropdown(wards) {
         const districtId = $('#selectedDistrictId').val();
-        // const page = $('#page').val();
 
         let dropdownWard = $('.wards ul.dropdown-menu');
     
@@ -61,24 +60,22 @@ $(document).ready(function () {
         }
     }
 
-    $('#previousPage').on('click', function(){
-        // let nextPage = document.getElementById("previousPage");
+    $('#previousPage').on('click', function() {
         let urlParams = new URLSearchParams(window.location.search);
         let page = urlParams.get('page') || 1;
         let currentPage = Number(page);
         page = currentPage - 1;
         urlParams.set("page", page);
-        nextPage.setAttribute('href', "?" + urlParams);
+        $(this).attr('href', "?" + urlParams.toString());
     });
-      
-      
-    $('#nextPage').on('click', function(){
+    
+    $('#nextPage').on('click', function() {
         console.log("Đã next page");
         let urlParams = new URLSearchParams(window.location.search);
         let page = urlParams.get('page') || 1;
         let currentPage = Number(page);
         page = currentPage + 1;
         urlParams.set("page", page);
-        nextPage.setAttribute('href', "?" + urlParams);
+        $(this).attr('href', "?" + urlParams.toString());
     });
 });

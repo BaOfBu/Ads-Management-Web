@@ -1,31 +1,163 @@
 import moment from "moment";
 import districtService from "../../services/departmentOfficer/district.service.js";
 import wardService from "../../services/departmentOfficer/ward.service.js";
+import district from "../../services/departmentOfficer/district.service.js";
+import providedInfo from "../../services/departmentOfficer/provided_infor.service.js";
+
+function generatePagination(wards, districtId, pageCurrent){
+    const limit = 8;
+    const page = pageCurrent;
+    const offset = (page - 1) * limit;
+
+    const total = wards.length;
+    const nPages = Math.ceil(total / limit);
+
+    let pageNumbers = [];
+    if(nPages <= 7){
+        for (let i = 1; i <= nPages; i++) {
+            pageNumbers.push({
+                value: i,
+                isActive: i === +page,
+                districtId: districtId,
+            });
+        }
+    }else{
+        if(Number(page) + 2 <= nPages){
+            if(Number(page) > 5){
+                for (let i = 1; i <= 2; i++) {
+                    pageNumbers.push({
+                        value: i,
+                        isActive: i === +page,
+                        districtId: districtId,
+                    });
+                }
+                pageNumbers.push({
+                    value: '..',
+                    isActive: false,
+                    districtId: districtId,
+                });
+                for (let i = Number(page) - 2; i <= Number(page) + 2; i++) {
+                    pageNumbers.push({
+                        value: i,
+                        isActive: i === +page,
+                        districtId: districtId,
+                    });
+                }  
+            }else if(Number(page) > 3){
+                for (let i = Number(page) - 3; i <= Number(page) + 3; i++) {
+                    pageNumbers.push({
+                        value: i,
+                        isActive: i === +page,
+                        districtId: districtId,
+                    });
+                }    
+            }else{
+                for (let i = 1; i <= 7; i++) {
+                    pageNumbers.push({
+                        value: i,
+                        isActive: i === +page,
+                        districtId: districtId,
+                    });
+                } 
+            }
+        }else if(Number(page) + 2 > nPages){
+            for (let i = 1; i <= 2; i++) {
+                pageNumbers.push({
+                    value: i,
+                    isActive: i === +page,
+                    districtId: districtId,
+                });
+            }
+            pageNumbers.push({
+                value: '..',
+                isActive: false,
+                districtId: districtId,
+            });
+            for (let i = nPages - 4; i <= nPages; i++) {
+                pageNumbers.push({
+                    value: i,
+                    isActive: i === +page,
+                    districtId: districtId,
+                });
+            }
+        }    
+    }
+
+    let list = wards;
+    if(total > offset){
+        list = wards.slice(offset, offset+limit); 
+    }
+
+    let isFirstPage = false;
+    if(Number(page) === 1) isFirstPage = true;
+
+    let isLastPage = false;
+    if(Number(page) === nPages || nPages === 0) isLastPage = true;
+
+    const pagination = {
+        list: list,
+        pageNumbers: pageNumbers,
+        isFirstPage: isFirstPage,
+        isLastPage: isLastPage
+    };
+
+    return pagination;
+}
 
 const index = async function (req, res) {
     let empty = false;
-    const districtId = req.query.districtId || 1;
-    const district = await districtService.findById(districtId);
-    const wards = await wardService.findAllByDistrictId(districtId);
+    const districtId = req.query.districtId || -1;
+    const page = req.query.page || 1;
+
+    const districts = await district.findAll();
+
+    let districtName = "Tất cả quận";
+    if (districtId !== -1 && districtId !== "-1"){
+        const tmpDistrict = await providedInfo.findById('district', 'districtId', districtId);
+        districtName = "Quận " + tmpDistrict.name;
+    } 
+
+    const wards = await getListByDistrict(districtId);
     if(!wards || wards.length === 0){
         empty = true;
     }
 
-    const wardsWithIndex = wards.map((ward, index) => ({
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
+
+    const pagination = generatePagination(wards, districtId, page);
+
+    res.render("departmentOfficer/management_ward/list", {
+        empty: empty,
+        districtName: districtName,
+        districtId: districtId,
+        ward: pagination.list,
+        date: currentDateTime,
+        isFirstPage: pagination.isFirstPage,
+        isLastPage: pagination.isLastPage,
+        pageNumbers: pagination.pageNumbers,
+        page: page,
+        districts: districts
+    });
+};
+
+async function getListByDistrict(districtId){
+    let wards;
+    console.log("districtId: ", districtId);
+    if(districtId === -1 || districtId === "-1"){
+        console.log("Đã vô đây");
+        wards = await wardService.findAll();   
+    }else{
+        wards = await wardService.findAllByDistrictId(districtId);
+    }  
+
+    let list = wards.map((ward, index) => ({
         ...ward,
         stt: index + 1,
         description: ward.description ? ward.description.slice(0, 50) + " ..." : "",
     }));
 
-    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
-    res.render("departmentOfficer/management_ward/list", {
-        empty: empty,
-        districtName: district.name,
-        districtId: districtId,
-        ward: wardsWithIndex,
-        date: currentDateTime
-    });
-};
+    return list;
+}
 
 const addWard = async function (req, res){
     res.render("departmentOfficer/management_ward/add", {
