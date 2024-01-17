@@ -11,11 +11,28 @@ import { get } from "http";
 const statusName = ["Đã quy hoạch", "Chưa quy hoạch"];
 
 const index = async function (req, res) {
+    console.log("req.query",req.query);
     const user = req.session.authUser;
+    const page = req.query.page || 1;
+    const keyword = req.query.keyword || "";
+    const limit = 3;
+    const offset = (page - 1) * limit;
     //console.log("user",user);
     const wardName = await adsService.findWardByWardId(user.wardId);
     const districtName = await adsService.findDistrictByDistrictId(user.districtId);
-    const arrayAdsLocation = await adsService.findAllAdsLocationByWardId(user.wardId);
+    var arrayAdsLocation = await adsService.findAllAdsLocationByWardId(user.wardId);
+    if(keyword != ""){
+        arrayAdsLocation = await adsService.findAllAdsLocationByKeyword(user.wardId,keyword);
+    }
+    const length = arrayAdsLocation.length;
+    const nPages = Math.ceil(length / limit);
+    const pageNumbers = [];
+    for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+        value: i,
+        isActive: i === +page
+        });
+    }
     // console.log("wardName",wardName);
     // console.log("districtName",districtName);
     //console.log("arrayAdsLocation",arrayAdsLocation);
@@ -23,13 +40,18 @@ const index = async function (req, res) {
         ...adsLocation,
         stt: index + 1
     }));
-    const currentDateTime = moment().format("HH:mm:ss DD-MM-YYYY");
+
+    const newArrayAdsLocation = adsLocationWithIndex.slice(offset, offset + limit);
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
+
     return res.render("wardOfficer/ads_location", {
         wardName: wardName.name,
         districtName: districtName.name,
-        arrayAdsLocation: adsLocationWithIndex,
+        arrayAdsLocation: newArrayAdsLocation,
         date: currentDateTime,
-        isEmpty: adsLocationWithIndex.length == 0
+        isEmpty: adsLocationWithIndex.length == 0,
+        pageNumbers : pageNumbers,
+        oldKeyword: keyword,
     });
 };
 
@@ -37,10 +59,25 @@ const postAdsLocation = async function (req, res) {
     console.log("req.body:", req.body);
     const keyword = req.body.keyword || "";
     const user = req.session.authUser;
+    const page = req.body.page || 1;
+    const limit = 3;
+    const offset = (page - 1) * limit;
+
     //console.log("user",user);
     const wardName = await adsService.findWardByWardId(user.wardId);
     const districtName = await adsService.findDistrictByDistrictId(user.districtId);
-    const arrayAdsLocation = await adsService.findAllAdsLocationByKeyword(user.wardId, keyword);
+
+    const arrayAdsLocation = await adsService.findAllAdsLocationByKeyword(user.wardId,keyword);
+    const length = arrayAdsLocation.length;
+    const nPages = Math.ceil(length / limit);
+    const pageNumbers = [];
+    for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+        value: i,
+        isActive: i === +page
+        });
+    }
+
     // console.log("wardName",wardName);
     // console.log("districtName",districtName);
     //console.log("arrayAdsLocation",arrayAdsLocation);
@@ -48,16 +85,21 @@ const postAdsLocation = async function (req, res) {
         ...adsLocation,
         stt: index + 1
     }));
-    const currentDateTime = moment().format("HH:mm:ss DD-MM-YYYY");
+
+    const newArrayAdsLocation = adsLocationWithIndex.slice(offset, limit+offset);
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
+
     return res.render("wardOfficer/ads_location", {
         wardName: wardName.name,
         districtName: districtName.name,
-        arrayAdsLocation: adsLocationWithIndex,
+        arrayAdsLocation: newArrayAdsLocation,
         date: currentDateTime,
-        isEmpty: adsLocationWithIndex.length == 0
+        isEmpty: adsLocationWithIndex.length == 0,
+        pageNumbers : pageNumbers,
+        oldKeyword: keyword,
     });
-    res.render("wardOfficer/ads_location");
-};
+
+}
 
 const viewDetails = async function (req, res) {
     const ads_panel = await adsService.findAllAdsPanelByAdsLocationId(req.query.adsLocationId);

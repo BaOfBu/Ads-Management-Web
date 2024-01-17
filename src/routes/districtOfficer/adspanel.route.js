@@ -1,5 +1,5 @@
 import express from "express";
-import adsPanelController from "../../controllers/wardOfficer/ads_panel.controller.js";
+import adsPanelController from "../../controllers/districtOfficer/ads_panel.controller.js";
 const router = express.Router();
 
 router.get("/", adsPanelController.index);

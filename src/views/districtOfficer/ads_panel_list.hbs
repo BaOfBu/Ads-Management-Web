@@ -1,6 +1,9 @@
 {{#section 'css'}}
     <link rel="stylesheet" href="/static/css/departmentOfficer/district.css">
 {{/section}}
+{{#section 'js'}}
+    <script src="/static/js/districtOfficer/ads_panel_list.js"></script>
+{{/section}}
 
 <div class="custom-container">
     <div class="card">
@@ -11,12 +14,31 @@
     <div>
         <div class="card mt-5">
         <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h5>Xem danh sách bảng quảng cáo</h5>
-            <form id="searchForm" action="" method="post" class="d-flex flex-row col-md-4">
-            {{!-- <div class="d-flex flex-row col-md-4"> --}}
-                    <input type="text" class="form-control col-md-8" id="keyword" name="keyword" placeholder="Tìm kiếm">
-                    <button type="submit" id="submitBtn" class="btn btn-primary form-control col-md-4">Tìm kiếm</button>
-            {{!-- </div> --}}
+            <h5>Xem danh sách điểm đặt quảng cáo</h5>
+            <form id="searchForm" action="" method="post" class="d-flex flex-row col-md-5">
+                <div class="dropdown col-md-4">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="multiSelectDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Danh sách phường
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="multiSelectDropdown">
+                        {{#each wards}}
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <input class="form-check-input" type="checkbox" value="{{this.wardId}}" id="Phuong{{this.wardId}}" />
+                                <label class="form-check-label" for="Phuong{{this.wardId}}">Phường {{this.name}}</label>
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <input type="hidden" name="wards" id="txtWards" value="">
+                <div class="d-flex flex-row col-md-8">
+                {{!-- <div class="d-flex flex-row col-md-4"> --}}
+                        <input type="text" class="form-control col-md-8" id="keyword" name="keyword" placeholder="Tìm kiếm">
+                        <button type="submit" id="submitBtn" class="btn btn-primary form-control col-md-4">Tìm kiếm</button>
+                {{!-- </div> --}}
+                </div>
             </form>
         </div>
         {{#if isEmpty}}
@@ -51,7 +73,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tableContent">
                 {{#each arrayAdsPanel}}
                 <tr>
                     <th scope="row">
@@ -81,14 +103,14 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <a class="d-flex view-detail mt-1" href="/ward-officer/ads-panel/view-panel-detail?adsPanelId={{adsPanelId}}" role="button">
+                            <a class="d-flex view-detail mt-1" href="/district-officer/ads-panel/view-panel-detail?adsPanelId={{adsPanelId}}" role="button">
                                 <span class="ml-1">Xem chi tiết</span>
                             </a>
                         </div>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <a class="d-flex view-detail mt-1" href="/ward-officer/ads-panel/ads-panel-edit?adsPanelId={{adsPanelId}}" role="button">
+                            <a class="d-flex view-detail mt-1" href="/district-officer/ads-panel/ads-panel-edit?adsPanelId={{adsPanelId}}" role="button">
                                 <span class="ml-1">Yêu cầu</span>
                             </a>
                         </div>
