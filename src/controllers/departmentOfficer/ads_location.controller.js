@@ -321,37 +321,17 @@ const editAdsLocation = async function(req, res){
 }
 
 const handle_editAdsLocation = async function(req, res){
-    console.log("Location:", req.body.location);
-    
     const ads_location = await adsLocation.findByName(req.body.location);
-
-    if(ads_location){
-        if(ads_location.adsLocationId === req.body.adsLocationId) {
-            console.log("body: ", req.body);
-            const coordinate = req.body.coordinate;
-            const split = coordinate.split(", ");
-            delete req.body.coordinate;
-            delete req.body.image;
-            req.body.lat = split[0];
-            req.body.long = split[1];
-            console.log("Trước khi edit: ", req.body);
-            const update = await adsLocation.patch(req.body);
-            console.log("Sau khi edit: ", update);
-        }
-    }else{
-        console.log("body: ", req.body);
+    if(ads_location === undefined || ads_location.adsLocationId.toString() === req.body.adsLocationId){
         const coordinate = req.body.coordinate;
         const split = coordinate.split(", ");
         delete req.body.coordinate;
         delete req.body.image;
         req.body.lat = split[0];
         req.body.long = split[1];
-        console.log("Trước khi edit: ", req.body);
         const update = await adsLocation.patch(req.body);
-        console.log("Sau khi edit: ", update);
     }
     
-    res.redirect("/department-officer/ads-location?districtId=-1&wardId=-1&page=1");
 }
 
 const handle_deleteAdsLocation = async function (req, res){
