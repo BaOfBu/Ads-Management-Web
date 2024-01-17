@@ -54,6 +54,7 @@ const cancelRequest = async function(req, res){
     const licenseRequestId = req.body.licenseRequestId;
     const updateStatus = await licenseRequest.patch({licenseRequestId: licenseRequestId, status: "Đã hủy"});
     console.log("updateStatus: ", updateStatus);
+    const updateStatusPanel = await adsPanel.patch({adsPanelId: req.body.adsPanelId, licenseId: null});
     return res.json({success: true, message: "Đã hủy yêu cầu này thành công!"});
 }
 

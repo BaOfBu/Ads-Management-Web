@@ -1,0 +1,17 @@
+.dashboard {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-card {
+    flex: 1;
+    background-color: var(--blue-light-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.info-card h3,h4{
+    color: var(--blue-bold-color);
+    font-weight: bolder;
+}

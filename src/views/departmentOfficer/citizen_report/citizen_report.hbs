@@ -1,0 +1,113 @@
+{{#section 'js'}}
+    <script src="/static/js/departmentOfficer/citizen_report/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{/section}}
+
+{{#section 'css'}}
+    <link rel="stylesheet" href="/static/css/departmentOfficer/citizen_report.css">
+{{/section}}
+
+
+<div class="custom-container">
+    <div class="d-flex mt-3 justify-content-end">
+        <div class="districts" style="margin-right: 10px;">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
+            Tất cả quận
+            </button>
+            <input type="hidden" id="selectedDicstrictId" value="-1">
+            <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" style="max-height: 500px; overflow-y: auto;">
+                <li><a class="dropdown-item active" data-value="Tất cả quận" data-id="-1">Tất cả quận</a></li>
+                {{#each districts}}
+                    <li><a class="dropdown-item" data-value="{{name}}" data-id="{{districtId}}">Quận {{name}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="wards">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false">
+            Tất cả phường
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownWard" style="max-height: 500px; overflow-y: auto;">
+                <li><a class="dropdown-item active" data-value="Tất cả phường" data-id="-1">Tất cả phường</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="overview">
+        <input type="hidden" id="merchantId" value="{{merchantId}}">
+        <h2>Tổng quan số lượng báo cáo vi phạm</h2>
+
+        <div class="dashboard mt-3">
+            <div class="info-card d-flex flex-column align-items-center">
+                <h5>Tổng số báo cáo vi phạm</h5>
+                <h3 id="total-report"></h3>
+            </div>
+            <div class="info-card d-flex flex-column align-items-center">
+                <h5>Số báo cáo đang xử lý</h5>
+                <h3 id="total-processing"></h3>
+            </div>
+            <div class="info-card d-flex flex-column align-items-center">
+                <h5>Số báo cáo đã xử lý</h5>
+                <h3 id="total-processed"></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <h2>Thống kê loại báo cáo</h2>
+        <div>
+            <canvas id="chartReportType" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <h2>Thống kê đối tượng báo cáo</h2>
+        <div>
+            <canvas id="chartObject" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="custom-card">
+            <h5 class="card-header">Danh sách các báo cáo của người dân</h5> 
+        </div>
+    </div>
+    <div>
+        <div class="list card mt-5">
+        <h5 class="card-header">Xem danh sách</h5>
+        {{#if empty}}
+            <div class="card-body">Không có dữ liệu</div>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 2%">#</th>
+                    <th scope="col" style="width: 13%">Đối tượng báo cáo</th>
+                    <th scope="col" style="width: 10%">Loại báo cáo</th>
+                    <th scope="col" style="width: 10%">Người gửi</th>
+                    <th scope="col" style="width: 17%">Nội dung</th>
+                    <th scope="col" style="width: 28%">Cách thức xử lý</th>
+                    <th scope="col" style="width: 10%">Thời gian gửi</th>
+                    <th scope="col" style="width: 10%">Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each citizen_report}}
+                <tr>
+                    <th scope="row">{{stt}}</th>
+                    <td>{{object}}</td>
+                    <td>{{report_type_name}}</td>
+                    <td>{{name}}</td>
+                    <td>{{content}}</td>
+                    <td>{{handlingProcedureInfor}}</td>
+                    <td>{{sendDate}}</td>
+                    <td>{{status}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+        <div class="card-footer text-muted font-italic">
+            <span class="small" id="dateSpan">{{date}}</span>
+        </div>
+    </div>
+</div>
