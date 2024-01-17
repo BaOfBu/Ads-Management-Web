@@ -37,17 +37,19 @@
                     <thead>
                         <tr>
                             <th scope="col" style="width: 2%">#</th>
-                            <th scope="col" style="width: 10%">Địa chỉ</th>
-                            <th scope="col" style="width: 7%">Khu vực</th>
-                            <th scope="col" style="width: 8%">Loại bảng</th>
+                            <th scope="col" style="width: 25%">Địa chỉ</th>
+                            <th scope="col" style="width: 14%">Khu vực</th>
+                            <th scope="col" style="width: 20%">Loại bảng</th>
                             <th scope="col" style="width: 9%">Kích thước</th>
-                            <th scope="col" style="width: 8%">Hình thức</th>
-                            <th scope="col" style="width: 8%">Phân loại</th>
-                            <th scope="col" style="width: 11%">Nội dung và ảnh</th>
+                            <th scope="col" style="width: 9%">Trạng thái</th>
+                            {{!-- <th scope="col" style="width: 15%">Hình thức</th> --}}
+                            {{!-- <th scope="col" style="width: 15%">Phân loại</th> --}}
+                            {{!-- <th scope="col" style="width: 11%">Nội dung và ảnh</th> --}}
                             {{!-- <th scope="col" style="width: 8%">Hình ảnh</th> --}}
-                            <th scope="col" style="width: 17%">Thông tin LH</th>
-                            <th scope="col" style="width: 10%">Thời gian</th>
+                            {{!-- <th scope="col" style="width: 17%">Thông tin LH</th> --}}
+                            {{!-- <th scope="col" style="width: 10%">Thời gian</th> --}}
                             <th scope="col" style="width: 10%">Hành động</th>
+                            <th scope="col" style="width: 11%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,16 +57,17 @@
                             <tr>
                                 <th scope="row">{{stt}}</th>
                                 <td>{{ads_location_name}}</td>
-                                <td>Phường {{ward_name}} - Quận {{district_name}}</td>
+                                <td>Phường {{ward_name}} <br> - Quận {{district_name}}</td>
                                 <td>{{ads_panel_type_name}}</td>
                                 <td>{{width}}m x {{height}}m</td>
-                                <td>{{ads_type_name}}</td>
-                                <td>{{ads_location_type_name}}</td>
-                                <td>{{content}} - Ảnh: {{img_link}}</td>
+                                <td>{{status}}</td>
+                                {{!-- <td>{{ads_type_name}}</td> --}}
+                                {{!-- <td>{{ads_location_type_name}}</td> --}}
+                                {{!-- <td>{{content}} - Ảnh: {{img_link}}</td> --}}
                                 {{!-- <td>{{img_link}}</td> --}}
                                 {{!-- <td>{{nameCompany}}</td> --}}
-                                <td>Tên công ty: {{nameCompany}} - Địa chỉ: {{locationCompany}} - Email: {{emailCompany}} - Số ĐT: {{phoneCompany}}</td>
-                                <td>{{startDate}} - {{endDate}}</td>
+                                {{!-- <td>Tên công ty: {{nameCompany}} - Địa chỉ: {{locationCompany}} - Email: {{emailCompany}} - Số ĐT: {{phoneCompany}}</td> --}}
+                                {{!-- <td>{{startDate}} - {{endDate}}</td> --}}
                                 <td class="d-flex">
                                     {{#if (equal status 'Chưa duyệt')}}
                                         <div class="d-flex justify-content-center" style="margin-right: 10px;">
@@ -78,6 +81,14 @@
                                             </a>
                                         </div>
                                     {{/if}}
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="d-flex view-detail mt-1" href="district/view-detail?districtId={{districtId}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                                            <span class="ml-1">Xem chi tiết</span>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         {{/each}}
