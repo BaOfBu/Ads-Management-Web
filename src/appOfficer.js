@@ -51,6 +51,12 @@ const hbs = engine({
         console: function (value) {
             console.log(value);
         },
+        increment: function (value) {
+            return parseInt(value) + 1;
+        },
+        decrement: function (value) {
+            return parseInt(value) - 1;
+        },
     }
 });
 
