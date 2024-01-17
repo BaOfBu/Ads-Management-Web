@@ -3,6 +3,7 @@ import adsPanelController from "../../controllers/wardOfficer/ads_panel.controll
 const router = express.Router();
 
 router.get("/", adsPanelController.index);
+router.post("/", adsPanelController.postAdsPanel);
 router.get("/view-panel-detail", adsPanelController.viewPanelDetails);
 router.get("/ads-panel-edit", adsPanelController.getEditAdsPanel);
 router.post("/ads-panel-edit", adsPanelController.postEditAdsPanel);

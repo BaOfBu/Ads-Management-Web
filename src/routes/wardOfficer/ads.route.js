@@ -33,6 +33,7 @@ const storageAdsLocation = multer.diskStorage({
 const uploadAdsLocation = multer({ storage: storageAdsLocation });
 
 router.get("/", adsController.index);
+router.post("/", adsController.postAdsLocation);
 router.get("/view-detail", adsController.viewDetails);
 router.get("/view-panel-detail", adsController.viewPanelDetails);
 router.get("/ads-location-edit", adsController.getEditAdsLocation);

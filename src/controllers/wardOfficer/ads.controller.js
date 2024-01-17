@@ -21,13 +21,39 @@ const index = async function (req, res) {
         stt: index + 1
     }));
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
-    res.render("wardOfficer/ads_location", {
+    return res.render("wardOfficer/ads_location", {
         wardName: wardName.name,
         districtName: districtName.name,
         arrayAdsLocation: adsLocationWithIndex,
         date: currentDateTime,
         isEmpty: adsLocationWithIndex.length == 0
     });
+}
+
+const postAdsLocation = async function (req, res) {
+    console.log("req.body:", req.body);
+    const keyword = req.body.keyword || "";
+    const user = req.session.authUser;
+    //console.log("user",user);
+    const wardName = await adsService.findWardByWardId(user.wardId);
+    const districtName = await adsService.findDistrictByDistrictId(user.districtId);
+    const arrayAdsLocation = await adsService.findAllAdsLocationByKeyword(user.wardId,keyword);
+    // console.log("wardName",wardName);
+    // console.log("districtName",districtName);
+    //console.log("arrayAdsLocation",arrayAdsLocation);
+    const adsLocationWithIndex = arrayAdsLocation.map((adsLocation, index) => ({
+        ...adsLocation,
+        stt: index + 1
+    }));
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
+    return res.render("wardOfficer/ads_location", {
+        wardName: wardName.name,
+        districtName: districtName.name,
+        arrayAdsLocation: adsLocationWithIndex,
+        date: currentDateTime,
+        isEmpty: adsLocationWithIndex.length == 0
+    });
+    res.render("wardOfficer/ads_location");
 }
 
 const viewDetails = async function (req, res) {
@@ -51,9 +77,9 @@ const viewDetails = async function (req, res) {
 };
 
 const viewPanelDetails = async function (req, res) {
-    console.log("req.query.adsPanelId",req.query.adsPanelId);
+    //console.log("req.query.adsPanelId",req.query.adsPanelId);
     const ads_panel = await adsService.findAdsPanel(req.query.adsPanelId);
-    console.log("ads_panel nè",ads_panel);
+    //console.log("ads_panel nè",ads_panel);
     res.render("wardOfficer/ads_panel_detail", {
         adsPanel: ads_panel
     })
@@ -86,4 +112,4 @@ const getEditAdsPanel = async function (req, res) {
 }
 
 
-export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel};
+export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, postAdsLocation};

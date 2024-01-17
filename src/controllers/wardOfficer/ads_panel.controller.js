@@ -12,7 +12,7 @@ const index = async (req, res, next) => {
         ...adsPanel,
         stt: index + 1
     }));
-    res.render("wardOfficer/ads_panel_list", {
+    return res.render("wardOfficer/ads_panel_list", {
         wardName: wardName.name,
         districtName: districtName.name,
         arrayAdsPanel: adsPanelWithIndex,
@@ -20,10 +20,29 @@ const index = async (req, res, next) => {
     });
 }
 
+const postAdsPanel = async function (req, res) {
+    //console.log("req.body:", req.body);
+    const keyword = req.body.keyword || "";
+    const user = req.session.authUser;
+    //console.log("user",user);
+    const wardName = await adsService.findWardByWardId(user.wardId);
+    const districtName = await adsService.findDistrictByDistrictId(user.districtId);
+    const arrayAdsPanel = await adsPanelService.findAllAdsPanelByWardIdAndKeyword(user.wardId,keyword);
+    const adsPanelWithIndex = arrayAdsPanel.map((adsPanel, index) => ({
+        ...adsPanel,
+        stt: index + 1
+    }));
+    return res.render("wardOfficer/ads_panel_list", {
+        wardName: wardName.name,
+        districtName: districtName.name,
+        arrayAdsPanel: adsPanelWithIndex,
+        isEmpty: adsPanelWithIndex.length == 0
+    });
+}
 const viewPanelDetails = async function (req, res) {
     //console.log("req.query.adsPanelId",req.query.adsPanelId);
     const ads_panel = await adsService.findAdsPanel(req.query.adsPanelId);
-    console.log("ads_panel",ads_panel);
+    //console.log("ads_panel",ads_panel);
     if(ads_panel.licenseId != null){
         ads_panel.startDate = moment(ads_panel.startDate).format('DD/MM/YYYY');
         ads_panel.endDate = moment(ads_panel.endDate).format('DD/MM/YYYY');    
@@ -69,4 +88,4 @@ const postEditAdsPanel = async function (req, res) {
     return res.redirect("/ward-officer/ads-panel/");
 }
 
-export default { index, viewPanelDetails, getEditAdsPanel, postEditAdsPanel };
+export default { index, postAdsPanel, viewPanelDetails, getEditAdsPanel, postEditAdsPanel };
