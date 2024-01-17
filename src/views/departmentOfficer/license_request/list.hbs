@@ -11,9 +11,11 @@
     <div class="d-flex mt-3 justify-content-end">
         <div class="districts" style="margin-right: 10px;">
             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
-            Quận
+            {{districtName}}
             </button>
+            <input type="hidden" id="selectedDistrictId" value="{{districtId}}">
             <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" style="max-height: 500px; overflow-y: auto;">
+                <li><a class="dropdown-item active" data-value="Tất cả quận" data-id="-1">Tất cả quận</a></li>
                 {{#each districts}}
                     <li><a class="dropdown-item" data-value="{{name}}" data-id="{{districtId}}">Quận {{name}}</a></li>
                 {{/each}}
@@ -21,9 +23,14 @@
         </div>
         <div class="wards">
             <button class="btn btn-info dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false">
-            Phường
+            {{wardName}}
             </button>
+            <input type="hidden" id="selectedWardId" value="{{wardId}}">
             <ul class="dropdown-menu" aria-labelledby="dropdownWard" style="max-height: 500px; overflow-y: auto;">
+                <li><a class="dropdown-item active" href="license-request?districtId={{districtId}}&wardId=-1&page=1" data-value="Tất cả phường" data-id="-1">Tất cả phường</a></li>
+                {{#each wards}}
+                    <li><a class="dropdown-item" href="license-request?districtId={{districtId}}&wardId={{wardId}}&page=1" data-value="{{name}}" data-id="{{wardId}}">Phường {{name}}</a></li>
+                {{/each}}
             </ul>
         </div>
     </div>
@@ -37,17 +44,13 @@
                     <thead>
                         <tr>
                             <th scope="col" style="width: 2%">#</th>
-                            <th scope="col" style="width: 10%">Địa chỉ</th>
-                            <th scope="col" style="width: 7%">Khu vực</th>
-                            <th scope="col" style="width: 8%">Loại bảng</th>
+                            <th scope="col" style="width: 25%">Địa chỉ</th>
+                            <th scope="col" style="width: 14%">Khu vực</th>
+                            <th scope="col" style="width: 20%">Loại bảng</th>
                             <th scope="col" style="width: 9%">Kích thước</th>
-                            <th scope="col" style="width: 8%">Hình thức</th>
-                            <th scope="col" style="width: 8%">Phân loại</th>
-                            <th scope="col" style="width: 11%">Nội dung và ảnh</th>
-                            {{!-- <th scope="col" style="width: 8%">Hình ảnh</th> --}}
-                            <th scope="col" style="width: 17%">Thông tin LH</th>
-                            <th scope="col" style="width: 10%">Thời gian</th>
+                            <th scope="col" style="width: 9%">Trạng thái</th>
                             <th scope="col" style="width: 10%">Hành động</th>
+                            <th scope="col" style="width: 11%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,20 +58,14 @@
                             <tr>
                                 <th scope="row">{{stt}}</th>
                                 <td>{{ads_location_name}}</td>
-                                <td>Phường {{ward_name}} - Quận {{district_name}}</td>
+                                <td>Phường {{ward_name}} <br> - Quận {{district_name}}</td>
                                 <td>{{ads_panel_type_name}}</td>
                                 <td>{{width}}m x {{height}}m</td>
-                                <td>{{ads_type_name}}</td>
-                                <td>{{ads_location_type_name}}</td>
-                                <td>{{content}} - Ảnh: {{img_link}}</td>
-                                {{!-- <td>{{img_link}}</td> --}}
-                                {{!-- <td>{{nameCompany}}</td> --}}
-                                <td>Tên công ty: {{nameCompany}} - Địa chỉ: {{locationCompany}} - Email: {{emailCompany}} - Số ĐT: {{phoneCompany}}</td>
-                                <td>{{startDate}} - {{endDate}}</td>
+                                <td>{{status}}</td>
                                 <td class="d-flex">
                                     {{#if (equal status 'Chưa duyệt')}}
                                         <div class="d-flex justify-content-center" style="margin-right: 10px;">
-                                            <a class="btn btn-sm btn-outline-info" data-id="{{licenseRequestId}}" id="cancel-{{licenseRequestId}}" role="button">
+                                            <a class="btn btn-sm btn-outline-info" data-id="{{licenseRequestId}}" data-value="{{adsPanelId}}" id="cancel-{{licenseRequestId}}" role="button">
                                                 <img src="/static/images/departmentOfficer/icon-cancel.png" width="24" height="24" alt="cancel this request">
                                             </a>
                                         </div>
@@ -79,6 +76,14 @@
                                         </div>
                                     {{/if}}
                                 </td>
+                                <td>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="d-flex view-detail mt-1" href="license-request/view-detail?licenseRequestId={{licenseRequestId}}&stt={{stt}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                                            <span class="ml-1">Xem chi tiết</span>
+                                        </a>
+                                    </div>
+                                </td>
                             </tr>
                         {{/each}}
                     </tbody>
@@ -88,5 +93,39 @@
                 <span class="small" id="dateSpan">{{date}}</span>
             </div>
         </div>
+        <nav aria-label="Page navigation example" class="justify-content-center mt-5" id="pagination">
+            <ul class="pagination justify-content-center">
+                {{#if isFirstPage}}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Trang trước</a>
+                    </li>
+                {{else}}
+                    <li class="page-item">
+                        <a class="page-link" href="#" id="previousPage">Trang trước</a>
+                    </li>
+                {{/if}}
+
+                {{#each pageNumbers}}
+                    {{#if isActive}}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{value}}</a>
+                    </li>
+                    {{else}}
+                    <a class="page-link" href="{{#if (equal value '..')}}#pagination{{else}}license-request?districtId={{districtId}}&wardId={{wardId}}&page={{value}}{{/if}}">{{value}}</a>
+                    {{/if}}
+                {{/each}}
+
+                {{#if isLastPage}}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Trang sau</a>
+                    </li>
+                {{else}}
+                    <li class="page-item">
+                        <a class="page-link" href="#" id="nextPage">Trang sau</a>
+                    </li>
+                {{/if}}
+            </ul>
+        </nav>
+        <input type="hidden" id="page" value="{{page}}">
     </div>
 </div>

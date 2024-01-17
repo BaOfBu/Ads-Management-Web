@@ -18,6 +18,7 @@ function setDefaultLayoutAndPartials(req, res, next) {
 }
 router.use(setDefaultLayoutAndPartials);
 
+router.use("/", districtRoutes);
 router.use("/district", districtRoutes);
 router.use("/ward", wardRoutes);
 router.use("/provided-info", providedInforRoutes);
@@ -29,4 +30,7 @@ router.use("/ads-location-modification-request", adsLocationModificationRoutes);
 router.use("/license-request", licenseRequestRoutes);
 router.use("/citizen-report", citizenReportRoutes);
 
+router.use("/management", async function(req, res){
+    res.render("departmentOfficer/redirect/management");
+})
 export default router;
