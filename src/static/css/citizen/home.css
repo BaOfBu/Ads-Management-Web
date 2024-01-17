@@ -218,12 +218,16 @@ input:checked + .slider:before {
     background-color: #d32e2e;
     color: white;
 }
-#ads-detail-item {
+#ads-detail-item,
+#no-ads-detail-item {
     width: 90%;
     margin: 0 auto;
     padding: 20px;
     border: 1px #737373 solid;
     border-radius: 5px;
+}
+#no-ads-detail-item {
+    border: none;
 }
 #button-pane {
     margin-top: 30px;
@@ -379,4 +383,18 @@ input:checked + .slider:before {
     font-size: 20px;
     margin-bottom: 10px;
     font-weight: bold;
+}
+#return-location {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--black-light-color);
+    line-height: 16px;
+    margin-left: 10px;
+    border: 1px solid;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.return-location:hover {
+    color: white;
+    background: black;
 }
