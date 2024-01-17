@@ -1,0 +1,112 @@
+{{#section 'css'}}
+    <link rel="stylesheet" href="/static/css/departmentOfficer/district.css">
+{{/section}}
+
+<div class="custom-container">
+    <div class="card">
+        <div class="custom-card">
+            <h5 class="card-header d-flex justify-content-center">Danh sách các bảng quảng cáo của phường {{wardName}} quận {{districtName}}</h5> 
+        </div>
+    </div>
+    <div>
+        <div class="card mt-5">
+        <div class="card-header d-flex justify-content-between align-items-center p-3">
+            <h5>Xem danh sách bảng quảng cáo</h5>
+            <form id="searchForm" action="" method="post" class="d-flex flex-row col-md-4">
+            {{!-- <div class="d-flex flex-row col-md-4"> --}}
+                    <input type="text" class="form-control col-md-8" id="keyword" name="keyword" placeholder="Tìm kiếm">
+                    <button type="submit" id="submitBtn" class="btn btn-primary form-control col-md-4">Tìm kiếm</button>
+            {{!-- </div> --}}
+            </form>
+        </div>
+        {{#if isEmpty}}
+            <div class="card-body">Không có dữ liệu</div>
+        {{else}}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">#</span>
+                    </th>
+                    <th scope="col" class="col-4">
+                        <span class="d-flex justify-content-center">Địa chỉ</span>
+                    </th>
+                    <th scope="col" class="col-2">
+                        <span class="d-flex justify-content-center">Loại bảng quảng cáo</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Kích thước</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Số lượng</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Chi tiết</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Y/c chỉnh sửa</span>
+                    </th>
+                    <th scope="col" class="col-1">
+                        <span class="d-flex justify-content-center">Y/c cấp phép</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each arrayAdsPanel}}
+                <tr>
+                    <th scope="row">
+                        <span class="d-flex justify-content-center">
+                            {{stt}}
+                        </span>
+                    </th>
+                    <td>
+                        <span class="d-flex justify-content-center">
+                            {{location_name}}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center">
+                            {{ads_panel_type_name}}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center">
+                            {{width}}m x {{height}}m
+                        </span>
+                    </td>
+                    <td>
+                        <span class="d-flex justify-content-center">
+                            {{quantity}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="d-flex view-detail mt-1" href="/ward-officer/ads-panel/view-panel-detail?adsPanelId={{adsPanelId}}" role="button">
+                                <span class="ml-1">Xem chi tiết</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="d-flex view-detail mt-1" href="/ward-officer/ads-panel/ads-panel-edit?adsPanelId={{adsPanelId}}" role="button">
+                                <span class="ml-1">Yêu cầu</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <a class="d-flex view-detail mt-1" href="#" role="button">
+                                <span class="ml-1">Yêu cầu</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{/if}}
+        <div class="card-footer text-muted font-italic">
+            <span class="small">{{date}}</span>
+        </div>
+    </div>
+</div>

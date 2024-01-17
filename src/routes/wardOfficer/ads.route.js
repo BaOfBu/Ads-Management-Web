@@ -33,6 +33,7 @@ const storageAdsLocation = multer.diskStorage({
 const uploadAdsLocation = multer({ storage: storageAdsLocation });
 
 router.get("/", adsController.index);
+router.post("/", adsController.postAdsLocation);
 router.get("/view-detail", adsController.viewDetails);
 router.get("/view-panel-detail", adsController.viewPanelDetails);
 router.get("/ads-location-edit", adsController.getEditAdsLocation);
@@ -83,9 +84,10 @@ router.post("/ads-panel-edit", async function(req,res,next){
         Quantity: req.body.Quantity,
 
     }
-    const ads_location_edit = await adsService.createAdsPanelEdit(entity);
+    const ads_panel_edit = await adsService.createAdsPanelEdit(entity);
     //const update = await adsService.updateMerchantInfo(userID, { image: req.body.image });
     //return res.json({ success: true, image: req.body.image });
-    return res.redirect("/ward-officer/ads");
+    return res.redirect("/ward-officer/ads/");
 });
+
 export default router;
