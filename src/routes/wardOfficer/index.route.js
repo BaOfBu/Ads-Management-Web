@@ -3,6 +3,7 @@ import homeRoutes from "./home.route.js";
 import adsRoutes from "./ads.route.js";
 import reportRoutes from "./report.route.js";
 import adsPanelRoutes from "./adspanel.route.js";
+import licenseRequestRoutes from "./license-request.route.js";
 const router = express.Router();
 
 // Middleware to apply default settings to the response locals
@@ -16,5 +17,6 @@ router.use("/",homeRoutes);
 router.use("/ads",adsRoutes);
 router.use("/report",reportRoutes)
 router.use("/ads-panel",adsPanelRoutes);
+router.use("/license-request",licenseRequestRoutes);
 
 export default router;

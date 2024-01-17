@@ -53,7 +53,6 @@ const postAdsLocation = async function (req, res) {
         date: currentDateTime,
         isEmpty: adsLocationWithIndex.length == 0
     });
-    res.render("wardOfficer/ads_location");
 }
 
 const viewDetails = async function (req, res) {
