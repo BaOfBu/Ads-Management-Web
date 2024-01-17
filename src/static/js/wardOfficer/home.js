@@ -192,7 +192,7 @@ let userWardId = document.getElementById("userWardId").value;
 // console.log(typeof userWardId);
 function updateTheInformationAdsItemForSideBar(ad) {
     const sidebar = document.getElementById("sidebar");
-    $.getJSON(`http://localhost:8888/get-data/get-ads-panel/byWard`, { entity: ad.adsLocationId, wardId:userWardId}, function (data) {
+    $.getJSON(`http://localhost:8888/get-data/get-ads-panel/byWard`, { entity: ad.adsLocationId, wardId: userWardId }, function (data) {
         if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
                 let adsDetailItem = document.createElement("div");
@@ -306,7 +306,7 @@ function createMarkerAds(ad) {
 }
 document.getElementById("switchAds").addEventListener("change", function () {
     if (this.checked) {
-        $.getJSON(`http://localhost:8888/get-data/get-ads-location/byWard`,{wardId:userWardId} , function (data) {
+        $.getJSON(`http://localhost:8888/get-data/get-ads-location/byWard`, { wardId: userWardId }, function (data) {
             //console.log(data);
             if (data === false) {
                 alert("Không thể tải dữ liệu từ Server");
@@ -424,7 +424,7 @@ function createMarkerReport(report) {
 }
 document.getElementById("switchReport").addEventListener("change", function () {
     if (this.checked) {
-        $.getJSON(`http://localhost:8888/get-data/get-report-location/byWard`,{wardId:userWardId}, function (data) {
+        $.getJSON(`http://localhost:8888/get-data/get-report-location/byWard`, { wardId: userWardId }, function (data) {
             if (data === false) {
                 alert("Không thể tải dữ liệu từ Server");
             } else {
