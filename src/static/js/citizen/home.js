@@ -1,7 +1,6 @@
 // Access the map
 const accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
 mapboxgl.accessToken = "pk.eyJ1IjoidHRiaW50dCIsImEiOiJjbHBnb282amQwMDVjMmpyeHY5N2c1bXMyIn0.ti-gYOhpihy4YzAFbKuxZQ";
-
 // Initialize the map
 const map = new mapboxgl.Map({
     container: "map",
@@ -10,11 +9,9 @@ const map = new mapboxgl.Map({
     zoom: 16,
     projection: "globe"
 });
-
 // Global variable
 let currentMarker = null;
 let isMarker = false;
-
 // User Location
 navigator.geolocation.getCurrentPosition(position => {
     const userLocation = [position.coords.longitude, position.coords.latitude];
@@ -24,13 +21,10 @@ navigator.geolocation.getCurrentPosition(position => {
     }
     currentMarker = new mapboxgl.Marker().setLngLat(userLocation).addTo(map);
 });
-
 // Fullscreen Controll
 map.addControl(new mapboxgl.FullscreenControl());
-
 // Compass Controll
 map.addControl(new mapboxgl.NavigationControl());
-
 // Auto Geocoding Search
 var geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
@@ -40,7 +34,6 @@ var geocoder = new MapboxGeocoder({
     marker: false
 });
 map.addControl(geocoder, "top-left");
-
 // Listen for the 'result' event when a location is selected
 geocoder.on("result", function (event) {
     var coordinates = event.result.geometry.coordinates;
@@ -54,7 +47,6 @@ geocoder.on("result", function (event) {
     button.style.display = "none";
 });
 // Update the information for the point without marker
-
 function updateSideBarWithEmptyPoint() {
     const apiUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${currentMarker._lngLat.lng},${currentMarker._lngLat.lat}.json?access_token=${accessToken}`;
     fetch(apiUrl)
@@ -137,7 +129,6 @@ map.on("click", function (e) {
         toggleSidebar();
     }
 });
-
 // Function default for Switch
 function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
@@ -213,10 +204,8 @@ function createMarkerAds(ad) {
         isMarker = true;
     });
 }
-let clustersVisible = null;
-function addCluster() {
-    // removeCluster();
-    // map.on("load", function () {
+let clustersVisibleAds = null;
+function addClusterAds() {
     map.addSource("earthquakes-daquyhoach", {
         type: "geojson",
         data: {
@@ -290,21 +279,17 @@ function addCluster() {
             "text-color": "#ffffff"
         }
     });
-    // });
 }
-
-function removeCluster() {
-    clustersVisible = null;
+function removeClusterAds() {
+    clustersVisibleAds = null;
     adsGeoJSON.features = [];
     var clusterLayerIds = ["clusters-daquyhoach", "clusters-chuaquyhoach", "cluster-count-daquyhoach", "cluster-count-chuaquyhoach"];
     var clusterSourceIds = ["earthquakes-daquyhoach", "earthquakes-chuaquyhoach"];
-
     clusterLayerIds.forEach(function (layerId) {
         if (map.getLayer(layerId)) {
             map.removeLayer(layerId);
         }
     });
-
     clusterSourceIds.forEach(function (sourceId) {
         if (map.getSource(sourceId)) {
             map.removeSource(sourceId);
@@ -315,8 +300,8 @@ function removeCluster() {
 function updateClusterVisibility() {
     var currentZoom = map.getZoom();
     if (currentZoom <= 13) {
-        if (clustersVisible == null) {
-            map.on("load", addCluster());
+        if (clustersVisibleAds == null) {
+            map.on("load", addClusterAds());
         }
         marker_ads.forEach(function (marker) {
             marker.remove();
@@ -326,24 +311,22 @@ function updateClusterVisibility() {
         map.setLayoutProperty("cluster-count-daquyhoach", "visibility", "visible");
         map.setLayoutProperty("cluster-count-chuaquyhoach", "visibility", "visible");
         // map.setLayoutProperty("unclustered-point", "visibility", "visible");
-        clustersVisible = true;
+        clustersVisibleAds = true;
     } else {
-        // removeCluster();
-        if (clustersVisible == null) {
-            map.on("load", addCluster());
+        if (clustersVisibleAds == null) {
+            map.on("load", addClusterAds());
         }
         map.setLayoutProperty("clusters-daquyhoach", "visibility", "none");
         map.setLayoutProperty("clusters-chuaquyhoach", "visibility", "none");
         map.setLayoutProperty("cluster-count-daquyhoach", "visibility", "none");
         map.setLayoutProperty("cluster-count-chuaquyhoach", "visibility", "none");
         // map.setLayoutProperty("unclustered-point", "visibility", "none");
-        clustersVisible = false;
+        clustersVisibleAds = false;
         marker_ads.forEach(function (marker) {
             marker.addTo(map);
         });
     }
 }
-
 function createMarkerElementAds(ad) {
     const el = document.createElement("div");
     el.className = "marker";
@@ -441,14 +424,6 @@ function addEvenDetailAdsPanel(ad, data) {
                         </div>
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden"></span>
-                    </button>
                 </div>
             </div>
             <div class = "detail-ads-information">
@@ -491,18 +466,32 @@ document.getElementById("switchAds").addEventListener("change", function () {
                 });
             }
         });
-        // addCluster();
     } else {
         marker_ads.forEach(function (marker) {
             marker.remove();
         });
         marker_ads = [];
-        removeCluster();
+        removeClusterAds();
     }
 });
-
 // Listen on the Switch Report
+let reportGeoJson = {
+    type: "FeatureCollection",
+    features: []
+};
 let marker_report = [];
+function createGeoJSONFeature(report) {
+    return {
+        type: "Feature",
+        geometry: {
+            type: "Point",
+            coordinates: [report.long, report.lat]
+        },
+        properties: {
+            status: report.status
+        }
+    };
+}
 function mouseEnterReport(el, report, popup) {
     popup
         .setLngLat([report.long, report.lat])
@@ -546,7 +535,7 @@ function updateTheInformationReportItemForSideBar(report) {
         addEventDetailReportPanel(report);
         return;
     }
-    // Ads panel
+    // report panel
     $.getJSON(`http://localhost:8888/get-data/get-report-location/get-report-panel`, { id: report.adsLocationId }, function (data) {
         if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
@@ -567,7 +556,7 @@ function updateTheInformationReportItemForSideBar(report) {
                             <p id="ads-detail-item-size"><strong>Nội dung</strong></p>
                             ${data[i].content}
                             <p><strong>Ngày gửi</strong>: ${formattedDate}</p>
-                            <p><strong>Trạng thái</strong>: ${data[i].status}</p>
+                            <p><strong>Trạng thái: ${data[i].status}</strong></p>
                             <div id="button-pane">
                                 <button class="more-information" report-detail-item=${i}><i class="bi bi-info-circle"></i></button>
                             </div>
@@ -626,8 +615,9 @@ function addEventDetailReportPanel(data) {
             <span class="report-content-pop-up">${data.content}</span>
             <span class="report-content-pop-up"><b>Địa chỉ</b></span>
             <span class="report-location">${data.location}</span>
-            <span class="status-popup-info-report"><b>Trạng thái</b>: ${data.status}</span>
+            <span class="status-popup-info-report"><b>Trạng thái: ${data.status}</b></span>
             <span class="status-popup-info-report"><b>Ngày gửi</b>: ${formattedDate}</span>
+            ${data.handlingProcedureInfor ? `<span class=""><b>Giải quyết</b>: ${data.handlingProcedureInfor}</span>` : ""}
         </div>`;
         sidebar.appendChild(reportDetailItem);
     } else {
@@ -677,8 +667,13 @@ function addEventDetailReportPanel(data) {
                 <span class="report-content-pop-up">${data[reportId].content}</span>
                 <span class="report-content-pop-up"><b>Địa chỉ</b></span>
                 <span class="report-location">${data[reportId].location}</span>
-                <span class="status-popup-info-report"><b>Trạng thái</b>: ${data[reportId].status}</span>
+                <span class="status-popup-info-report"><b>Trạng thái: ${data[reportId].status}</b></span>
                 <span class="status-popup-info-report"><b>Ngày gửi</b>: ${formattedDate}</span>
+                ${
+                    data[reportId].handlingProcedureInfor
+                        ? `<span class=""><b>Giải quyết</b>: ${data[reportId].handlingProcedureInfor}</span>`
+                        : ""
+                }
                 <button class="return-button-report" >
                     <i class="bi bi-arrow-return-left"></i>Trở về
                 </button>
