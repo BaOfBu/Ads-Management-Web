@@ -25,10 +25,9 @@ export default {
             .leftJoin("image as img1", "citizen_report.imgId1", "=", "img1.imgId")
             .leftJoin("image as img2", "citizen_report.imgId2", "=", "img2.imgId");
     },
-    async findAllReportLocationByLocation(adsLocationId) {
+    findAllReportLocationByWard(wardId) {
         return db("citizen_report")
             .select(
-                "citizen_report.citizenReportId as reportId",
                 "citizen_report.long as long",
                 "citizen_report.lat as lat",
                 "citizen_report.location as location",
@@ -41,6 +40,19 @@ export default {
                 "img2.imgLink as imgId2",
                 "citizen_report.sendDate as date",
                 "citizen_report.status as status",
+                "citizen_report.adsPanelId as adsPanelId"
+            )
+            .join("report_type", "citizen_report.reportTypeId", "=", "report_type.reportTypeId")
+            .join("ads_panel", "citizen_report.adsPanelId", "=", "ads_panel.adsPanelId")
+            .join("ads_location", "ads_panel.adsLocationId", "=", "ads_location.adsLocationId")
+            .leftJoin("image as img1", "citizen_report.imgId1", "=", "img1.imgId")
+            .leftJoin("image as img2", "citizen_report.imgId2", "=", "img2.imgId")
+            .where("ads_location.wardId", wardId);
+=======
+    async findAllReportLocationByLocation(adsLocationId) {
+        return db("citizen_report")
+            .select(
+                "citizen_report.citizenReportId as reportId",
                 "citizen_report.adsPanelId as adsPanelId",
                 "ads_panel.adsLocationId as adsLocationId",
                 "ads_panel.quantity as ads_panel_quantity",

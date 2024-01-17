@@ -2,8 +2,8 @@ import express from "express";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
-import adsController from "../../controllers/wardOfficer/ads.controller.js";
-import adsService from "../../services/wardOfficer/ads.service.js";
+import adsController from "../../controllers/districtOfficer/ads.controller.js";
+import adsService from "../../services/districtOfficer/ads.service.js";
 const router = express.Router();
 
 const uploadAdsLocationRequest = "static/images/ads-location/";
@@ -59,7 +59,7 @@ router.post("/ads-location-edit", uploadAdsLocation.array("image"),async functio
     const ads_location_edit = await adsService.createAdsLocationEdit(entity);
     //const update = await adsService.updateMerchantInfo(userID, { image: req.body.image });
     //return res.json({ success: true, image: req.body.image });
-    return res.redirect("/ward-officer/ads");
+    return res.redirect("/district-officer/ads");
 });
 
 router.post("/ads-panel-edit", async function(req,res,next){
@@ -83,7 +83,7 @@ router.post("/ads-panel-edit", async function(req,res,next){
     const ads_panel_edit = await adsService.createAdsPanelEdit(entity);
     //const update = await adsService.updateMerchantInfo(userID, { image: req.body.image });
     //return res.json({ success: true, image: req.body.image });
-    return res.redirect("/ward-officer/ads/");
+    return res.redirect("/district-officer/ads/");
 });
 
 export default router;

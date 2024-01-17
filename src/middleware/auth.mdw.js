@@ -48,6 +48,27 @@ if (req.session.auth === false) {
 next();
 };
 
+const authDistrictOfficer = function (req, res, next) {
+    //console.log("authMerchant");
+    if(req.session.authUser){
+        switch (req.session.authUser.role) {
+            case 'Ward':
+                return res.redirect('/ward-officer');
+            case 'Department':
+                return res.redirect('/department-officer');
+            case undefined:
+                return res.redirect('/');
+        }
+    }
+    if(req.originalUrl === '/'){
+        return next();
+    }
+    if (req.session.auth === false) {
+        return res.redirect('/');
+    }
+    next();
+    };
+
 const authDepartmentOfficer = function (req, res, next) {
     //console.log("authMerchant");
     if(req.session.authUser){
@@ -74,5 +95,6 @@ export default {
     authUser,
     authLogout,
     authWardOfficer,
+    authDistrictOfficer,
     authDepartmentOfficer
 };
