@@ -411,6 +411,7 @@ function addEvenDetailAdsPanel(ad, data) {
             alert("Bảng quảng cáo hiện chưa có cấp phép quảng cáo");
             return;
         } else {
+            endDate = new Date(data[index].endDate).toLocaleDateString("en-GB");
             listHtmlSideBar = $("#sidebar").html();
             ads = ad;
             resetTheInformationOfSideBar();
@@ -433,7 +434,7 @@ function addEvenDetailAdsPanel(ad, data) {
                 <p id="ads-detail-item-number">Số lượng: <strong>${data[index].quantity} trụ/bảng</strong></p>
                 <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
                 <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
-                <p id="expired-date-item">Ngày hết hạn: <b>31/12/2024</b></p>
+                <p id="expired-date-item">Ngày hết hạn: <b>${endDate}</b></p>
                 <div id="button-pane">
                     <button class="report-button" ads-panel-id="${adsPanelId}">
                         <i class="bi bi-exclamation-octagon-fill"></i>
