@@ -21,7 +21,7 @@ const index = async (req, res, next) => {
 }
 
 const viewPanelDetails = async function (req, res) {
-    console.log("req.query.adsPanelId",req.query.adsPanelId);
+    //console.log("req.query.adsPanelId",req.query.adsPanelId);
     const ads_panel = await adsService.findAdsPanel(req.query.adsPanelId);
     //console.log("ads_panel",ads_panel);
     res.render("wardOfficer/ads_panel_detail", {

@@ -52,7 +52,7 @@ const viewDetails = async function (req, res) {
 
 const viewPanelDetails = async function (req, res) {
     const ads_panel = await adsService.findAdsPanel(req.query.adsPanelId);
-    //console.log("ads_panel",ads_panel);
+    console.log("ads_panel",ads_panel);
     res.render("wardOfficer/ads_panel_detail", {
         adsPanel: ads_panel
     })

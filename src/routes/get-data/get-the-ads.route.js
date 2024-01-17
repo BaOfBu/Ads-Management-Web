@@ -1,5 +1,6 @@
 import express from "express";
 import GetAdsLocationController from "../../controllers/departmentOfficer/get-ads-location.controller.js";
 const router = express.Router();
-router.use("/", GetAdsLocationController.getAdsLocation);
+router.get("/", GetAdsLocationController.getAdsLocation);
+router.get("/byWard", GetAdsLocationController.getAdsLocationByWard);
 export default router;
