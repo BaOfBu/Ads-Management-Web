@@ -1,4 +1,8 @@
 import adsService from "../../services/districtOfficer/ads.service.js";
+import adsServiceWard from "../../services/wardOfficer/ads.service.js";
+import imageService from "../../services/departmentOfficer/image.service.js";
+import newLicenseRequest from "../../services/wardOfficer/license_request.service.js";
+import adsPanel from "../../services/departmentOfficer/ads_panel.service.js";
 import moment from "moment";
 import multer from "multer";
 import fs from "fs";
@@ -178,7 +182,7 @@ const licenseRequest = async function (req, res) {
     const adsPanelId = req.query.adsPanelId;
     let available = true;
 
-    let adsPanel = await adsService.findLicenseRequestOfAdsPanel(adsPanelId);
+    let adsPanel = await adsServiceWard.findLicenseRequestOfAdsPanel(adsPanelId);
 
     console.log("adsPanel: ", adsPanel);
 
@@ -229,4 +233,4 @@ const handleAddNewRequest = async function (req, res) {
 };
 
 
-export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, postAdsLocation};
+export default { index, viewDetails, viewPanelDetails, getEditAdsLocation, getEditAdsPanel, postAdsLocation, licenseRequest, handleAddNewRequest};

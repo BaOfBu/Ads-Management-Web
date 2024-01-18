@@ -46,7 +46,7 @@ const index = async (req, res, next) => {
     //console.log("ReportWithIndex",ReportWithIndex);
     const newArray = ReportWithIndex.slice(offset, offset + limit);
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
-    res.render("districtOfficer/report", {
+    res.render("wardOfficer/report", {
         type: "report",
         wardName: wardName.name,
         districtName: districtName.name,
@@ -62,7 +62,7 @@ const index = async (req, res, next) => {
 const viewDetails = async (req, res, next) => {
     const report = await reportService.findReportByReportId(req.query.citizenReportId);
     //console.log("report",report);
-    res.render("districtOfficer/report_detail", {
+    res.render("wardOfficer/report_detail", {
         type: "report",
         report: report
     })
@@ -88,7 +88,7 @@ const updateStatus = async (req, res, next) => {
     };
 
     await transporter.sendMail(mailOptions);
-    return res.redirect("/district-officer/report");
+    return res.redirect("/ward-officer/report");
     //res.redirect("/ward-officer/report/viewDetails?citizenReportId=" + citizenReportId + "");
 }
 

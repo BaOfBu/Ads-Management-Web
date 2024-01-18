@@ -12,7 +12,7 @@ const index = async function (req, res) {
     const limit = 2;
     const offset = (page - 1) * limit;
     let empty = false;
-    const license_request = await licenseRequest.findByWardId(user.wardId);
+    const license_request = await licenseRequest.findAllByDistrict(user.districtId);
 
     if (!license_request || license_request.length === 0) {
         empty = true;
@@ -40,7 +40,7 @@ const index = async function (req, res) {
     const newArray = license_requestWithIndex.slice(offset, offset + limit);
     const currentDateTime = moment().format("HH:mm:ss DD-MM-YYYY");
 
-    res.render("wardOfficer/license_request", {
+    res.render("districtOfficer/license_request", {
         type: "license",
         empty: empty,
         license_request: newArray,
@@ -61,19 +61,19 @@ const cancelRequest = async function (req, res) {
 
 const addNewRequest = async function (req, res) {
     const user = req.session.authUser;
-    const adsLocations = await adsLocation.findAllByWardId(user.wardId);
+    const adsLocations = await adsLocation.findAllWardByDistrictId(user.districtId);
     const adsPanelTypes = await adsPanel.findAllByAdsLocationId(adsLocations[0].adsLocationId);
     const lengthImg = await imageService.findAll();
     console.log("adsLocations: ", adsLocations);
     console.log("adsPanelTypes: ", adsPanelTypes);
 
-    res.render("wardOfficer/license_request_add", {
+    res.render("districtOfficer/license_request_add", {
         type: "license",
         adsLocations: adsLocations,
         defaultAdsLocation: adsLocations[0],
         adsPanelTypes: adsPanelTypes,
         defaultAdsPanelType: adsPanelTypes[0],
-        lengthImg: lengthImg.length + 1
+        lengthImg: lengthImg[lengthImg.length - 1] + 1
     });
 };
 
@@ -136,7 +136,7 @@ const handleAddNewRequest = async function (req, res) {
     const request = await newLicenseRequest.add(req.body);
     const adsPanel = await adsPanel.patch({ adsPanelId: req.body.adsPanelId, licenseId: request.licenseRequestId });
     console.log("New request: ", request);
-    res.redirect("/ward-officer/license-request");
+    res.redirect("/district-officer/license-request");
 };
 
 export default { index, cancelRequest, addNewRequest, getAdsPanelTypeByLocation, uploadImage, handleAddNewRequest };

@@ -75,7 +75,7 @@ export default {
       .join('ads_panel_type', 'ads_panel.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId')
       .leftJoin('license_request', 'ads_panel.adsPanelId', '=', 'license_request.adsPanelId')
       .leftJoin('image', 'license_request.imgId', '=', 'image.imgId')
-      .where('ads_panel.adsPanelId', adsPanelId).first();
+      .where('ads_panel.adsPanelId', adsPanelId);
       //console.log("res",res);
       return res;
     },

@@ -38,6 +38,8 @@ router.get("/view-detail", adsController.viewDetails);
 router.get("/view-panel-detail", adsController.viewPanelDetails);
 router.get("/ads-location-edit", adsController.getEditAdsLocation);
 router.get("/ads-panel-edit", adsController.getEditAdsPanel);
+router.get("/license-request", adsController.licenseRequest);
+router.post("/license-request", adsController.handleAddNewRequest);
 router.post("/ads-location-edit", uploadAdsLocation.array("image"),async function(req,res,next){
     //console.log("req.body:", req.body);
     const filePath = req.files[0].path;

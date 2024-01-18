@@ -71,9 +71,17 @@
                         </span>
                     </td>
                     <td>
-                        <span class="d-flex justify-content-center">
-                            {{status}}
-                        </span>
+                        <span class="d-flex justify-content-center"><h4>
+                            {{#if (equal status "Đã xử lý xong")}}
+                                <span class="badge badge-success">{{status}}</span>
+                            {{else}}
+                            {{#if (equal status "Đang xử lý")}}
+                                <span class="badge badge-warning">{{status}}</span>
+                            {{else}}
+                                <span class="badge badge-danger">{{status}}</span>
+                            {{/if}}
+                            {{/if}}
+                        </h4></span>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
