@@ -56,15 +56,16 @@ const handle_register = async function (req, res) {
         const raw_password = req.body.raw_password;
         const salt = bcrypt.genSaltSync(10);
         const hash_password = bcrypt.hashSync(raw_password, salt);
-
+        const role = req.body.role === "Phường" ? "Ward" : "District";
         const raw_dob = req.body.raw_dob;
         const dob = moment(raw_dob, "DD/MM/YYYY").format("YYYY-MM-DD");
-
-        const wardId = await wardService.getIdByName(req.body.ward);
-
+        let wardId;
+        if (role == "Ward") {
+            wardId = await wardService.getIdByName(req.body.ward);
+        } else {
+            wardId = null;
+        }
         const districtId = await districtService.getIdByName(req.body.district);
-
-        const role = req.body.role === "Phường" ? "Ward" : "District";
 
         const account = {
             username: req.body.username,
@@ -74,7 +75,8 @@ const handle_register = async function (req, res) {
             phone: req.body.phone,
             dob: dob,
             role: role,
-            wardId: wardId.wardId,
+            wardId: wardId != null ? wardId.wardId : null,
+            status: "Active",
             districtId: districtId.districtId
         };
 

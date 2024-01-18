@@ -241,14 +241,14 @@ $("#submitButton").on("click", function (event) {
         if (isValid) $("#dropdownDistrict").focus();
         isValid = false;
     }
-
-    if ($("#selectedWard").val() == "") {
-        $("#dropdownWard").addClass("is-invalid");
-        $("#wardError").show();
-        if (isValid) $("#dropdownWard").focus();
-        isValid = false;
+    if ($("#flexRadioDefault").is(":checked")) {
+        if ($("#selectedWard").val() == "") {
+            $("#dropdownWard").addClass("is-invalid");
+            $("#wardError").show();
+            if (isValid) $("#dropdownWard").focus();
+            isValid = false;
+        }
     }
-
     if (!isValid) {
         event.preventDefault();
     } else {
@@ -272,4 +272,7 @@ $("#submitButton").on("click", function (event) {
 
 $("#flexRadioChecked").on("click", function (event) {
     $(".ward").hide();
+});
+$("#flexRadioDefault").on("click", function (event) {
+    $(".ward").show();
 });
