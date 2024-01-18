@@ -2,7 +2,11 @@ import express from "express";
 import adsPanelController from "../../controllers/departmentOfficer/ads_panel.controller.js";
 
 const router = express.Router();
-
+const setActiveNavItem = (req, res, next) => {
+    res.locals.activeNavItem = "management";
+    next();
+};
+router.use(setActiveNavItem);
 router.get("/", adsPanelController.index);
 router.get("/view-detail", adsPanelController.viewDetailAdsPanel);
 router.get("/add", adsPanelController.addAdsPanel);

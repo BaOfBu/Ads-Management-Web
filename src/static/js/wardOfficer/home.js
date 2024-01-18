@@ -365,6 +365,8 @@ function createMarkerElementReport(report) {
         el.style.backgroundImage = 'url("/static/images/citizen/report-blue.png")';
     } else if (report.status === "Đang xử lý") {
         el.style.backgroundImage = 'url("/static/images/citizen/report-red.png")';
+    } else if (report.status === "Chưa xử lý") {
+        el.style.backgroundImage = 'url("/static/images/citizen/report-red.png")';
     }
     el.style.backgroundSize = "cover";
     return el;

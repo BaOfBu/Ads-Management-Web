@@ -15,16 +15,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-link">
-            <a class="custom-font-color" href="/department-officer/management">Quản lý <span class="sr-only">(current)</span></a>
+            <a class="custom-font-color  {{#if (equal activeNavItem 'management')}}active{{/if}}" href="/department-officer/management">Quản lý <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-link">
-            <a class="custom-font-color" href="/department-officer/request">Yêu cầu</a>
+            <a class="custom-font-color {{#if (equal activeNavItem 'request')}}active{{/if}}" href="/department-officer/request">Yêu cầu</a>
           </li>
           <li class="nav-link">
-            <a class="custom-font-color" href="/department-officer/citizen-report">Thống kê</a>
+            <a class="custom-font-color {{#if (equal activeNavItem 'citizen-report')}}active{{/if}}" href="/department-officer/citizen-report">Thống kê</a>
           </li>
           <li class="nav-link">
-            <a class="custom-font-color" href="/department-officer/officer">Cán bộ</a>
+            <a class="custom-font-color {{#if (equal activeNavItem 'officer')}}active{{/if}}" href="/department-officer/officer">Cán bộ</a>
           </li>
         </ul>
 

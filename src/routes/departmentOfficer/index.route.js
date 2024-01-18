@@ -30,16 +30,22 @@ router.use("/ads-location-modification-request", adsLocationModificationRoutes);
 router.use("/license-request", licenseRequestRoutes);
 router.use("/citizen-report", citizenReportRoutes);
 
-router.use("/management", async function(req, res){
-    res.render("departmentOfficer/redirect/management");
+router.use("/management", async function (req, res) {
+    res.render("departmentOfficer/redirect/management", {
+        activeNavItem: "management"
+    });
 });
 
-router.use("/request", async function(req, res){
-    res.render("departmentOfficer/redirect/request");
+router.use("/request", async function (req, res) {
+    res.render("departmentOfficer/redirect/request", {
+        activeNavItem: "request"
+    });
 });
 
-router.use("/officer", async function(req, res){
-    res.render("departmentOfficer/redirect/officer");
+router.use("/officer", async function (req, res) {
+    res.render("departmentOfficer/redirect/officer", {
+        activeNavItem: "officer"
+    });
 });
 
 export default router;
