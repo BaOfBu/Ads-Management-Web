@@ -1,0 +1,39 @@
+{{#section "js"}}
+    <script src="/static/js/departmentOfficer/management_officer/assignment.js"></script>
+{{/section}}
+{{#section "cs"}}
+    <link rel="stylesheet" href="/static/css/departmentOfficer/assignment.css" />
+{{/section}}
+<div class="custom-container">
+    <form method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Tên tài khoản</label>
+            <input type="text" class="form-control" id="username" disabled value="{{this.account.username}}" />
+        </div>
+        {{!-- <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <input type="text" class="form-control" id="password" disabled value="{{this.account.password}}" />
+        </div> --}}
+        <div class="mb-3">
+            <label for="name" class="form-label">Họ và tên</label>
+            <input type="text" class="form-control" id="name" disabled value="{{this.account.name}}" />
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Ngày sinh</label>
+            <input type="text" class="form-control" id="name" disabled value="{{this.account.dob}}" />
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" disabled value="{{this.account.email}}" />
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="name" disabled value="{{this.account.phone}}" />
+        </div>
+        <div class="mb-3">
+            <label for="role" class="form-label">Chức năng</label>
+            <input type="text" class="form-control" id="role" disabled value="{{this.account.phone}}" />
+        </div>
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+    </form>
+</div>
