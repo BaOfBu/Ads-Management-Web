@@ -1,0 +1,102 @@
+{{#section 'js'}}
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js">
+    </script>
+    <script src="/static/js/wardOfficer/profile.js"></script>
+{{/section}}
+
+{{#section 'css'}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+{{/section}}
+
+<div class="custom-container">
+    <form action="" method="post" id="frmUpdate">
+        <div class="card">
+            <h5 class="card-header">
+            Tài khoản của cán bộ
+            </h5>
+            <div class="card-body">
+                <h5>Thông tin cá nhân</h5>
+                <div class="form-group">
+                    <label for="txtName">Họ và tên</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="name" id="txtName" value="{{officer.name}}" class="form-control" aria-describedby="checkValidationName" required>
+                        <div id="checkValidationName" class="invalid-feedback">
+                            Vui lòng nhập họ và tên không quá 100 kí tự
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="txtEmail">Email</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="email" id="txtEmail" value="{{officer.email}}" class="form-control" aria-describedby="checkValidationEmail" required>
+                        <div id="checkValidationEmail" class="invalid-feedback">
+                            Vui lòng nhập đúng định dạng email và không quá 100 kí tự, ví dụ abc@gmail.com
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="txtDoB">Ngày sinh</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="raw_dob" id="txtDoB" value="{{officer.dob}}" class="form-control" aria-describedby="checkValidationDoB" required>
+                        <div id="checkValidationDoB" class="invalid-feedback">
+                            Vui lòng nhập ngày sinh của bạn
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="txtPhone">Số điện thoại</label>
+                    <div class="input-group has-validation">
+                        <input type="text" name="phone" id="txtPhone" value="{{officer.phone}}" class="form-control" aria-describedby="checkValidationPhone" required>
+                        <div id="checkValidationPhone" class="invalid-feedback">
+                            Vui lòng nhập đúng định dạng số điện thoại, ví dụ: 03676842622
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Khu vực quản lý</h5>
+                <div class="form-group">
+                    <div class="d-flex">
+                        <div class="role">
+                            <label>Vai trò</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="flexRadioDefault" {{#if (equal officer.role 'Ward')}}checked{{/if}} disabled>
+                                <label class="form-check-label" for="flexRadioDefault">
+                                    Cán bộ phường
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="flexRadioChecked" {{#if (equal officer.role 'District')}}checked{{/if}} disabled>
+                                <label class="form-check-label" for="flexRadioChecked">
+                                    Cán bộ quận
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="flexRadioChecked" {{#if (equal officer.role 'Department')}}checked{{/if}} disabled>
+                                <label class="form-check-label" for="flexRadioChecked">
+                                    Cán bộ sở
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtManagement">Khu vực quản lý</label>
+                        <div class="input-group">
+                            <input type="text" id="txtManagement" class="form-control" value="{{#if (equal officer.role 'Ward')}}Phường {{officer.ward_name}} - Quận {{officer.district_name}}
+                            {{else}}Quận {{officer.district_name}}{{/if}}" readonly>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="card-footer">
+                <button id="submitButton" type="submit" class="btn btn-primary">
+                    <i class="bi bi-check2"></i>
+                    Lưu
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
