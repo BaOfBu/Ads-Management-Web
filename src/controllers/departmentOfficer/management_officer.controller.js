@@ -7,7 +7,9 @@ import officerService from "../../services/departmentOfficer/officer.service.js"
 import accountService from "../../services/account/account.service.js";
 
 const index = async function (req, res) {
-    res.render("departmentOfficer/redirect/officer");
+    res.render("departmentOfficer/redirect/officer", {
+        activeNavItem: "officer"
+    });
 };
 
 const register = async function (req, res) {
@@ -241,10 +243,11 @@ const arrage = async function (req, res) {
         const account = await officerService.findByIdWardDistrict(accountId);
         let ward;
         if (account) {
+            let ward;
             account.dob = moment(account.dob).format("DD-MM-YYYY");
             if (account.role == "District") {
                 account.role = "quận";
-                ward = null;
+                ward=null;
             }
             if (account.role == "Ward") {
                 account.role = "phường";
