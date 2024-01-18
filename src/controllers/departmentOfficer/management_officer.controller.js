@@ -49,7 +49,7 @@ const handle_register = async function (req, res) {
     const isExisted = await officerService.findByUsername(username);
     console.log("isExisted: ", isExisted);
 
-    if(!isExisted){
+    if (!isExisted) {
         const raw_password = req.body.raw_password;
         const salt = bcrypt.genSaltSync(10);
         const hash_password = bcrypt.hashSync(raw_password, salt);
@@ -60,6 +60,8 @@ const handle_register = async function (req, res) {
         const wardId = await wardService.getIdByName(req.body.ward);
 
         const districtId = await districtService.getIdByName(req.body.district);
+
+        const role = req.body.role === "Phường" ? "Ward" : "District";
 
         const account = {
             username: req.body.username,
@@ -239,13 +241,15 @@ const arrage = async function (req, res) {
         if (account) {
             account.dob = moment(account.dob).format("DD-MM-YYYY");
             if (account.role == "District") {
-                account.role = "Quận";
+                account.role = "quận";
             }
-            if ((account.role = "Ward")) {
-                account.role = "Phường";
+            if (account.role == "Ward") {
+                account.role = "phường";
             }
+            const district = await districtService.findAll();
             res.render("departmentOfficer/management_officer/assignment", {
-                account: account
+                account: account,
+                district: district
             });
         } else {
             res.redirect("/department-officer/management-officer/list-officer?role=-1&page=1");

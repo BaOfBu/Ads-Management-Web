@@ -1,39 +1,62 @@
 {{#section "js"}}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     <script src="/static/js/departmentOfficer/management_officer/assignment.js"></script>
 {{/section}}
-{{#section "cs"}}
+{{#section "css"}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/departmentOfficer/assignment.css" />
 {{/section}}
 <div class="custom-container">
     <form method="post">
-        <div class="mb-3">
-            <label for="username" class="form-label">Tên tài khoản</label>
-            <input type="text" class="form-control" id="username" disabled value="{{this.account.username}}" />
-        </div>
-        {{!-- <div class="mb-3">
-            <label for="password" class="form-label">Mật khẩu</label>
-            <input type="text" class="form-control" id="password" disabled value="{{this.account.password}}" />
-        </div> --}}
-        <div class="mb-3">
-            <label for="name" class="form-label">Họ và tên</label>
-            <input type="text" class="form-control" id="name" disabled value="{{this.account.name}}" />
-        </div>
-        <div class="mb-3">
-            <label for="name" class="form-label">Ngày sinh</label>
-            <input type="text" class="form-control" id="name" disabled value="{{this.account.dob}}" />
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" disabled value="{{this.account.email}}" />
-        </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone</label>
-            <input type="text" class="form-control" id="name" disabled value="{{this.account.phone}}" />
-        </div>
-        <div class="mb-3">
-            <label for="role" class="form-label">Chức năng</label>
-            <input type="text" class="form-control" id="role" disabled value="{{this.account.phone}}" />
-        </div>
-        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <div class="card">
+            <h5 class="card-header">
+            Xem chi tiết tài khoản cán bộ
+            </h5>
+            <div class="card-body">
+                <h5><b>Thông tin tài khoản</b></h5>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Tên tài khoản</label>
+                    <input type="text" class="form-control" id="username" disabled value="{{this.account.username}}" />
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Họ và tên</label>
+                    <input type="text" class="form-control" id="name" disabled value="{{this.account.name}}" />
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Ngày sinh</label>
+                    <input type="text" class="form-control" id="name" disabled value="{{this.account.dob}}" />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" disabled value="{{this.account.email}}" />
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="name" disabled value="{{this.account.phone}}" />
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Chức năng</label>
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="Cán bộ quận" {{#if (equal this.account.role "Cán bộ quận")}}selected{{/if}}>Cán bộ quận</option>
+                        <option value="Cán bộ phường" {{#if (equal this.account.role "Cán bộ phường")}}selected{{/if}}>Cán bộ phường</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Quận</label>
+                    <select class="form-select" aria-label="Default select example">
+                        {{#each district}}
+                            {{#if (equal this.name ./account.name)}}
+                                <option value="" selected>Quận {{this.name}}</option>
+                            {{else}}
+                                <option value="">Quận {{this.name}}</option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </div>
     </form>
 </div>

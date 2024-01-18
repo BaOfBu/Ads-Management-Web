@@ -42,6 +42,11 @@ export default {
             .orderBy("account.name");
     },
     findByIdWardDistrict(id) {
-        return db("account").where("accountId", id).where("role", "!=", "Department").first();
+        return db("account")
+            .select("account.*", "district.name as districtName")
+            .where("accountId", id)
+            .where("role", "!=", "Department")
+            .join("district", "district.districtId", "=", "account.districtId")
+            .first();
     }
 };
