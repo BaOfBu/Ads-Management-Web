@@ -1,0 +1,9 @@
+select{
+    &:invalid {
+    color: gray;
+    }
+
+    [disabled] {
+    color: gray;
+    }
+}
