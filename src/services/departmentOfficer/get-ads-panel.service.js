@@ -32,6 +32,7 @@ export default {
                 "ads_panel.width as width",
                 "license_request.content as content",
                 "image.imgLink as img",
+                "license_request.status as status",
                 "license_request.nameCompany as company",
                 "license_request.phoneCompany as phoneCompany",
                 "license_request.emailCompany as emailCompany",
