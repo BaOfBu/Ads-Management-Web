@@ -13,6 +13,7 @@ router.get("/list-ward", managementOfficerController.list_ward);
 router.get("/is-available", managementOfficerController.isAvaiable);
 router.post("/register", managementOfficerController.handle_register);
 router.get("/list-officer", managementOfficerController.list_officer);
-router.get("/arrage",managementOfficerController.arrage)
+router.get("/arrage", managementOfficerController.arrage);
+router.get("/updateAccountRole", managementOfficerController.updateAccountRole);
 
 export default router;

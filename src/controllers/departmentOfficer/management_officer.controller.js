@@ -4,6 +4,7 @@ import moment from "moment";
 import wardService from "../../services/departmentOfficer/ward.service.js";
 import districtService from "../../services/departmentOfficer/district.service.js";
 import officerService from "../../services/departmentOfficer/officer.service.js";
+import accountService from "../../services/account/account.service.js";
 
 const index = async function (req, res) {
     res.render("departmentOfficer/redirect/officer");
@@ -243,11 +244,16 @@ const arrage = async function (req, res) {
             if (account.role == "District") {
                 account.role = "quận";
             }
+            let ward;
             if (account.role == "Ward") {
                 account.role = "phường";
+                ward = account.wardId;
             }
             const district = await districtService.findAll();
+
             res.render("departmentOfficer/management_officer/assignment", {
+                accountId: accountId,
+                ward: ward,
                 account: account,
                 district: district
             });
@@ -256,4 +262,20 @@ const arrage = async function (req, res) {
         }
     }
 };
-export default { index, register, list_ward, isAvaiable, handle_register, list_officer, arrage };
+const updateAccountRole = async function (req, res) {
+    const districtname = req.query.district || null; // Tên quận
+    const wardId = req.query.ward || null; // WardID
+    const roleName = req.query.role || null;
+    const accountId = req.query.accountId || null;
+    const districtIdFull = await districtService.getIdByName(districtname);
+    let role;
+    if (roleName == "Cán bộ quận") {
+        role = "District";
+    }
+    if (roleName == "Cán bộ phường") {
+        role = "Ward";
+    }
+    await accountService.updateDistrictAndWard(accountId, districtIdFull.districtId, wardId, role);
+    res.json(true);
+};
+export default { index, register, list_ward, isAvaiable, handle_register, list_officer, arrage, updateAccountRole };

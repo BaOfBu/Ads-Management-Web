@@ -43,10 +43,11 @@ export default {
     },
     findByIdWardDistrict(id) {
         return db("account")
-            .select("account.*", "district.name as districtName")
+            .select("account.*", "district.name as districtName", "ward.name as wardName")
             .where("accountId", id)
             .where("role", "!=", "Department")
             .join("district", "district.districtId", "=", "account.districtId")
+            .leftJoin("ward", "ward.wardId", "=", "account.wardId")
             .first();
     }
 };
