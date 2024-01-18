@@ -38,8 +38,8 @@ router.use("/request", async function(req, res){
     res.render("departmentOfficer/redirect/request");
 });
 
-router.use("/officer", async function(req, res){
-    res.render("departmentOfficer/redirect/officer");
-});
+// router.use("/officer", async function(req, res){
+//     res.render("departmentOfficer/redirect/officer");
+// });
 
 export default router;
