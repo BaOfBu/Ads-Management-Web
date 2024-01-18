@@ -119,8 +119,28 @@
             </tbody>
         </table>
         {{/if}}
-        <div class="card-footer text-muted font-italic">
-            <span class="small">{{date}}</span>
+        <div class="card-footer d-flex justify-content-center">
+            <div>
+                <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="?page={{previousValue}}&keyword={{oldKeyword}}">Previous</a>
+                </li>
+                {{#each this.pageNumbers}}
+                {{#if isActive}}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{value}}</a>
+                </li>
+                {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{value}}&keyword={{../oldKeyword}}">{{value}}</a>
+                </li>
+                {{/if}}
+                {{/each}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{nextValue}}&keyword={{oldKeyword}}">Next</a>
+                </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

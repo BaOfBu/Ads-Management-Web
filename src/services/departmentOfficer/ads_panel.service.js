@@ -12,6 +12,13 @@ export default {
       .join('ads_location', 'ads_panel.adsLocationId', '=', 'ads_location.adsLocationId')
       .join('ads_panel_type', 'ads_panel.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId');
   },
+  findAllTypeName(){
+    return db('ads_panel_type').select(
+      'ads_panel_type.adsPanelTypeId as ads_panel_type_id',
+      'ads_panel_type.name as ads_panel_type_name'
+
+    );
+  },
   findById(id) {
     return db('ads_panel').select(
       'ads_panel.*',
