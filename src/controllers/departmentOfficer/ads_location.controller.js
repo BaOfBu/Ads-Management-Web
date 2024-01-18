@@ -204,7 +204,7 @@ const addAdsLocation = async function(req, res){
     res.render("departmentOfficer/management_ads_location/add", {
         typeLocation: typeLocation,
         typeAdsPanel: typeAdsPanel,
-        lengthImg: image[image.length - 1].imgId + 1
+        lengthImg: (image.length > 0)? image[image.length - 1].imgId + 1 : 1
     });
 }
 

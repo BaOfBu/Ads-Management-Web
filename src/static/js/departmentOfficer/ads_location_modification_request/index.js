@@ -94,9 +94,9 @@ $(document).ready(function() {
         let adsLocationId = $(this).data('value');
 
         let row = $('#accept-' + requestId).closest('tr');
-        let ads_location_type = row.find('td:eq(4)').text();
-        let ads_type = row.find('td:eq(5)').text();
-        let img_link = row.find('td:eq(6)').text();
+        let ads_location_type = row.find('td:eq(3)').text();
+        let ads_type = row.find('td:eq(4)').text();
+        let img_link = $('#img_link').val();
 
         const adsLocationNew = {
             ads_location_type: ads_location_type,
