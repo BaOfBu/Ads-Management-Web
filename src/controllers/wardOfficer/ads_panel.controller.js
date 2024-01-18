@@ -85,7 +85,23 @@ const postAdsPanel = async function (req, res) {
 }
 const viewPanelDetails = async function (req, res) {
     //console.log("req.query.adsPanelId",req.query.adsPanelId);
-    const ads_panel = await adsService.findAdsPanel(req.query.adsPanelId);
+    const ads_panel_array = await adsService.findAdsPanel(req.query.adsPanelId);
+    console.log("ads_panel_array",ads_panel_array.length);
+    var ads_panel = null;
+    for(let i = 0; i < ads_panel_array.length; i++){
+        if(ads_panel_array[i].license_status == "Đã duyệt"){
+            ads_panel = ads_panel_array[i];
+            break;
+        }
+    }
+    if(ads_panel == null){
+        for(let i = 0; i < ads_panel_array.length; i++){
+            if(ads_panel_array[i].license_status == "Chưa duyệt"){
+                ads_panel = ads_panel_array[i];
+                break;
+            }
+        }
+    }
     //console.log("ads_panel",ads_panel);
     if(ads_panel.licenseId != null){
         ads_panel.startDate = moment(ads_panel.startDate).format('DD/MM/YYYY');

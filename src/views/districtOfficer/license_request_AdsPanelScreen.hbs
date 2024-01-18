@@ -1,0 +1,224 @@
+{{#section 'js'}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js">
+    </script>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/locales/vi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/buffer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/filetype.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/piexif.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/js/plugins/sortable.min.js"></script>
+
+    <script src="/static/js/districtOfficer/license_request_add_AdsPanelScreen.js"></script>
+{{/section}}
+
+{{#section "css"}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.2/css/fileinput.min.css">
+{{/section}}
+
+{{#if available}}
+    <div class="custom-container">
+        <form action="" method="post" id="frmAdd">
+            <div class="card">
+                <h5 class="card-header">
+                {{#if (equal status 'Chưa duyệt')}}
+                    Yêu cầu cấp phép quảng cáo đang chờ duyệt
+                {{else}}
+                    Giấy cấp phép quảng cáo
+                {{/if}}
+                </h5>
+                <div class="card-body">
+                    <div class="adsLocation">
+                        <label for="adsLocation">Điểm đặt quảng cáo</label>
+                        <input type="text" id="adsLocation" class="form-control" value="{{adsPanel.ads_location_name}}" style="margin-right: 10px;" readonly required>
+                    </div>
+
+                    <div class="adsAdsPanelType mt-1">
+                        <label for="adsPanelType">Loại bảng quảng cáo</label>
+                        <input type="text" id="adsPanelType" class="form-control" value="{{adsPanel.ads_panel_type_name}}" style="margin-right: 10px;" readonly required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtContent">Nội dung quảng cáo</label>
+                        <textarea class="form-control" name="content" id="txtContent" rows="3" value="{{adsPanel.content}}" readonly required>{{adsPanel.content}}</textarea>
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="img">Hình ảnh minh họa</label>
+                        <img src="{{adsPanel.img_link}}" alt="">
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtNameCompany">Tên công ty</label>
+                        <input type="text" name="nameCompany" id="txtNameCompany" class="form-control" value="{{adsPanel.nameCompany}}" style="margin-right: 10px;" readonly required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtPhoneCompany">Số điện thoại công ty</label>
+                        <input type="text" name="phoneCompany" id="txtPhoneCompany" class="form-control" value="{{adsPanel.phoneCompany}}" style="margin-right: 10px;" readonly required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtEmailCompany">Email của công ty</label>
+                        <input type="text" name="emailCompany" id="txtEmailCompany" class="form-control" value="{{adsPanel.emailCompany}}" style="margin-right: 10px;" readonly required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtLocationCompany">Địa chỉ của công ty</label>
+                        <input type="text" name="locationCompany" id="txtLocationCompany" class="form-control" value="{{adsPanel.locationCompany}}" style="margin-right: 10px;" readonly required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtStartDate">Ngày bắt đầu hợp đồng</label>
+                        <input type="text" name="startDate" id="txtStartDate" class="form-control" style="margin-right: 10px;" value="{{adsPanel.startDate}}" readonly required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtEndDate">Ngày kết thúc hợp đồng</label>
+                        <input type="text" name="endDate" id="txtEndDate" class="form-control" style="margin-right: 10px;" value="{{adsPanel.endDate}}" readonly required>
+                    </div>
+                </div>
+
+                <div class="card-footer text-muted">
+                    <a class="btn btn-outline-success" href="/ward-officer/ads/view-detail?adsLocationId={{adsPanel.adsLocationId}}" role="button">
+                        <i class="bi bi-skip-backward-fill"></i>
+                        Danh sách
+                    </a>
+                    <a class="btn btn-danger justify-content-center" id="cancel-request" role="button">
+                        <i class="bi bi-x-lg"></i>
+                        Hủy yêu cầu
+                        <input type="hidden" id="licenseRequestId" value="{{adsPanel.licenseId}}">
+                        <input type="hidden" id="adsPanelId" value="{{adsPanel.adsPanelId}}">
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+{{else}}
+    <div class="card custom-container mb-5">
+        <div class="custom-card-2">
+            <h5 class="card-header d-flex justify-content-center" style="font-style: italic; font-size: 18px;">Hiện tại bảng quảng cáo này chưa có yêu cầu cấp phép quảng cáo đang chờ duyệt. Bạn có thể tạo yêu cầu cấp phép bằng cách điền form dưới đây!</h5> 
+        </div>
+    </div>
+
+    <div class="custom-container">
+        <form action="" method="post" id="frmAdd">
+            <div class="card">
+                <h5 class="card-header">
+                Thêm yêu cầu cấp phép quảng cáo
+                </h5>
+                <div class="card-body">
+                    <div class="adsLocation">
+                        <label for="adsLocation">Điểm đặt quảng cáo</label>
+                        <input type="text" id="adsLocation" class="form-control " value="{{adsPanel.ads_location_name}}" style="margin-right: 10px;" readonly required>
+                        <input type="hidden" name="adsLocationId" value="{{adsPanel.adsLocationId}}">
+                    </div>
+
+                    <div class="adsAdsPanelType mt-1">
+                        <label for="adsPanelType">Loại bảng quảng cáo</label>
+                        <input type="text" id="adsPanelType" class="form-control " value="{{adsPanel.ads_panel_type_name}}" style="margin-right: 10px;" readonly required>
+                        <input id="selectedAdsPanel" name="adsPanelId" type="hidden" value="{{adsPanel.adsPanelId}}"></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtContent">Nội dung quảng cáo</label>
+
+                        <div class="input-group has-validation">
+                            <textarea class="form-control" name="content" id="txtContent" rows="3" style="margin-right: 10px;" aria-describedby="checkValidationEmptyName" required></textarea>
+                            <div id="checkValidationContent" class="invalid-feedback">
+                                Vui lòng không để trống mục này
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="img">Hình ảnh minh họa</label>
+                        <div class="input-group has-validation">
+                            <input type="file" id="img" name="image" style="margin-right: 10px;" aria-describedby="checkValidationImage" required>
+                            <div id="checkValidationImage" class="invalid-feedback">
+                                Vui lòng không để trống mục này
+                            </div>
+                        </div>
+                        <input type="hidden" id="imgId" name="imgId" value="{{lengthImg}}">
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtNameCompany">Tên công ty</label>
+                        <div class="input-group has-validation">
+                            <input type="text" name="nameCompany" id="txtNameCompany" class="form-control " style="margin-right: 10px;" aria-describedby="checkValidationEmptyName" required>
+                            <div id="checkValidationEmptyName" class="invalid-feedback">
+                                Vui lòng không để trống mục này và không được nhập quá 50 ký tự
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtPhoneCompany">Số điện thoại công ty</label>
+                        <div class="input-group has-validation">
+                            <input type="text" name="phoneCompany" id="txtPhoneCompany" class="form-control " style="margin-right: 10px;" aria-describedby="checkValidationEmptyPhone" required>
+                            <div id="checkValidationEmptyPhone" class="invalid-feedback">
+                                Vui lòng nhập đúng định dạng số điện thoại
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtEmailCompany">Email của công ty</label>
+                        <div class="input-group has-validation">
+                            <input type="text" name="emailCompany" id="txtEmailCompany" class="form-control " style="margin-right: 10px;" aria-describedby="checkValidationEmptyEmail" required>
+                            <div id="checkValidationEmptyEmail" class="invalid-feedback">
+                                Vui lòng nhập đúng định dạng email
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtLocationCompany">Địa chỉ của công ty</label>
+                        <div class="input-group has-validation">
+                            <input type="text" name="locationCompany" id="txtLocationCompany" class="form-control " style="margin-right: 10px;" aria-describedby="checkValidationEmptyLocation" required>
+                            <div id="checkValidationEmptyLocation" class="invalid-feedback">
+                                Vui lòng nhập địa chỉ không quá 150 kí tự
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtStartDate">Ngày bắt đầu hợp đồng</label>
+                        <div class="input-group has-validation">
+                            <input type="text" name="startDate" id="txtStartDate" class="form-control " style="margin-right: 10px;" aria-describedby="checkValidationStartDate" required>
+                            <div id="checkValidationStartDate" class="invalid-feedback">
+                                Vui lòng không để trống mục này
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="txtEndDate">Ngày kết thúc hợp đồng</label>
+                        <div class="input-group has-validation">
+                            <input type="text" name="endDate" id="txtEndDate" class="form-control " style="margin-right: 10px;" aria-describedby="checkValidationEndDate" required>
+                            <div id="checkValidationEndDate" class="invalid-feedback">
+                                Vui lòng không để trống mục này
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-muted">
+                    <a class="btn btn-outline-success" href="/ward-officer/ads/view-detail?adsLocationId={{adsPanel.adsLocationId}}" role="button">
+                        <i class="bi bi-skip-backward-fill"></i>
+                        Danh sách
+                    </a>
+                    <button id="submitButton" type="submit" class="btn btn-primary">
+                        <i class="bi bi-check2"></i>
+                        Tạo yêu cầu
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{{/if}}

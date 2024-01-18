@@ -90,11 +90,25 @@ const authDepartmentOfficer = function (req, res, next) {
     next();
 };
 
+const authProfile = function (req, res, next) {
+    if(req.session.authUser){
+        next();
+    }
+    if(req.originalUrl === '/'){
+        return next();
+    }
+    if (req.session.auth === false) {
+        return res.redirect('/');
+    }
+    next();
+};
+
 
 export default {
     authUser,
     authLogout,
     authWardOfficer,
     authDistrictOfficer,
-    authDepartmentOfficer
+    authDepartmentOfficer,
+    authProfile
 };

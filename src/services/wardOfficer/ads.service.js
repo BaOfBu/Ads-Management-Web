@@ -36,7 +36,7 @@ export default {
             'ads_location.*',
             'ads_type.name as ads_type_name',
             'location_type.name as location_type_name',
-            'ward.name as ward_name'
+            'ward.name as ward_name',
           )
           .join('ads_type', 'ads_location.adsType', '=', 'ads_type.adsTypeId')
           .join('image', 'ads_location.imgId', '=', 'image.imgId')
@@ -75,7 +75,7 @@ export default {
       .join('ads_panel_type', 'ads_panel.adsPanelTypeId', '=', 'ads_panel_type.adsPanelTypeId')
       .leftJoin('license_request', 'ads_panel.adsPanelId', '=', 'license_request.adsPanelId')
       .leftJoin('image', 'license_request.imgId', '=', 'image.imgId')
-      .where('ads_panel.adsPanelId', adsPanelId).first();
+      .where('ads_panel.adsPanelId', adsPanelId);
       //console.log("res",res);
       return res;
     },
