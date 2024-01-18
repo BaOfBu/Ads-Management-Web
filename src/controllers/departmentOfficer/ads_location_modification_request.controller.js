@@ -6,53 +6,6 @@ import providedInfo from "../../services/departmentOfficer/provided_infor.servic
 import imageService from "../../services/departmentOfficer/image.service.js";
 import adsLocation from "../../services/departmentOfficer/ads_location.service.js";
 
-const index = async function (req, res) {
-    let empty = false;
-
-    const districts = await district.findAll();
-    const districtCurrent = req.query.districtId || -1;
-    const wardCurrent = req.query.wardId || -1;
-    const page = req.query.page || 1;
-    const wards = await ward.findAllByDistrictId(districtCurrent);
-    let districtName = "Tất cả quận";
-    let wardName = "Tất cả phường";
-
-    const edit_ads_locations_request = await getListByWard(wardCurrent, districtCurrent);
-
-    if (districtCurrent !== -1 && districtCurrent !== "-1"){
-        const tmpDistrict = await providedInfo.findById('district', 'districtId', districtCurrent);
-        districtName = "Quận " + tmpDistrict.name;
-    } 
-    if (wardCurrent !== -1 && wardCurrent !== "-1"){
-        const tmpWard = await providedInfo.findById('ward', 'wardId', wardCurrent);
-        wardName = "Phường " + tmpWard.name;
-    } 
-
-    if(!edit_ads_locations_request || edit_ads_locations_request.length === 0){
-        empty = true;
-    }
-
-    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
-
-    const pagination = generatePagination(edit_ads_locations_request, districtCurrent, wardCurrent, page);
-
-    res.render("departmentOfficer/ads_location_modification_request/list", {
-        empty: empty,
-        edit_ads_locations_request: pagination.list,
-        districts: districts,
-        date: currentDateTime,
-        wards: wards,
-        isFirstPage: pagination.isFirstPage,
-        isLastPage: pagination.isLastPage,
-        pageNumbers: pagination.pageNumbers,
-        page: page,
-        districtId: districtCurrent,
-        wardId: wardCurrent,
-        districtName: districtName,
-        wardName: wardName
-    });
-};
-
 function generatePagination(request, districtId, wardId, pageCurrent){
     const limit = 8;
     const page = pageCurrent;
@@ -161,6 +114,54 @@ function generatePagination(request, districtId, wardId, pageCurrent){
 
     return pagination;
 }
+
+const index = async function (req, res) {
+    let empty = false;
+
+    const districts = await district.findAll();
+    const districtCurrent = req.query.districtId || -1;
+    const wardCurrent = req.query.wardId || -1;
+    const page = req.query.page || 1;
+    const wards = await ward.findAllByDistrictId(districtCurrent);
+    let districtName = "Tất cả quận";
+    let wardName = "Tất cả phường";
+
+    const edit_ads_locations_request = await getListByWard(wardCurrent, districtCurrent);
+
+    if (districtCurrent !== -1 && districtCurrent !== "-1"){
+        const tmpDistrict = await providedInfo.findById('district', 'districtId', districtCurrent);
+        districtName = "Quận " + tmpDistrict.name;
+    } 
+    if (wardCurrent !== -1 && wardCurrent !== "-1"){
+        const tmpWard = await providedInfo.findById('ward', 'wardId', wardCurrent);
+        wardName = "Phường " + tmpWard.name;
+    } 
+
+    if(!edit_ads_locations_request || edit_ads_locations_request.length === 0){
+        empty = true;
+    }
+
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
+
+    const pagination = generatePagination(edit_ads_locations_request, districtCurrent, wardCurrent, page);
+
+    res.render("departmentOfficer/ads_location_modification_request/list", {
+        empty: empty,
+        edit_ads_locations_request: pagination.list,
+        districts: districts,
+        date: currentDateTime,
+        wards: wards,
+        isFirstPage: pagination.isFirstPage,
+        isLastPage: pagination.isLastPage,
+        pageNumbers: pagination.pageNumbers,
+        page: page,
+        districtId: districtCurrent,
+        wardId: wardCurrent,
+        districtName: districtName,
+        wardName: wardName
+    });
+};
+
 
 const getWardByDistrict = async function(req, res){
     const wards = await ward.findAllByDistrictId(req.body.districtId);

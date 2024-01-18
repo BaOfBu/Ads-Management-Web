@@ -371,7 +371,8 @@ const viewDetail = async function (req, res) {
     console.log("license_request: ", license_request);
 
     license_request.startDate = moment(license_request.startDate).format("DD/MM/YYYY");
-    (license_request.endDate = moment(license_request.endDate).format("DD/MM/YYYY")), console.log("license_request: ", license_request);
+    license_request.endDate = moment(license_request.endDate).format("DD/MM/YYYY");
+    console.log("license_request: ", license_request);
     res.render("departmentOfficer/license_request/view_detail", {
         stt: stt,
         license_request: license_request
