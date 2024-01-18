@@ -2,7 +2,11 @@ import express from "express";
 import providedInfoController from "../../controllers/departmentOfficer/provided_infor.controller.js";
 
 const router = express.Router();
-
+const setActiveNavItem = (req, res, next) => {
+    res.locals.activeNavItem = "management";
+    next();
+};
+router.use(setActiveNavItem);
 router.get("/:choice", providedInfoController.index);
 router.get("/view-detail/:choice", providedInfoController.viewDetailProvidedInfo);
 router.get("/add/:choice", providedInfoController.addType);

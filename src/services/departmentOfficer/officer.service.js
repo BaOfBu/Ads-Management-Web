@@ -1,4 +1,4 @@
-import db from '../../utils/db.js';
+import db from "../../utils/db.js";
 
 export default {
   findAll() {
@@ -46,8 +46,17 @@ export default {
     'ward.name as ward_name',
     'district.name as district_name')
     .leftJoin('ward', 'account.wardId', '=', 'ward.wardId')
-    .leftJoin('district', 'account.districtId', '=', 'district.districtId')
+    .join('district', 'account.districtId', '=', 'district.districtId')
     .where('role', role)
     .orderBy('district_name').orderBy('ward_name').orderBy('account.name');
+  },
+  findByIdWardDistrict(id) {
+      return db("account")
+          .select("account.*", "district.name as districtName", "ward.name as wardName")
+          .where("accountId", id)
+          .where("role", "!=", "Department")
+          .join("district", "district.districtId", "=", "account.districtId")
+          .leftJoin("ward", "ward.wardId", "=", "account.wardId")
+          .first();
   }
-}
+};

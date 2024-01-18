@@ -1,3 +1,6 @@
 .custom-font-color {
     color: var(--blue-bold-color);
 }
+.custom-font-color.active {
+    font-weight: bold;
+}
