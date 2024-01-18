@@ -13,6 +13,10 @@ const transporter = nodemailer.createTransport({
 
 const index = async (req, res, next) => {
     const user = req.session.authUser;
+    const page = req.query.page || 1;
+    //const keyword = req.query.keyword || "";
+    const limit = 2;
+    const offset = (page - 1) * limit;
     //console.log("user",user);
     const wardName = await adsService.findWardByWardId(user.wardId);
     const districtName = await adsService.findDistrictByDistrictId(user.districtId);
@@ -20,6 +24,17 @@ const index = async (req, res, next) => {
     for(let i = 0; i < arrayReport.length; i++){
         arrayReport[i].sendDate = moment(arrayReport[i].sendDate).format('HH:mm:ss DD-MM-YYYY');
     }
+    const length = arrayReport.length;
+    const nPages = Math.ceil(length / limit);
+    const pageNumbers = [];
+    for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+        value: i,
+        isActive: i === +page
+        });
+    }
+    const previousValue = page == 1 ? 1 : page - 1;
+    const nextValue = page == nPages ? nPages : +page + 1;
     //console.log("arrayReport",arrayReport);
     // console.log("wardName",wardName);
     // console.log("districtName",districtName);
@@ -29,13 +44,17 @@ const index = async (req, res, next) => {
         stt: index + 1
     }));
     //console.log("ReportWithIndex",ReportWithIndex);
+    const newArray = ReportWithIndex.slice(offset, offset + limit);
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
     res.render("wardOfficer/report", {
         wardName: wardName.name,
         districtName: districtName.name,
-        arrayReport: ReportWithIndex,
+        arrayReport: newArray,
         date: currentDateTime,
-        isEmpty: ReportWithIndex.length == 0
+        isEmpty: ReportWithIndex.length == 0,
+        pageNumbers : pageNumbers,
+        previousValue: previousValue,
+        nextValue: nextValue,
     });
 }
 
