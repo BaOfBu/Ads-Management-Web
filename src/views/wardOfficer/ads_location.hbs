@@ -4,17 +4,16 @@
 {{#section 'js'}}
     <script src="/static/js/wardOfficer/ads_location.js"></script>
 {{/section}}
-<input type="hidden" id="currentPage" value="{{currentPage}}">
 <div class="custom-container">
     <div class="card">
         <div class="custom-card">
-            <h5 class="card-header d-flex justify-content-center">Danh sách các điểm đặt quảng cáo của phường {{wardName}} quận {{districtName}}</h5> 
+            <h5 class="card-header d-flex justify-content-center font-weight-bold">Danh sách các điểm đặt quảng cáo của phường {{wardName}} quận {{districtName}}</h5> 
         </div>
     </div>
     <div>
-        <div class="card mt-5">
+        <div class="card border-dark mt-5">
         <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h5>Xem danh sách điểm đặt quảng cáo</h5>
+            <h5><span class="font-weight-bold">Xem danh sách điểm đặt quảng cáo</span></h5>
             <form id="searchForm" action="" method="post" class="d-flex flex-row col-md-4">
             {{!-- <div class="d-flex flex-row col-md-4"> --}}
                     <input type="hidden" class="form-control col-md-8" id="page" name="page">
@@ -83,17 +82,17 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <a class="d-flex view-detail mt-1" href="ads/view-detail?adsLocationId={{adsLocationId}}" role="button">
-                                
-                                <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
-                                <span class="ml-1">Danh sách</span>
+                            <a class="d-flex justify-content-center align-items-center view-detail mt-1" href="ads/view-detail?adsLocationId={{adsLocationId}}" role="button">
+                                <h4><span class="ml-1 badge bg-info text-light rounded-pill">
+                                    <i class="fa-solid fa-list"></i> Danh sách</span></h4>
                             </a>
                         </div>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <a class="d-flex view-detail mt-1" href="ads/ads-location-edit?adsLocationId={{adsLocationId}}">
-                                Yêu cầu
+                            <a class="d-flex justify-content-center align-items-center view-detail mt-1" href="ads/ads-location-edit?adsLocationId={{adsLocationId}}">
+                                <h4><span class="ml-1 badge bg-warning text-dark rounded-pill">
+                                    <i class="fa-solid fa-code-pull-request"></i> Yêu cầu</span></h4>
                             </a>
                         </div>
                     </td>

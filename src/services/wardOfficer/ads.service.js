@@ -36,7 +36,7 @@ export default {
             'ads_location.*',
             'ads_type.name as ads_type_name',
             'location_type.name as location_type_name',
-            'ward.name as ward_name'
+            'ward.name as ward_name',
           )
           .join('ads_type', 'ads_location.adsType', '=', 'ads_type.adsTypeId')
           .join('image', 'ads_location.imgId', '=', 'image.imgId')

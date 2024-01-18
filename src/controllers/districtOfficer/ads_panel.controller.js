@@ -14,6 +14,7 @@ const index = async (req, res, next) => {
     }));
     console.log("adsPanelWithIndex",adsPanelWithIndex);
     return res.render("districtOfficer/ads_panel_list", {
+        type: "ads_panel",
         wards: wards,
         districtName: districtName.name,
         arrayAdsPanel: adsPanelWithIndex,
@@ -48,9 +49,13 @@ const viewPanelDetails = async function (req, res) {
         ads_panel.startDate = moment(ads_panel.startDate).format('DD/MM/YYYY');
         ads_panel.endDate = moment(ads_panel.endDate).format('DD/MM/YYYY');    
     }    
+    const returnUrl = req.headers.referer;
+    console.log("returnUrl",returnUrl);
     console.log("ads_panel",ads_panel);
     res.render("districtOfficer/ads_panel_detail", {
-        adsPanel: ads_panel
+        type: "ads_panel",
+        adsPanel: ads_panel,
+        returnUrl: returnUrl
     })
 }
 
@@ -60,6 +65,7 @@ const getEditAdsPanel = async function (req, res) {
     //console.log("adsPanel",adsPanel);
     //console.log("adsPanelType",adsPanelType);
     res.render("districtOfficer/edit_ads_panel", {
+        type: "ads_panel",
         adsPanelType : adsPanelType,
         adsPanel : adsPanel
     })

@@ -37,7 +37,7 @@ const index = async function (req, res) {
     const nextValue = page == nPages ? nPages : +page + 1;
     // console.log("wardName",wardName);
     // console.log("districtName",districtName);
-    //console.log("arrayAdsLocation",arrayAdsLocation);
+    console.log("arrayAdsLocation",arrayAdsLocation);
     const adsLocationWithIndex = arrayAdsLocation.map((adsLocation, index) => ({
         ...adsLocation,
         stt: index + 1

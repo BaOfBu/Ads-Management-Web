@@ -14,14 +14,17 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-link">
-            <a class="custom-font-color" href="/district-officer/ads">Điểm đặt quảng cáo<span class="sr-only">(current)</span></a>
+          <li class="nav-link ">
+            <a class="custom-font-color {{#if (equal type 'ads_location')}}active{{/if}} " href="/district-officer/ads">Điểm đặt quảng cáo<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-link">
-            <a class="custom-font-color" href="/district-officer/ads-panel">Bảng quảng cáo<span class="sr-only">(current)</span></a>
+            <a class="custom-font-color {{#if (equal type 'ads_panel')}}active{{/if}}" href="/district-officer/ads-panel">Bảng quảng cáo<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-link">
-            <a class="custom-font-color" href="/district-officer/report">Báo cáo<span class="sr-only">(current)</span></a>
+            <a class="custom-font-color {{#if (equal type 'report')}}active{{/if}}" href="/district-officer/report">Báo cáo<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-link">
+            <a class="custom-font-color {{#if (equal type 'license')}}active{{/if}}" href="/district-officer/license-request">Yêu cầu cấp phép<span class="sr-only">(current)</span></a>
           </li>
         </ul>
 
@@ -32,7 +35,7 @@
               Hello, <b>{{authUser.name}}!</b>
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="/account/profile">
+              <a class="dropdown-item" href="/profile">
                 <i class="bi bi-person"></i>
                 Profile
               </a>

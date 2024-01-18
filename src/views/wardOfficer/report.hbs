@@ -71,15 +71,22 @@
                         </span>
                     </td>
                     <td>
-                        <span class="d-flex justify-content-center">
-                            {{status}}
-                        </span>
+                        <span class="d-flex justify-content-center"><h4>
+                            {{#if (equal status "Đã xử lý xong")}}
+                                <span class="badge badge-success">{{status}}</span>
+                            {{else}}
+                            {{#if (equal status "Đang xử lý")}}
+                                <span class="badge badge-warning">{{status}}</span>
+                            {{else}}
+                                <span class="badge badge-danger">{{status}}</span>
+                            {{/if}}
+                            {{/if}}
+                        </h4></span>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <a class="d-flex view-detail mt-1" href="report/viewDetails?citizenReportId={{citizenReportId}}" role="button">
-                                
-                                <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                            <a class="d-flex justify-content-center align-items-center view-detail mt-1" href="report/viewDetails?citizenReportId={{citizenReportId}}" role="button">
+                                <i class="fa-solid fa-circle-info"></i>
                                 <span class="ml-1">Chi tiết</span>
                             </a>
                         </div>
