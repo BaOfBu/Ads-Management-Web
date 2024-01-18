@@ -24,7 +24,7 @@
             <a class="custom-font-color {{#if (equal activeNavItem 'citizen-report')}}active{{/if}}" href="/department-officer/citizen-report">Thống kê</a>
           </li>
           <li class="nav-link">
-            <a class="custom-font-color {{#if (equal activeNavItem 'officer')}}active{{/if}}" href="/department-officer/officer">Cán bộ</a>
+            <a class="custom-font-color {{#if (equal activeNavItem 'officer')}}active{{/if}}" href="/department-officer/management-officer">Cán bộ</a>
           </li>
         </ul>
 
@@ -35,12 +35,12 @@
               Hello, <b>{{authUser.name}}!</b>
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="/account/profile">
+              <a class="dropdown-item" href="/department-officer/profile">
                 <i class="bi bi-person"></i>
                 Profile
               </a>
               <div class="dropdown-divider"></div>
-              <form id="frmLogout" action="/account/logout" method="post"></form>
+              <form id="frmLogout" action="/logout" method="post"></form>
               <a class="dropdown-item" href="javascript: $('#frmLogout').submit()">
                 <i class="bi bi-box-arrow-in-left"></i>
                 Logout

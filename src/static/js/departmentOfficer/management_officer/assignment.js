@@ -49,21 +49,34 @@ function fetchWardsAndUpdateDropdown() {
     });
 }
 function updateWardDropdown(data) {
+    console.log("ward current: ", wardCurrent);
     var wardDropdown = $("#ward");
     wardDropdown.empty();
-    console.log(wardCurrent);
     if (data == false) {
     } else if (!data) {
     } else if (data.length > 1) {
         data.forEach(function (ward) {
-            if (ward.wardId == wardCurrent) {
-                wardDropdown.append(`<option value="${ward.wardId}" selected>Phường ${ward.name}</option>`);
+            if (wardCurrent){
+                if (ward.wardId == wardCurrent) {
+                    wardDropdown.append(`<option value="${ward.wardId}" selected>Phường ${ward.name}</option>`);
+                }
+                wardDropdown.append(`<option value="${ward.wardId}">Phường ${ward.name}</option>`);
             }
-            wardDropdown.append(`<option value="${ward.wardId}">Phường ${ward.name}</option>`);
+            else{
+                wardDropdown.append(`<option value="${ward.wardId}">Phường ${ward.name}</option>`);
+            }
+            
         });
     } else {
-        if (ward.wardId == wardCurrent) {
-            wardDropdown.append(`<option value="${ward.wardId}" selected>Phường ${ward.name}</option>`);
-        } else wardDropdown.append(`<option value="${data.wardId}">Phường ${data.name}</option>`);
+        if(wardCurrent){
+            if (ward.wardId == wardCurrent) {
+                wardDropdown.append(`<option value="${ward.wardId}" selected>Phường ${ward.name}</option>`);
+            } 
+            else wardDropdown.append(`<option value="${data.wardId}">Phường ${data.name}</option>`);
+        }
+        else{
+            wardDropdown.append(`<option value="${data.wardId}">Phường ${data.name}</option>`);
+        }
+        
     }
 }
