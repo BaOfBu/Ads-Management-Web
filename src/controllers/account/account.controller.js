@@ -164,5 +164,5 @@ export default {
     get_verification,
     post_verification,
     getChangePassword,
-    postChangePassword
+    postChangePassword,
 };
