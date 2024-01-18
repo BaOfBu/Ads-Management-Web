@@ -476,23 +476,7 @@ document.getElementById("switchAds").addEventListener("change", function () {
     }
 });
 // Listen on the Switch Report
-let reportGeoJson = {
-    type: "FeatureCollection",
-    features: []
-};
 let marker_report = [];
-function createGeoJSONFeature(report) {
-    return {
-        type: "Feature",
-        geometry: {
-            type: "Point",
-            coordinates: [report.long, report.lat]
-        },
-        properties: {
-            status: report.status
-        }
-    };
-}
 function mouseEnterReport(el, report, popup) {
     popup
         .setLngLat([report.long, report.lat])
@@ -516,6 +500,8 @@ function createMarkerElementReport(report) {
     if (report.status === "Đã xử lý xong") {
         el.style.backgroundImage = 'url("/static/images/citizen/report-blue.png")';
     } else if (report.status === "Đang xử lý") {
+        el.style.backgroundImage = 'url("/static/images/citizen/report-red.png")';
+    } else if (report.status === "Chưa xử lý") {
         el.style.backgroundImage = 'url("/static/images/citizen/report-red.png")';
     }
     el.style.backgroundSize = "cover";
