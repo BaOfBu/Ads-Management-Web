@@ -51,8 +51,9 @@
                     {{#each officers}}
                     <tr>
                         <th scope="row">{{stt}}</th>
-                        <td>{{#if (equal role 'Ward')}}Phường{{else}}Quận{{/if}}</td>
-                        <td>Phường {{ward_name}} - Quận {{district_name}}</td>
+                        <td>{{#if (equal role 'Ward')}}Cán bộ phường{{else}}Cán bộ quận{{/if}}</td>
+                        <td>{{#if (equal role 'Ward')}}Phường {{ward_name}} - Quận {{district_name}}{{else}}
+                            Quận {{district_name}}{{/if}}</td>
                         <td>{{name}}</td>
                         <td>{{email}}</td>
                         <td>{{phone}}</td>

@@ -191,6 +191,7 @@ $(".district .dropdown-menu .dropdown-item").on("click", function (event) {
 
 $("#submitButton").on("click", function (event) {
     let isValid = true;
+    // event.preventDefault();
     if(checkUsername() === false){
         $('#txtUsername').addClass("is-invalid");
         $("#checkValidationUsername").show();
