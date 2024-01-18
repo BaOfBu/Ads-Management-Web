@@ -105,9 +105,9 @@
         <div class="card-footer d-flex justify-content-center">
             <div>
                 <ul class="pagination">
-                {{!-- <li class="page-item">
-                    <a class="page-link" href="?page={{decrement value}}&keyword={{oldKeyword}}">Previous</a>
-                </li> --}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{previousValue}}&keyword={{oldKeyword}}">Previous</a>
+                </li>
                 {{#each this.pageNumbers}}
                 {{#if isActive}}
                 <li class="page-item active" aria-current="page">
@@ -119,9 +119,9 @@
                 </li>
                 {{/if}}
                 {{/each}}
-                {{!-- <li class="page-item">
-                    <a class="page-link" href="?page={{increment {{}}}}&keyword={{oldKeyword}}">Next</a>
-                </li> --}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{nextValue}}&keyword={{oldKeyword}}">Next</a>
+                </li>
                 </ul>
             </div>
         </div>

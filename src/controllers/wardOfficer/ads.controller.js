@@ -11,11 +11,11 @@ import { get } from "http";
 const statusName = ["Đã quy hoạch", "Chưa quy hoạch"];
 
 const index = async function (req, res) {
-    console.log("req.query",req.query);
+    //console.log("req.query",req.query);
     const user = req.session.authUser;
     const page = req.query.page || 1;
     const keyword = req.query.keyword || "";
-    const limit = 3;
+    const limit = 4;
     const offset = (page - 1) * limit;
     //console.log("user",user);
     const wardName = await adsService.findWardByWardId(user.wardId);
@@ -33,6 +33,8 @@ const index = async function (req, res) {
         isActive: i === +page
         });
     }
+    const previousValue = page == 1 ? 1 : page - 1;
+    const nextValue = page == nPages ? nPages : +page + 1;
     // console.log("wardName",wardName);
     // console.log("districtName",districtName);
     //console.log("arrayAdsLocation",arrayAdsLocation);
@@ -41,26 +43,29 @@ const index = async function (req, res) {
         stt: index + 1
     }));
 
-    const newArrayAdsLocation = adsLocationWithIndex.slice(offset, offset + limit);
+    const newArray = adsLocationWithIndex.slice(offset, offset + limit);
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
 
     return res.render("wardOfficer/ads_location", {
+        type: "ads_location",
         wardName: wardName.name,
         districtName: districtName.name,
-        arrayAdsLocation: newArrayAdsLocation,
+        arrayAdsLocation: newArray,
         date: currentDateTime,
         isEmpty: adsLocationWithIndex.length == 0,
         pageNumbers : pageNumbers,
         oldKeyword: keyword,
+        previousValue: previousValue,
+        nextValue: nextValue,
     });
 };
 
 const postAdsLocation = async function (req, res) {
-    console.log("req.body:", req.body);
+    //console.log("req.body:", req.body);
     const keyword = req.body.keyword || "";
     const user = req.session.authUser;
     const page = req.body.page || 1;
-    const limit = 3;
+    const limit = 4;
     const offset = (page - 1) * limit;
 
     //console.log("user",user);
@@ -77,7 +82,8 @@ const postAdsLocation = async function (req, res) {
         isActive: i === +page
         });
     }
-
+    const previousValue = page == 1 ? 1 : page - 1;
+    const nextValue = page == nPages ? nPages : +page + 1;
     // console.log("wardName",wardName);
     // console.log("districtName",districtName);
     //console.log("arrayAdsLocation",arrayAdsLocation);
@@ -86,17 +92,20 @@ const postAdsLocation = async function (req, res) {
         stt: index + 1
     }));
 
-    const newArrayAdsLocation = adsLocationWithIndex.slice(offset, limit+offset);
+    const newArray = adsLocationWithIndex.slice(offset, limit+offset);
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
 
     return res.render("wardOfficer/ads_location", {
+        type: "ads_location",
         wardName: wardName.name,
         districtName: districtName.name,
-        arrayAdsLocation: newArrayAdsLocation,
+        arrayAdsLocation: newArray,
         date: currentDateTime,
         isEmpty: adsLocationWithIndex.length == 0,
         pageNumbers : pageNumbers,
         oldKeyword: keyword,
+        previousValue: previousValue,
+        nextValue: nextValue,
     });
 
 }
@@ -115,6 +124,7 @@ const viewDetails = async function (req, res) {
     const isEmpty = adsPanelWithIndex.length == 0;
     //console.log("isEmpty",isEmpty);
     res.render("wardOfficer/ads_panel", {
+        type: "ads_location",
         adsLocationName: adsLocationName.location,
         adsPanel: adsPanelWithIndex,
         isEmpty: isEmpty
@@ -124,9 +134,20 @@ const viewDetails = async function (req, res) {
 const viewPanelDetails = async function (req, res) {
     //console.log("req.query.adsPanelId",req.query.adsPanelId);
     const ads_panel = await adsService.findAdsPanel(req.query.adsPanelId);
+    const url  = req.url;
+    console.log("url",url);
+    var returnUrl = "";
+    if(url.includes("view-panel-detail")){
+        returnUrl = "/ward-officer/ads/view-detail?adsLocationId="+ads_panel.adsLocationId;
+    }
+    else{
+        returnUrl = "/ward-officer/ads-panel";
+    }
     //console.log("ads_panel nè",ads_panel);
     res.render("wardOfficer/ads_panel_detail", {
-        adsPanel: ads_panel
+        type: "ads_location",
+        adsPanel: ads_panel,
+        returnUrl: returnUrl
     });
 };
 
@@ -139,6 +160,7 @@ const getEditAdsLocation = async function (req, res) {
     //console.log("adsLocation",adsLocation);
 
     res.render("wardOfficer/edit_ads_location", {
+        type: "ads_location",
         status: statusName,
         adsLocation: adsLocation,
         locationType: LocationType,
@@ -150,6 +172,7 @@ const getEditAdsPanel = async function (req, res) {
     const adsPanel = await adsService.findAdsPanel(req.query.adsPanelId);
 
     res.render("wardOfficer/edit_ads_panel", {
+        type: "ads_location",
         adsPanelType: adsPanelType,
         adsPanel: adsPanel
     });
@@ -175,6 +198,7 @@ const licenseRequest = async function (req, res) {
         const lengthImg = await imageService.findAll();
 
         res.render("wardOfficer/license_request_AdsPanelScreen", {
+            type: "ads_location",
             adsPanel: adsPanel,
             available: available,
             lengthImg: lengthImg[lengthImg.length - 1].imgId + 1
