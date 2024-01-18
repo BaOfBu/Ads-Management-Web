@@ -4,7 +4,7 @@
 {{#section 'js'}}
     <script src="/static/js/wardOfficer/ads_location.js"></script>
 {{/section}}
-
+<input type="hidden" id="currentPage" value="{{currentPage}}">
 <div class="custom-container">
     <div class="card">
         <div class="custom-card">
@@ -17,8 +17,10 @@
             <h5>Xem danh sách điểm đặt quảng cáo</h5>
             <form id="searchForm" action="" method="post" class="d-flex flex-row col-md-4">
             {{!-- <div class="d-flex flex-row col-md-4"> --}}
+                    <input type="hidden" class="form-control col-md-8" id="page" name="page">
                     <input type="text" class="form-control col-md-8" id="keyword" name="keyword" placeholder="Tìm kiếm">
                     <button type="submit" id="submitBtn" class="btn btn-primary form-control col-md-4">Tìm kiếm</button>
+
             {{!-- </div> --}}
             </form>
         </div>
@@ -100,8 +102,29 @@
             </tbody>
         </table>
         {{/if}}
-        <div class="card-footer text-muted font-italic">
-            <span class="small">{{date}}</span>
+        <div class="card-footer d-flex justify-content-center">
+            <div>
+                <ul class="pagination">
+                {{!-- <li class="page-item">
+                    <a class="page-link" href="?page={{decrement value}}&keyword={{oldKeyword}}">Previous</a>
+                </li> --}}
+                {{#each this.pageNumbers}}
+                {{#if isActive}}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{value}}</a>
+                </li>
+                {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{value}}&keyword={{../oldKeyword}}">{{value}}</a>
+                </li>
+                {{/if}}
+                {{/each}}
+                {{!-- <li class="page-item">
+                    <a class="page-link" href="?page={{increment {{}}}}&keyword={{oldKeyword}}">Next</a>
+                </li> --}}
+                </ul>
+            </div>
         </div>
+        
     </div>
 </div>

@@ -5,15 +5,16 @@ import adsPanelService from "../../services/districtOfficer/ads_panel.service.js
 const index = async (req, res, next) => {
     const user = req.session.authUser;
     //console.log("user",user);
-    const wardName = await adsService.findWardByWardId(user.wardId);
+    const wards = await adsService.findAllWardByDistrictId(user.districtId);
     const districtName = await adsService.findDistrictByDistrictId(user.districtId);
-    const arrayAdsPanel = await adsPanelService.findAllAdsPanelByWardId(user.wardId);
+    const arrayAdsPanel = await adsPanelService.findAllAdsPanelByDistrictId(user.districtId);
     const adsPanelWithIndex = arrayAdsPanel.map((adsPanel, index) => ({
         ...adsPanel,
         stt: index + 1
     }));
+    console.log("adsPanelWithIndex",adsPanelWithIndex);
     return res.render("districtOfficer/ads_panel_list", {
-        wardName: wardName.name,
+        wards: wards,
         districtName: districtName.name,
         arrayAdsPanel: adsPanelWithIndex,
         isEmpty: adsPanelWithIndex.length == 0
@@ -24,16 +25,16 @@ const postAdsPanel = async function (req, res) {
     //console.log("req.body:", req.body);
     const keyword = req.body.keyword || "";
     const user = req.session.authUser;
+    const wards = req.body.wards || [];
     //console.log("user",user);
-    const wardName = await adsService.findWardByWardId(user.wardId);
     const districtName = await adsService.findDistrictByDistrictId(user.districtId);
-    const arrayAdsPanel = await adsPanelService.findAllAdsPanelByWardIdAndKeyword(user.wardId,keyword);
+    const arrayAdsPanel = await adsPanelService.findAllAdsPanelByDistrictIdAndKeyword(keyword,wards);
     const adsPanelWithIndex = arrayAdsPanel.map((adsPanel, index) => ({
         ...adsPanel,
         stt: index + 1
     }));
-    return res.render("districtOfficer/ads_panel_list", {
-        wardName: wardName.name,
+    res.json({
+        wards: wards,
         districtName: districtName.name,
         arrayAdsPanel: adsPanelWithIndex,
         isEmpty: adsPanelWithIndex.length == 0
@@ -85,7 +86,7 @@ const postEditAdsPanel = async function (req, res) {
     const ads_panel_edit = await adsService.createAdsPanelEdit(entity);
     //const update = await adsService.updateMerchantInfo(userID, { image: req.body.image });
     //return res.json({ success: true, image: req.body.image });
-    return res.redirect("/ward-officer/ads-panel/");
+    return res.redirect("/district-officer/ads-panel/");
 }
 
 export default { index, postAdsPanel, viewPanelDetails, getEditAdsPanel, postEditAdsPanel };

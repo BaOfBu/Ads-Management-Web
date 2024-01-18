@@ -29,7 +29,7 @@
     margin-right: 20px;
 }
 
-.info-card-2 h3,h4{
+.management{
     color: #CD6688;
     font-weight: bolder;
 }
@@ -40,4 +40,10 @@
 
 .info-card-2 h4:hover{
     border-bottom: 2px solid #CD6688;
+}
+
+.info-card-2 h5:hover{
+    color: #CD6688;
+    font-weight: bolder;
+    text-decoration: 2px underline #CD6688;
 }
