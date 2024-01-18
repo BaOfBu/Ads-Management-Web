@@ -7,7 +7,7 @@ const knex = knexObj({
     port: 3306,
     user: 'root',
     password: '',
-    database: 'ads_management'
+    database: 'ads'
   },
   pool: { min: 0, max: 7 }
 });
