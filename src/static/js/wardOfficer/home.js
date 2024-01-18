@@ -263,42 +263,75 @@ function addEvenDetailAdsPanel(ad, data) {
         }
         resetTheInformationOfSideBar();
         $("#sidebar").css("padding", "0px");
-        $("#sidebar").html(`
-        ${
-            newData[index].img !== "Không có"
-                ? `<div class="image-detail">
-                <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="${newData[index].img}" class="d-block w-100 image-detail-pane" alt="...">
+        console.log("newData[index].license_status", newData[index]);
+        if(newData[index].status == "Đã duyệt"){
+            $("#sidebar").html(`
+            ${
+                newData[index].img !== "Không có"
+                    ? `<div class="image-detail">
+                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="${newData[index].img}" class="d-block w-100 image-detail-pane" alt="...">
+                            </div>
                         </div>
                     </div>
+                </div>`
+                    : ""
+            }
+            <div class = "detail-ads-information">
+                <h5 id="ads-detail-item-title"><b>${newData[index].adsPanelType}</b></h5>
+                <p id="ads-detail-item-address">${ad.location}</p>
+                <p id="ads-detail-item-size">Kích thước: <strong>${newData[index].width}m * ${newData[index].height}m</strong></p>
+                <p id="ads-detail-item-number">Số lượng: <strong>${newData[index].quantity} trụ/bảng</strong></p>
+                <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
+                <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
+                <p>Ngày bắt đầu:<b> ${startDate} </b></p>
+                <p id="expired-date-item">Ngày hết hạn: <b>${endDate}</b></p>
+                <p>Tên công ty:<b> ${newData[index].company}</b> </p>
+                <p>Nội dung:<b> ${newData[index].content}</b> </p>
+                <p>Email liên lạc công ty: <b>${newData[index].emailCompany}</b> </p>
+                <p>Địa chỉ công ty: <b>${newData[index].locationCompany}</b></p>
+                <p>Số liên lạc công ty:<b> ${newData[index].phoneCompany}</b></p>
+                <div id="button-pane">
+                    <button class="return-button" >
+                        <i class="bi bi-arrow-return-left"></i>
+                        Trở về
+                    </button>
                 </div>
-            </div>`
-                : ""
-        }
-        <div class = "detail-ads-information">
-            <h5 id="ads-detail-item-title"><b>${newData[index].adsPanelType}</b></h5>
-            <p id="ads-detail-item-address">${ad.location}</p>
-            <p id="ads-detail-item-size">Kích thước: <strong>${newData[index].width}m * ${newData[index].height}m</strong></p>
-            <p id="ads-detail-item-number">Số lượng: <strong>${newData[index].quantity} trụ/bảng</strong></p>
-            <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
-            <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
-            <p>Ngày bắt đầu:<b> ${startDate} </b></p>
-            <p id="expired-date-item">Ngày hết hạn: <b>${endDate}</b></p>
-            <p>Tên công ty:<b> ${newData[index].company}</b> </p>
-            <p>Nội dung:<b> ${newData[index].content}</b> </p>
-            <p>Email liên lạc công ty: <b>${newData[index].emailCompany}</b> </p>
-            <p>Địa chỉ công ty: <b>${newData[index].locationCompany}</b></p>
-            <p>Số liên lạc công ty:<b> ${newData[index].phoneCompany}</b></p>
-            <div id="button-pane">
-                <button class="return-button" >
-                    <i class="bi bi-arrow-return-left"></i>
-                    Trở về
-                </button>
             </div>
-        </div>
-        `);
+            `);
+        }else{
+            $("#sidebar").html(`
+            ${
+                newData[index].img !== "Không có"
+                    ? `<div class="image-detail">
+                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="${newData[index].img}" class="d-block w-100 image-detail-pane" alt="...">
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+                    : ""
+            }
+            <div class = "detail-ads-information">
+                <h5 id="ads-detail-item-title"><b>${newData[index].adsPanelType}</b></h5>
+                <p id="ads-detail-item-address">${ad.location}</p>
+                <p id="ads-detail-item-size">Kích thước: <strong>${newData[index].width}m * ${newData[index].height}m</strong></p>
+                <p id="ads-detail-item-number">Số lượng: <strong>${newData[index].quantity} trụ/bảng</strong></p>
+                <p id="ads-detail-item-ads-type">Hình thức: <strong>${ad.ads_type_name}</strong></p>
+                <p id="ads-detai-item-location-type">Phân loại: <strong>${ad.location_type_name}</strong></p>
+                <div id="button-pane">
+                    <button class="return-button" >
+                        <i class="bi bi-arrow-return-left"></i>
+                        Trở về
+                    </button>
+                </div>
+            </div>
+            `);
+        }
         addReturnButtonListener(ad, data);
         addReportButtonAdsListener(ad.lat, ad.long, ad.status);
     });
@@ -402,11 +435,9 @@ function updateTheInformationReportItemForSideBar(report) {
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
                 </button>
             </div>
         </div>

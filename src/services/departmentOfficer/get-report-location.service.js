@@ -43,11 +43,10 @@ export default {
                 "citizen_report.adsPanelId as adsPanelId"
             )
             .join("report_type", "citizen_report.reportTypeId", "=", "report_type.reportTypeId")
-            .join("ads_panel", "citizen_report.adsPanelId", "=", "ads_panel.adsPanelId")
-            .join("ads_location", "ads_panel.adsLocationId", "=", "ads_location.adsLocationId")
+            .leftJoin("ads_panel", "citizen_report.adsPanelId", "=", "ads_panel.adsPanelId")
             .leftJoin("image as img1", "citizen_report.imgId1", "=", "img1.imgId")
             .leftJoin("image as img2", "citizen_report.imgId2", "=", "img2.imgId")
-            .where("ads_location.wardId", wardId);
+            .where("citizen_report.wardId", wardId);
     },
     async findAllReportLocationByLocation(adsLocationId) {
         return db("citizen_report")

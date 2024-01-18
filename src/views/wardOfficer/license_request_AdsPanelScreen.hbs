@@ -89,12 +89,14 @@
                         <i class="bi bi-skip-backward-fill"></i>
                         Danh sách
                     </a>
-                    <a class="btn btn-danger justify-content-center" id="cancel-request" role="button">
-                        <i class="bi bi-x-lg"></i>
-                        Hủy yêu cầu
-                        <input type="hidden" id="licenseRequestId" value="{{adsPanel.licenseId}}">
-                        <input type="hidden" id="adsPanelId" value="{{adsPanel.adsPanelId}}">
-                    </a>
+                    {{#if (equal status 'Chưa duyệt')}}
+                        <a class="btn btn-danger justify-content-center" id="cancel-request" role="button">
+                            <i class="bi bi-x-lg"></i>
+                            Hủy yêu cầu
+                            <input type="hidden" id="licenseRequestId" value="{{adsPanel.licenseId}}">
+                            <input type="hidden" id="adsPanelId" value="{{adsPanel.adsPanelId}}">
+                        </a>
+                    {{/if}}
                 </div>
             </div>
         </form>
