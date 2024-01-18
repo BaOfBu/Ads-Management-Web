@@ -83,4 +83,8 @@ const acceptRequest = async function(req, res){
     return res.json({success: true, message: "Đã phê duyệt yêu cầu này thành công!"});
 }
 
-export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest };
+const viewDetail = async function(req, res){
+    res.render("departmentOfficer/ads_location_modification_request/view_detail");
+}
+
+export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest, viewDetail };

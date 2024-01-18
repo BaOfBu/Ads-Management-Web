@@ -38,14 +38,15 @@
                         <tr>
                             <th scope="col" style="width: 2%">#</th>
                             <th scope="col" style="width: 10%">Thời điểm xin</th>
-                            <th scope="col" style="width: 15%">Lí do</th>
-                            <th scope="col" style="width: 18%">Địa chỉ</th>
-                            <th scope="col" style="width: 9%">Khu vực</th>
+                            {{!-- <th scope="col" style="width: 15%">Lí do</th> --}}
+                            <th scope="col" style="width: 24%">Địa chỉ</th>
+                            <th scope="col" style="width: 13%">Khu vực</th>
                             <th scope="col" style="width: 8%">Loại vị trí</th>
-                            <th scope="col" style="width: 11%">Hình thức QC</th>
-                            <th scope="col" style="width: 8%">Hình ảnh</th>
+                            <th scope="col" style="width: 12%">Hình thức QC</th>
+                            {{!-- <th scope="col" style="width: 8%">Hình ảnh</th> --}}
                             <th scope="col" style="width: 9%">Trạng thái</th>
                             <th scope="col" style="width: 10%">Hành động</th>
+                            <th scope="col" style="width: 12%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,12 +54,12 @@
                             <tr>
                                 <th scope="row">{{stt}}</th>
                                 <td>{{requestTime}}</td>
-                                <td>{{requestReason}}</td>
+                                {{!-- <td>{{requestReason}}</td> --}}
                                 <td>{{ads_location_name}}</td>
-                                <td>Phường {{ward_name}} - Quận {{district_name}}</td>
+                                <td>Phường {{ward_name}}<br>- Quận {{district_name}}</td>
                                 <td>{{ads_location_type_name}}</td>
                                 <td>{{ads_type_name}}</td>
-                                <td>{{img_link}}</td>
+                                {{!-- <td>{{img_link}}</td> --}}
                                 <td>{{status}}</td>
                                 <td class="d-flex">
                                     {{#if (equal status 'Chưa duyệt')}}
@@ -73,6 +74,14 @@
                                             </a>
                                         </div>
                                     {{/if}}
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center">
+                                        <a class="d-flex view-detail mt-1" href="license-request/view-detail?licenseRequestId={{licenseRequestId}}&stt={{stt}}" role="button">
+                                            <img src="/static/images/departmentOfficer/icon-view-detail.png" width="24" height="24" alt="view detail">
+                                            <span class="ml-1">Xem chi tiết</span>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         {{/each}}
