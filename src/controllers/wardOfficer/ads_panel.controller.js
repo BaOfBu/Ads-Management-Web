@@ -32,6 +32,7 @@ const index = async (req, res, next) => {
     }));
     const newArrayAdsLocation = adsPanelWithIndex.slice(offset, limit+offset);
     return res.render("wardOfficer/ads_panel_list", {
+        type: "ads_panel",
         wardName: wardName.name,
         districtName: districtName.name,
         arrayAdsPanel: newArrayAdsLocation,
@@ -71,6 +72,7 @@ const postAdsPanel = async function (req, res) {
     }));
     const newArrayAdsLocation = adsPanelWithIndex.slice(offset, limit+offset);
     return res.render("wardOfficer/ads_panel_list", {
+        type: "ads_panel",
         wardName: wardName.name,
         districtName: districtName.name,
         arrayAdsPanel: newArrayAdsLocation,
@@ -92,6 +94,7 @@ const viewPanelDetails = async function (req, res) {
     const returnUrl = req.headers.referer;
     console.log("ads_panel",ads_panel);
     res.render("wardOfficer/ads_panel_detail", {
+        type: "ads_panel",
         adsPanel: ads_panel,
         returnUrl: returnUrl
     })
@@ -103,6 +106,7 @@ const getEditAdsPanel = async function (req, res) {
     //console.log("adsPanel",adsPanel);
     //console.log("adsPanelType",adsPanelType);
     res.render("wardOfficer/edit_ads_panel", {
+        type: "ads_panel",
         adsPanelType : adsPanelType,
         adsPanel : adsPanel
     })

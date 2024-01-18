@@ -47,6 +47,7 @@ const index = async (req, res, next) => {
     const newArray = ReportWithIndex.slice(offset, offset + limit);
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
     res.render("wardOfficer/report", {
+        type: "report",
         wardName: wardName.name,
         districtName: districtName.name,
         arrayReport: newArray,
@@ -62,6 +63,7 @@ const viewDetails = async (req, res, next) => {
     const report = await reportService.findReportByReportId(req.query.citizenReportId);
     //console.log("report",report);
     res.render("wardOfficer/report_detail", {
+        type: "report",
         report: report
     })
 }

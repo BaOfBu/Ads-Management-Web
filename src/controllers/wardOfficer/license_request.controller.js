@@ -41,6 +41,7 @@ const index = async function (req, res) {
     const currentDateTime = moment().format("HH:mm:ss DD-MM-YYYY");
 
     res.render("wardOfficer/license_request", {
+        type: "license",
         empty: empty,
         license_request: newArray,
         date: currentDateTime,
@@ -67,6 +68,7 @@ const addNewRequest = async function (req, res) {
     console.log("adsPanelTypes: ", adsPanelTypes);
 
     res.render("wardOfficer/license_request_add", {
+        type: "license",
         adsLocations: adsLocations,
         defaultAdsLocation: adsLocations[0],
         adsPanelTypes: adsPanelTypes,

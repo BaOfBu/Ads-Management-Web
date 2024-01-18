@@ -47,6 +47,7 @@ const index = async function (req, res) {
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
 
     return res.render("wardOfficer/ads_location", {
+        type: "ads_location",
         wardName: wardName.name,
         districtName: districtName.name,
         arrayAdsLocation: newArray,
@@ -95,6 +96,7 @@ const postAdsLocation = async function (req, res) {
     const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY')
 
     return res.render("wardOfficer/ads_location", {
+        type: "ads_location",
         wardName: wardName.name,
         districtName: districtName.name,
         arrayAdsLocation: newArray,
@@ -122,6 +124,7 @@ const viewDetails = async function (req, res) {
     const isEmpty = adsPanelWithIndex.length == 0;
     //console.log("isEmpty",isEmpty);
     res.render("wardOfficer/ads_panel", {
+        type: "ads_location",
         adsLocationName: adsLocationName.location,
         adsPanel: adsPanelWithIndex,
         isEmpty: isEmpty
@@ -142,6 +145,7 @@ const viewPanelDetails = async function (req, res) {
     }
     //console.log("ads_panel nè",ads_panel);
     res.render("wardOfficer/ads_panel_detail", {
+        type: "ads_location",
         adsPanel: ads_panel,
         returnUrl: returnUrl
     });
@@ -156,6 +160,7 @@ const getEditAdsLocation = async function (req, res) {
     //console.log("adsLocation",adsLocation);
 
     res.render("wardOfficer/edit_ads_location", {
+        type: "ads_location",
         status: statusName,
         adsLocation: adsLocation,
         locationType: LocationType,
@@ -167,6 +172,7 @@ const getEditAdsPanel = async function (req, res) {
     const adsPanel = await adsService.findAdsPanel(req.query.adsPanelId);
 
     res.render("wardOfficer/edit_ads_panel", {
+        type: "ads_location",
         adsPanelType: adsPanelType,
         adsPanel: adsPanel
     });
@@ -192,6 +198,7 @@ const licenseRequest = async function (req, res) {
         const lengthImg = await imageService.findAll();
 
         res.render("wardOfficer/license_request_AdsPanelScreen", {
+            type: "ads_location",
             adsPanel: adsPanel,
             available: available,
             lengthImg: lengthImg[lengthImg.length - 1].imgId + 1
