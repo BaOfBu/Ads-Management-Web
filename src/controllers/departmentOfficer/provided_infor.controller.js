@@ -1,4 +1,5 @@
 import providedInfo from "../../services/departmentOfficer/provided_infor.service.js";
+import moment from "moment";
 
 const index = async function (req, res) {
     const choice = req.params.choice || 'location-type';
@@ -6,6 +7,10 @@ const index = async function (req, res) {
 
     let title = 'loại vị trí được phép đặt bảng quảng cáo ở thành phố';
     let type = 'loại';
+
+    let providedInfos = [{choice: 'location-type', name: 'Loại vị trí'}, {choice: 'ads-type', name: 'Hình thức quảng cáo'}, {
+        choice: 'ads-panel-type', name: 'Loại bảng quảng cáo'}, {choice: 'report-type', name: 'Hình thức báo cáo'}];
+    let infoCurrent = 'Loại vị trí';
 
     let information;
     switch(choice){
@@ -15,19 +20,24 @@ const index = async function (req, res) {
             break;
         };
         case 'ads-type':{
+            infoCurrent = 'Hình thức quảng cáo';
             title = 'hình thức quảng cáo ở thành phố';
             type = 'hình thức';
             information = await providedInfo.findAll('ads_type');
             break;
         };
         case 'ads-panel-type':{
+            infoCurrent = 'Loại bảng quảng cáo';
             title = 'loại bảng quảng cáo ở thành phố';
             information = await providedInfo.findAll('ads_panel_type');
             break;
         };
         case 'report-type':{
+            infoCurrent = 'Hình thức báo cáo';
             title = 'hình thức báo cáo liên quan đến một bảng quảng cáo, hoặc một địa điểm trên bản đồ';
             type = 'hình thức';
+            information = await providedInfo.findAll('report_type');
+            break;
         }
     }
 
@@ -45,12 +55,17 @@ const index = async function (req, res) {
         }));
     }
 
+    const currentDateTime = moment().format('HH:mm:ss DD-MM-YYYY');
+
     res.render("departmentOfficer/management_type/provided_infor", {
         choice: choice,
         title: title,
         type: type,
         information: informationsWithIndex,
-        empty: empty
+        empty: empty,
+        date: currentDateTime,
+        infoCurrent: infoCurrent,
+        providedInfo: providedInfos
     });
 };
 

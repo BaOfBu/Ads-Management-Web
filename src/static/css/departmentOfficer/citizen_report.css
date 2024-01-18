@@ -15,3 +15,29 @@
     color: var(--blue-bold-color);
     font-weight: bolder;
 }
+
+/* .dashboard a{
+    color: var(--blue-bold-color);
+} */
+
+.info-card-2 {
+    flex: 1;
+    background-color: #FFF6F6;
+    border: 1px solid #FFDFDF;
+    padding: 20px;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.info-card-2 h3,h4{
+    color: #CD6688;
+    font-weight: bolder;
+}
+
+.info-card-2:hover{
+    text-decoration: none;
+}
+
+.info-card-2 h4:hover{
+    border-bottom: 2px solid #CD6688;
+}

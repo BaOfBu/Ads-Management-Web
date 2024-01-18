@@ -1,3 +1,7 @@
+{{#section 'js'}}
+    <script src="/static/js/departmentOfficer/management_ward/list.js"></script>
+{{/section}}
+
 {{#section 'css'}}
     <link rel="stylesheet" href="/static/css/departmentOfficer/district.css">
 {{/section}}
@@ -5,11 +9,27 @@
 <div class="custom-container">
     <div class="card">
         <div class="custom-card">
-            <h5 class="card-header d-flex justify-content-center">Danh sách các phường của quận {{districtName}} thành phố Hồ Chí Minh</h5> 
+            <h5 class="card-header d-flex justify-content-center">Danh sách các phường của {{districtName}} thành phố Hồ Chí Minh</h5> 
         </div>
     </div>
+
+    <div class="d-flex mt-3 justify-content-end">
+        <div class="districts" style="margin-right: 10px;">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
+            {{districtName}}
+            </button>
+            <input type="hidden" id="selectedDistrictId" value="{{districtId}}">
+            <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" style="max-height: 500px; overflow-y: auto;">
+                <li><a class="dropdown-item active" href="ward?districtId=-1&page=1" data-value="Tất cả quận" data-id="-1">Tất cả quận</a></li>
+                {{#each districts}}
+                    <li><a class="dropdown-item" href="ward?districtId={{districtId}}&page=1" data-value="{{name}}" data-id="{{districtId}}">Quận {{name}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+
     <div>
-        <div class="card mt-5">
+        <div class="card mt-3">
         <h5 class="card-header d-flex justify-content-between align-items-center">
             Xem danh sách phường
             <a href="ward/add?districtId={{districtId}}" class="d-flex btn btn-outline-info" role="button">
@@ -80,4 +100,37 @@
             <span class="small">{{date}}</span>
         </div>
     </div>
+    <nav aria-label="Page navigation example" class="justify-content-center mt-5" id="pagination">
+        <ul class="pagination justify-content-center">
+            {{#if isFirstPage}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Trang trước</a>
+                </li>
+            {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="#" id="previousPage">Trang trước</a>
+                </li>
+            {{/if}}
+
+            {{#each pageNumbers}}
+                {{#if isActive}}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{value}}</a>
+                </li>
+                {{else}}
+                <a class="page-link" href="{{#if (equal value '..')}}#pagination{{else}}ward?districtId={{districtId}}&page={{value}}{{/if}}">{{value}}</a>
+                {{/if}}
+            {{/each}}
+
+            {{#if isLastPage}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Trang sau</a>
+                </li>
+            {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="#" id="nextPage">Trang sau</a>
+                </li>
+            {{/if}}
+        </ul>
+    </nav>
 </div>
