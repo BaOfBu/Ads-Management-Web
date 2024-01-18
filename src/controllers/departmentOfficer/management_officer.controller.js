@@ -6,7 +6,7 @@ import districtService from "../../services/departmentOfficer/district.service.j
 import officerService from '../../services/departmentOfficer/officer.service.js';
 
 const index = async function (req, res) {
-    const district = districtService.findAll();
+    const district = await districtService.findAll();
     res.render("departmentOfficer/management_officer/management_officer", {
         district: district
     });
