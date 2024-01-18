@@ -11,6 +11,7 @@ import adsPanelModificationRoutes from "./ads_panel_modification_request.route.j
 import adsLocationModificationRoutes from "./ads_location_modification_request.route.js";
 import licenseRequestRoutes from "./license_request.route.js";
 import citizenReportRoutes from "./citizen_report.route.js";
+import updateProfileRoutes from "./profile.route.js";
 
 function setDefaultLayoutAndPartials(req, res, next) {
     res.locals.layout = "departmentOfficer/layouts/main";
@@ -38,6 +39,7 @@ router.use("/request", async function(req, res){
     res.render("departmentOfficer/redirect/request");
 });
 
+router.use("/profile", updateProfileRoutes);
 // router.use("/officer", async function(req, res){
 //     res.render("departmentOfficer/redirect/officer");
 // });

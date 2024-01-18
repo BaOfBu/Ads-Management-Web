@@ -11,7 +11,7 @@ const update = async function(req, res){
     console.log("officer: ", officer);
     const district = await districtService.findAll();
     officer.dob = moment(officer.dob).format('DD/MM/YYYY');
-    res.render("wardOfficer/profile", {
+    res.render("districtOfficer/profile", {
         district: district,
         officer: officer
     });
@@ -40,7 +40,7 @@ const handle_update = async function(req, res){
     console.log("officer: ", officer);
 
     const district = await districtService.findAll();
-    res.redirect("/ward-officer/profile");
+    res.redirect("/district-officer/profile");
 
 }
 

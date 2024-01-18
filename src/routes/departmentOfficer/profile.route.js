@@ -1,5 +1,6 @@
 import express from "express";
-import profileController from "../../controllers/wardOfficer/profile.controller.js";
+import profileController from "../../controllers/departmentOfficer/profile.controller.js";
+
 const router = express.Router();
 
 router.get("/", profileController.update);

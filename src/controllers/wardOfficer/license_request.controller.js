@@ -73,7 +73,7 @@ const addNewRequest = async function (req, res) {
         defaultAdsLocation: adsLocations[0],
         adsPanelTypes: adsPanelTypes,
         defaultAdsPanelType: adsPanelTypes[0],
-        lengthImg: lengthImg.length + 1
+        lengthImg: lengthImg[lengthImg.length - 1].imgId + 1
     });
 };
 

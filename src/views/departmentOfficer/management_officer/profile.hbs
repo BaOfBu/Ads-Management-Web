@@ -2,7 +2,7 @@
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js">
     </script>
-    <script src="/static/js/departmentOfficer/account/profile.js"></script>
+    <script src="/static/js/departmentOfficer/management_officer/profile.js"></script>
 {{/section}}
 
 {{#section 'css'}}
@@ -10,7 +10,7 @@
 {{/section}}
 
 <div class="custom-container">
-    <form action="" method="post" id="frmRegister">
+    <form action="" method="post" id="frmUpdate">
         <div class="card">
             <h5 class="card-header">
             Tài khoản của cán bộ
@@ -63,54 +63,30 @@
                         <div class="role">
                             <label>Vai trò</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value="Phường" id="flexRadioDefault" name="role" checked>
+                                <input class="form-check-input" type="radio" id="flexRadioDefault" {{#if (equal officer.role 'Ward')}}checked{{/if}} disabled>
                                 <label class="form-check-label" for="flexRadioDefault">
                                     Cán bộ phường
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value="Quận" id="flexRadioChecked" name="role">
+                                <input class="form-check-input" type="radio" id="flexRadioChecked" {{#if (equal officer.role 'District')}}checked{{/if}} disabled>
                                 <label class="form-check-label" for="flexRadioChecked">
                                     Cán bộ quận
                                 </label>
                             </div>
-
-                            <div class="area d-flex mt-3">
-                                <div class="district mr-5">
-                                    <label for="dropdownDistrict">Quận</label>
-                                    <button class="form-control dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false" required>
-                                    Quận
-                                    </button>
-                                    <div class="input-group has-validation">
-                                        <input id="selectedDistrict" name="district" type="hidden"></input>
-                                        <div id="districtError" class="invalid-feedback">
-                                            Vui lòng chọn một quận.
-                                        </div>
-                                    </div>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" required>
-                                        {{#each district}}
-                                            <li><a class="dropdown-item" data-id="{{districtId}}" data-value="{{name}}">{{name}}</a></li>
-                                        {{/each}}
-                                    </ul>
-                                </div>
-
-                                <div class="ward">
-                                    <label for="dropdownWard">Phường</label>
-                                    <button class="form-control dropdown-toggle" type="button" id="dropdownWard" data-toggle="dropdown" aria-expanded="false" required>
-                                    Phường
-                                    </button>
-                                    <div class="input-group has-validation">
-                                        <input id="selectedWard" name="ward" type="hidden" aria-describedby="wardError" required></input>
-                                        <div id="wardError" class="invalid-feedback">
-                                            Vui lòng chọn một phường.
-                                        </div>
-                                    </div>
-                                    
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownWard">
-
-                                    </ul>
-                                </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="flexRadioChecked" {{#if (equal officer.role 'Department')}}checked{{/if}} disabled>
+                                <label class="form-check-label" for="flexRadioChecked">
+                                    Cán bộ sở
+                                </label>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtManagement">Khu vực quản lý</label>
+                        <div class="input-group">
+                            <input type="text" id="txtManagement" class="form-control" value="{{#if (equal officer.role 'Ward')}}Phường {{officer.ward_name}} - Quận {{officer.district_name}}
+                            {{else}}Quận {{officer.district_name}}{{/if}}" readonly>
                         </div>
                     </div>
                 </div>  
