@@ -61,6 +61,8 @@ const handle_register = async function(req, res){
 
         const districtId = await districtService.getIdByName(req.body.district);
 
+        const role = (req.body.role === 'Phường') ? 'Ward' : 'District';
+        
         const account = {
             username: req.body.username,
             password: hash_password,
