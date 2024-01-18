@@ -1,4 +1,13 @@
+.custom-container-assignment {
+    width: 85%;
+    margin: 0 auto;
+}
 .custom-container {
     width: 85%;
     margin: 0 auto;
+}
+.row {
+    display: flex;
+    margin-left: -15px;
+    margin-right: -15px;
 }
