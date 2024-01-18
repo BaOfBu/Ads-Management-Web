@@ -239,12 +239,13 @@ const arrage = async function (req, res) {
         res.redirect("/department-officer/management-officer/list-officer?role=-1&page=1");
     } else {
         const account = await officerService.findByIdWardDistrict(accountId);
+        let ward;
         if (account) {
             account.dob = moment(account.dob).format("DD-MM-YYYY");
             if (account.role == "District") {
                 account.role = "quận";
+                ward = null;
             }
-            let ward;
             if (account.role == "Ward") {
                 account.role = "phường";
                 ward = account.wardId;
