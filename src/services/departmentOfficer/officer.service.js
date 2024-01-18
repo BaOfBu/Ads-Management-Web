@@ -35,11 +35,12 @@ export default {
   findAllByRole(role){
     return db('account')
     .select(
+    'account.*',
     'ward.name as ward_name',
     'district.name as district_name')
     .join('ward', 'account.wardId', '=', 'ward.wardId')
     .join('district', 'account.districtId', '=', 'district.districtId')
     .where('role', role)
-    .orderBy('district_name').orderBy('ward_name').orderBy('name');
+    .orderBy('district_name').orderBy('ward_name').orderBy('account.name');
   }
 }

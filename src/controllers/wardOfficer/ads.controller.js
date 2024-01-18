@@ -148,9 +148,8 @@ const handleAddNewRequest = async function (req, res) {
     delete req.body.adsPanelTypeId;
     req.body.wardId = user.wardId;
     req.body.districtId = user.districtId;
-    // req.body.emailSender = user.email;
+    req.body.emailSender = user.email;
     req.body.status = "Chưa duyệt";
-    req.body.senderEmail = user.email;
 
     const splitStartDate = req.body.startDate.split("/");
     const tempStart = splitStartDate[2] + "-" + splitStartDate[1] + "-" + splitStartDate[0];

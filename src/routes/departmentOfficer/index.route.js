@@ -37,4 +37,9 @@ router.use("/management", async function(req, res){
 router.use("/request", async function(req, res){
     res.render("departmentOfficer/redirect/request");
 });
+
+router.use("/officer", async function(req, res){
+    res.render("departmentOfficer/redirect/officer");
+});
+
 export default router;

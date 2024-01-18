@@ -85,18 +85,20 @@ const list_officer = async function(req, res){
     const role = req.query.role || -1;
     const page = req.query.page || 1;
 
-    let empty = true;
+    let empty = false;
+    let roleName = "Tất cả cán bộ";
 
     let officers;
     if(role === "-1" || role === -1){
         officers = await officerService.findAllWardOfficerAndDistrictOfficer();
     }else{
-        if(role === 1){
+        if(role === 1 || role === '1'){
             officers = await officerService.findAllByRole('Ward');
+            roleName = 'Cán bộ phường';
         }else{
             officers = await officerService.findAllByRole('District');
+            roleName = 'Cán bộ quận';
         }
-        
     }
 
     if(!officers || officers.length === 0){
@@ -121,6 +123,8 @@ const list_officer = async function(req, res){
         isLastPage: pagination.isLastPage,
         pageNumbers: pagination.pageNumbers,
         page: page,
+        role: role,
+        roleName: roleName
     });
 }
 

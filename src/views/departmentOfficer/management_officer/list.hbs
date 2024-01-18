@@ -10,15 +10,15 @@
     </div>
 
     <div class="d-flex mt-3 justify-content-end">
-        <div class="districts" style="margin-right: 10px;">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownDistrict" data-toggle="dropdown" aria-expanded="false">
-            {{role}}
+        <div class="roles" style="margin-right: 10px;">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownRole" data-toggle="dropdown" aria-expanded="false">
+            {{roleName}}
             </button>
-            <input type="hidden" id="selectedDistrictId" value="{{role}}">
-            <ul class="dropdown-menu" aria-labelledby="dropdownDistrict" style="max-height: 500px; overflow-y: auto;">
-                <li><a class="dropdown-item active" data-value="Tất cả cán bộ" data-id="-1">Tất cả cán bộ</a></li>
-                <li><a class="dropdown-item active" data-value="Cán bộ sở" data-id="1">Cán bộ sở</a></li>
-                <li><a class="dropdown-item active" data-value="Cán bộ phường" data-id="2">Cán bộ phường</a></li>
+            <input type="hidden" id="selectedRole" value="{{role}}">
+            <ul class="dropdown-menu" aria-labelledby="dropdownRole" style="max-height: 500px; overflow-y: auto;">
+                <li><a href="list-officer?role=-1&page=1" class="dropdown-item active" data-value="Tất cả cán bộ" data-id="-1">Tất cả cán bộ</a></li>
+                <li><a href="list-officer?role=1&page=1" class="dropdown-item active" data-value="Cán bộ phường" data-id="1">Cán bộ phường</a></li>
+                <li><a href="list-officer?role=2&page=1" class="dropdown-item active" data-value="Cán bộ quận" data-id="2">Cán bộ quận</a></li>
             </ul>
         </div>
     </div>
@@ -27,9 +27,9 @@
         <div class="list card mt-3">
         <h5 class="card-header d-flex justify-content-between align-items-center">
             Xem danh sách
-            <a href="ads-location/add" role="button" class="d-flex btn btn-outline-info">
+            <a href="/department-officer/management-officer" role="button" class="d-flex btn btn-outline-info">
                 <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a point">
-                <span class="ml-1">Thêm một điểm</span>
+                <span class="ml-1">Thêm một cán bộ</span>
             </a>
         </h5>
         {{#if empty}}
@@ -51,12 +51,12 @@
                     {{#each officers}}
                     <tr>
                         <th scope="row">{{stt}}</th>
-                        <td>{{role}}</td>
+                        <td>{{#if (equal role 'Ward')}}Phường{{else}}Quận{{/if}}</td>
                         <td>Phường {{ward_name}} - Quận {{district_name}}</td>
                         <td>{{name}}</td>
                         <td>{{email}}</td>
                         <td>{{phone}}</td>
-                        <td><a href="management-officer/arrange">Phân công</a></td>
+                        <td><a href="management-officer/arrange" style="color: var(--blue-bold-color); font-weight: thin; text-decoration: underline; font-style: italic">Phân công</a></td>
                     </tr>
                     {{/each}}
                 </tbody>

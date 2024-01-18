@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    activateDistrict($('#selectedDistrictId').val());
+    activateRole($('#selectedRole').val());
 
-    function activateDistrict(selectedDistrictId) {
-        $('.districts ul.dropdown-menu .dropdown-item').removeClass('active');
+    function activateRole(selectedRole) {
+        $('.roles ul.dropdown-menu .dropdown-item').removeClass('active');
     
-        $('.districts ul.dropdown-menu .dropdown-item[data-id="' + selectedDistrictId + '"]').addClass('active');
+        $('.roles ul.dropdown-menu .dropdown-item[data-id="' + selectedRole + '"]').addClass('active');
     }
 
     $('#previousPage').on('click', function() {
