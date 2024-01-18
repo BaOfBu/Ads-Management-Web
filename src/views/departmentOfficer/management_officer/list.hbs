@@ -1,0 +1,103 @@
+{{#section 'js'}}
+    <script src="/static/js/departmentOfficer/management_officer/list.js"></script>
+{{/section}}
+
+<div class="custom-container">
+    <div class="card">
+        <div class="custom-card">
+            <h5 class="card-header">Danh sách các cán bộ</h5> 
+        </div>
+    </div>
+
+    <div class="d-flex mt-3 justify-content-end">
+        <div class="roles" style="margin-right: 10px;">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownRole" data-toggle="dropdown" aria-expanded="false">
+            {{roleName}}
+            </button>
+            <input type="hidden" id="selectedRole" value="{{role}}">
+            <ul class="dropdown-menu" aria-labelledby="dropdownRole" style="max-height: 500px; overflow-y: auto;">
+                <li><a href="list-officer?role=-1&page=1" class="dropdown-item active" data-value="Tất cả cán bộ" data-id="-1">Tất cả cán bộ</a></li>
+                <li><a href="list-officer?role=1&page=1" class="dropdown-item active" data-value="Cán bộ phường" data-id="1">Cán bộ phường</a></li>
+                <li><a href="list-officer?role=2&page=1" class="dropdown-item active" data-value="Cán bộ quận" data-id="2">Cán bộ quận</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div>
+        <div class="list card mt-3">
+        <h5 class="card-header d-flex justify-content-between align-items-center">
+            Xem danh sách
+            <a href="/department-officer/management-officer" role="button" class="d-flex btn btn-outline-info">
+                <img src="/static/images/departmentOfficer/icon-add.png" width="24" height="24" alt="add a point">
+                <span class="ml-1">Thêm một cán bộ</span>
+            </a>
+        </h5>
+        {{#if empty}}
+            <div class="card-body">Không có dữ liệu</div>
+        {{else}}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 2%;">#</th>
+                        <th scope="col" class="width: 10%;">Vai trò</th>
+                        <th scope="col" class="width: 16%;">Khu vực</th>
+                        <th scope="col" class="width: 30%;">Họ và Tên</th>
+                        <th scope="col" class="width: 20%;">Email</th>
+                        <th scope="col" class="width: 10%;">Số điện thoại</th>
+                        <th scope="col" class="width: 10%;">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each officers}}
+                    <tr>
+                        <th scope="row">{{stt}}</th>
+                        <td>{{#if (equal role 'Ward')}}Phường{{else}}Quận{{/if}}</td>
+                        <td>Phường {{ward_name}} - Quận {{district_name}}</td>
+                        <td>{{name}}</td>
+                        <td>{{email}}</td>
+                        <td>{{phone}}</td>
+                        <td><a href="management-officer/arrange" style="color: var(--blue-bold-color); font-weight: thin; text-decoration: underline; font-style: italic">Phân công</a></td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/if}}
+        <div class="card-footer text-muted font-italic">
+            <span class="small">{{date}}</span>
+        </div>
+    </div>
+    <nav aria-label="Page navigation example" class="justify-content-center mt-5" id="pagination">
+        <ul class="pagination justify-content-center">
+            {{#if isFirstPage}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Trang trước</a>
+                </li>
+            {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="#" id="previousPage">Trang trước</a>
+                </li>
+            {{/if}}
+
+            {{#each pageNumbers}}
+                {{#if isActive}}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{value}}</a>
+                </li>
+                {{else}}
+                <a class="page-link" href="{{#if (equal value '..')}}#pagination{{else}}arrange?role={{role}}&page={{value}}{{/if}}">{{value}}</a>
+                {{/if}}
+            {{/each}}
+
+            {{#if isLastPage}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Trang sau</a>
+                </li>
+            {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="#" id="nextPage">Trang sau</a>
+                </li>
+            {{/if}}
+        </ul>
+    </nav>
+    <input type="hidden" id="page" value="{{page}}">
+</div>
