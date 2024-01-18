@@ -8,12 +8,27 @@ import newLicenseRequest from "../../services/wardOfficer/license_request.servic
 
 const index = async function (req, res) {
     const user = req.session.authUser;
+    const page = req.query.page || 1;
+    const limit = 2;
+    const offset = (page - 1) * limit;
     let empty = false;
     const license_request = await licenseRequest.findByWardId(user.wardId);
 
     if (!license_request || license_request.length === 0) {
         empty = true;
     }
+
+    const length = license_request.length;
+    const nPages = Math.ceil(length / limit);
+    const pageNumbers = [];
+    for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+        value: i,
+        isActive: i === +page
+        });
+    }
+    const previousValue = page == 1 ? 1 : page - 1;
+    const nextValue = page == nPages ? nPages : +page + 1;
 
     let license_requestWithIndex = license_request.map((request, index) => ({
         ...request,
@@ -22,12 +37,17 @@ const index = async function (req, res) {
         stt: index + 1
     }));
 
+    const newArray = license_requestWithIndex.slice(offset, offset + limit);
     const currentDateTime = moment().format("HH:mm:ss DD-MM-YYYY");
 
     res.render("wardOfficer/license_request", {
+        type: "license",
         empty: empty,
-        license_request: license_requestWithIndex,
-        date: currentDateTime
+        license_request: newArray,
+        date: currentDateTime,
+        pageNumbers: pageNumbers,
+        previousValue: previousValue,
+        nextValue: nextValue
     });
 };
 
@@ -48,6 +68,7 @@ const addNewRequest = async function (req, res) {
     console.log("adsPanelTypes: ", adsPanelTypes);
 
     res.render("wardOfficer/license_request_add", {
+        type: "license",
         adsLocations: adsLocations,
         defaultAdsLocation: adsLocations[0],
         adsPanelTypes: adsPanelTypes,

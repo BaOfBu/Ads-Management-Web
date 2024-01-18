@@ -13,5 +13,6 @@ router.post("/get-ward-by-district", adsLocationModificationRequestController.ge
 router.post("/get-request-by-ward", adsLocationModificationRequestController.getRequestByWard);
 router.post("/cancel-request", adsLocationModificationRequestController.cancelRequest);
 router.post("/accept-request", adsLocationModificationRequestController.acceptRequest);
+router.get("/view-detail", adsLocationModificationRequestController.viewDetail);
 
 export default router;

@@ -17,7 +17,7 @@ const index = async function (req, res) {
 
     let edit_ads_locations_requestWithIndex = edit_ads_locations_request.map((request, index) => ({
         ...request,
-        requestTime: moment(request.requestTime).format('DD/MM/YYYY HH:mm:ss'),
+        requestTime: moment(request.requestTime).format('DD/MM/YYYY'),
         stt: index + 1,
     }));
 
@@ -83,4 +83,19 @@ const acceptRequest = async function(req, res){
     return res.json({success: true, message: "Đã phê duyệt yêu cầu này thành công!"});
 }
 
-export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest };
+const viewDetail = async function(req, res){
+    console.log("query of view detail: ", req.query);
+    const requestId = req.query.requestId;
+    const stt = req.query.stt;
+
+    const request = await adsLocationModificationRequest.findById(requestId);
+    console.log("ads_location_modification_request: ", request);
+
+    request.requestTime = moment(request.requestTime).format("DD/MM/YYYY");
+    res.render("departmentOfficer/ads_location_modification_request/view_detail", {
+        stt: stt,
+        edit_ads_locations_request: request
+    });
+}
+
+export default { index, getWardByDistrict, getRequestByWard, cancelRequest, acceptRequest, viewDetail };

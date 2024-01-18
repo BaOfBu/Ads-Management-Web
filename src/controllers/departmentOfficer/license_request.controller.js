@@ -120,7 +120,6 @@ function generatePagination(license_requests, districtId, wardId, pageCurrent) {
 
 const index = async function (req, res) {
     let empty = false;
-    // const license_request = await licenseRequest.findAll();
     const districts = await district.findAll();
     const districtCurrent = req.query.districtId || -1;
     const wardCurrent = req.query.wardId || -1;
@@ -142,13 +141,6 @@ const index = async function (req, res) {
     if (!license_request || license_request.length === 0) {
         empty = true;
     }
-
-    // let license_requestWithIndex = license_request.map((request, index) => ({
-    //     ...request,
-    //     startDate: moment(request.startDate).format('DD/MM/YYYY'),
-    //     endDate: moment(request.endDate).format('DD/MM/YYYY'),
-    //     stt: index + 1,
-    // }));
 
     const currentDateTime = moment().format("HH:mm:ss DD-MM-YYYY");
 

@@ -6,10 +6,7 @@ import districtService from "../../services/departmentOfficer/district.service.j
 import officerService from "../../services/departmentOfficer/officer.service.js";
 
 const index = async function (req, res) {
-    const district = await districtService.findAll();
-    res.render("departmentOfficer/management_officer/management_officer", {
-        district: district
-    });
+    res.render("departmentOfficer/redirect/officer");
 };
 
 const register = async function (req, res) {
@@ -39,8 +36,10 @@ const isAvaiable = async function (req, res) {
     const username = req.query.username;
     const account = await officerService.findByUsername(username);
     if (!account) {
+        console.log("Chưa có");
         return res.json(true);
     }
+    console.log("Đã có");
     res.json(false);
 };
 
@@ -48,7 +47,9 @@ const handle_register = async function (req, res) {
     console.log(req.body);
     const username = req.body.username;
     const isExisted = await officerService.findByUsername(username);
-    if (!isExisted) {
+    console.log("isExisted: ", isExisted);
+
+    if(!isExisted){
         const raw_password = req.body.raw_password;
         const salt = bcrypt.genSaltSync(10);
         const hash_password = bcrypt.hashSync(raw_password, salt);
@@ -72,9 +73,11 @@ const handle_register = async function (req, res) {
             districtId: districtId.districtId
         };
 
-        await officerService.add(account);
+        const officer = await officerService.add(account);
+        console.log("officer: ", officer);
     }
-    const district = districtService.findAll();
+
+    const district = await districtService.findAll();
     res.render("departmentOfficer/management_officer/management_officer", {
         district: district
     });
