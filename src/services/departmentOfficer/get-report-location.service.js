@@ -60,7 +60,13 @@ export default {
                 "ads_panel_type.name as ads_panel_type_name",
                 "ads_type.name as ads_type",
                 "location_type.name as location_type",
-                "handlingProcedureInfor as handlingProcedureInfor"
+                "handlingProcedureInfor as handlingProcedureInfor",
+                "report_type.name as reportTypeName",
+                "citizen_report.content as content",
+                "citizen_report.name as name",
+                "citizen_report.status as status",
+                "citizen_report.sendDate as date",
+                "citizen_report.location as location"
             )
             .leftJoin("ads_panel", "ads_panel.adsPanelId", "=", "citizen_report.adsPanelId")
             .join("report_type", "citizen_report.reportTypeId", "=", "report_type.reportTypeId")
