@@ -83,9 +83,9 @@ function checkEmail() {
     return regex.test(email) && email.length <= 100;
 }
 
-$('#txtDoB').datetimepicker({
+$("#txtDoB").datetimepicker({
     timepicker: false,
-    format: 'd/m/Y',
+    format: "d/m/Y",
     mask: true
 });
 
@@ -117,10 +117,10 @@ function checkPhone() {
 }
 
 $("#dropdownWard").on("click", function () {
-    if($("#selectedWard").val() == ""){
+    if ($("#selectedWard").val() == "") {
         $("#dropdownWard").addClass("is-invalid");
         $("#wardError").show();
-    }else{
+    } else {
         $("#dropdownWard").removeClass("is-invalid");
         $("#wardError").hide();
     }
@@ -137,29 +137,29 @@ $(".ward ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
     $("#dropdownWard").text(selectedValue);
     $("#dropdownWard").removeClass("is-invalid");
     $("#wardError").hide();
-    activateWard($(this).data('id'));
+    activateWard($(this).data("id"));
 });
 
 $("#dropdownDistrict").on("click", function () {
-    if($("#selectedDistrict").val() == ""){
+    if ($("#selectedDistrict").val() == "") {
         $("#dropdownDistrict").addClass("is-invalid");
         $("#districtError").show();
-    }else{
+    } else {
         $("#dropdownDistrict").removeClass("is-invalid");
         $("#districtError").hide();
     }
 });
 
 function activateDistrict(selectedDistrictId) {
-    $('.district ul.dropdown-menu .dropdown-item').removeClass('active');
+    $(".district ul.dropdown-menu .dropdown-item").removeClass("active");
 
-    $('.district ul.dropdown-menu .dropdown-item[data-id="' + selectedDistrictId + '"]').addClass('active');
+    $('.district ul.dropdown-menu .dropdown-item[data-id="' + selectedDistrictId + '"]').addClass("active");
 }
 
 function activateWard(selectedWardId) {
-    $('.ward ul.dropdown-menu .dropdown-item').removeClass('active');
+    $(".ward ul.dropdown-menu .dropdown-item").removeClass("active");
 
-    $('.ward ul.dropdown-menu .dropdown-item[data-id="' + selectedWardId + '"]').addClass('active');
+    $('.ward ul.dropdown-menu .dropdown-item[data-id="' + selectedWardId + '"]').addClass("active");
 }
 
 $(".district .dropdown-menu .dropdown-item").on("click", function (event) {
@@ -171,18 +171,18 @@ $(".district .dropdown-menu .dropdown-item").on("click", function (event) {
     activateDistrict($(this).data("id"));
 
     console.log("selectedDistrict: ", selectedValue);
-    $('.ward ul.dropdown-menu').empty();
+    $(".ward ul.dropdown-menu").empty();
     $.getJSON(`/department-officer/management-officer/list-ward?district=${selectedValue}`, function (data) {
-        if(data != false){
+        if (data != false) {
             for (let p of data) {
-                let newItem = `<li><a class="dropdown-item" data-id=${p.wardId} data-value="` + p.name + '">' + p.name + '</a></li>';
+                let newItem = `<li><a class="dropdown-item" data-id=${p.wardId} data-value="` + p.name + '">' + p.name + "</a></li>";
                 console.log(newItem);
                 $(".ward ul.dropdown-menu").append(newItem);
             }
-        }else{
+        } else {
             $("#selectedWard").val("");
             $("#dropdownWard").text("Phường");
-        }  
+        }
     });
 
     $("#dropdownDistrict").removeClass("is-invalid");
@@ -192,80 +192,84 @@ $(".district .dropdown-menu .dropdown-item").on("click", function (event) {
 $("#submitButton").on("click", function (event) {
     let isValid = true;
     // event.preventDefault();
-    if(checkUsername() === false){
-        $('#txtUsername').addClass("is-invalid");
+    if (checkUsername() === false) {
+        $("#txtUsername").addClass("is-invalid");
         $("#checkValidationUsername").show();
-        $('#txtUsername').focus();
+        $("#txtUsername").focus();
         isValid = false;
     }
-    if(checkPassword() === false){
-        $('#txtPassword').addClass("is-invalid");
+    if (checkPassword() === false) {
+        $("#txtPassword").addClass("is-invalid");
         $("#checkValidationPassword").show();
-        if(isValid) $('#txtPassword').focus();
+        if (isValid) $("#txtPassword").focus();
         isValid = false;
     }
-    if(checkConfirmPassword() === false){
-        $('#txtConfirm').addClass("is-invalid");
+    if (checkConfirmPassword() === false) {
+        $("#txtConfirm").addClass("is-invalid");
         $("#checkValidationConfirmPassword").show();
-        if(isValid) $('#txtConfirm').focus();
+        if (isValid) $("#txtConfirm").focus();
         isValid = false;
     }
-    if(checkName() === false){
-        $('#txtName').addClass("is-invalid");
+    if (checkName() === false) {
+        $("#txtName").addClass("is-invalid");
         $("#checkValidationName").show();
-        if(isValid) $('#txtName').focus();
+        if (isValid) $("#txtName").focus();
         isValid = false;
     }
-    if(checkEmail() === false){
-        $('#txtEmail').addClass("is-invalid");
+    if (checkEmail() === false) {
+        $("#txtEmail").addClass("is-invalid");
         $("#checkValidationEmail").show();
-        if(isValid) $('#txtEmail').focus();
+        if (isValid) $("#txtEmail").focus();
         isValid = false;
     }
-    if(!$("#txtDoB").val().trim() ||  $("#txtDoB").val() === "__/__/____"){
-        $('txtDoB').addClass("is-invalid");
+    if (!$("#txtDoB").val().trim() || $("#txtDoB").val() === "__/__/____") {
+        $("txtDoB").addClass("is-invalid");
         $("#checkValidationDoB").show();
-        if(isValid) $("#txtDoB").focus();
+        if (isValid) $("#txtDoB").focus();
         isValid = false;
     }
-    if(checkPhone() === false){
-        $('#txtPhone').addClass("is-invalid");
+    if (checkPhone() === false) {
+        $("#txtPhone").addClass("is-invalid");
         $("#checkValidationPhone").show();
-        if(isValid) $('#txtPhone').focus();
+        if (isValid) $("#txtPhone").focus();
         isValid = false;
     }
 
-    if($("#selectedDistrict").val() == ""){
+    if ($("#selectedDistrict").val() == "") {
         $("#dropdownDistrict").addClass("is-invalid");
         $("#districtError").show();
-        if(isValid) $("#dropdownDistrict").focus(); 
+        if (isValid) $("#dropdownDistrict").focus();
         isValid = false;
     }
-    
-    if($("#selectedWard").val() == ""){
+
+    if ($("#selectedWard").val() == "") {
         $("#dropdownWard").addClass("is-invalid");
         $("#wardError").show();
-        if(isValid) $("#dropdownWard").focus();
+        if (isValid) $("#dropdownWard").focus();
         isValid = false;
     }
 
     if (!isValid) {
         event.preventDefault();
     } else {
-        $('#frmRegister').on('submit', function (e) {
+        $("#frmRegister").on("submit", function (e) {
             e.preventDefault();
-        
-            const username = $('#txtUsername').val();
-        
+
+            const username = $("#txtUsername").val();
+
             $.getJSON(`/department-officer/management-officer/is-available?username=${username}`, function (data) {
-              if (data === false) {
-                alert('Tài khoản đã tồn tại. Vui lòng chọn tên đăng nhập khác!');
-                $('#frmRegister').off('submit').submit();
-              } else {
-                alert('Đã tạo tài khoản thành công!');
-                $('#frmRegister').off('submit').submit();
-              }
+                if (data === false) {
+                    alert("Tài khoản đã tồn tại. Vui lòng chọn tên đăng nhập khác!");
+                    $("#frmRegister").off("submit").submit();
+                } else {
+                    alert("Đã tạo tài khoản thành công!");
+                    $("#frmRegister").off("submit").submit();
+                }
             });
-        })
+        });
     }
+});
+
+$("#flexRadioChecked").on("click", function (event) {
+    $(".ward").hide();
 });

@@ -73,7 +73,7 @@ const handle_register = async function (req, res) {
             email: req.body.email,
             phone: req.body.phone,
             dob: dob,
-            role: req.body.role,
+            role: role,
             wardId: wardId.wardId,
             districtId: districtId.districtId
         };
@@ -247,7 +247,7 @@ const arrage = async function (req, res) {
             account.dob = moment(account.dob).format("DD-MM-YYYY");
             if (account.role == "District") {
                 account.role = "quận";
-                ward=null;
+                ward = null;
             }
             if (account.role == "Ward") {
                 account.role = "phường";
