@@ -2,7 +2,11 @@ import express from "express";
 import districtController from "../../controllers/departmentOfficer/district.controller.js";
 
 const router = express.Router();
-
+const setActiveNavItem = (req, res, next) => {
+    res.locals.activeNavItem = "management";
+    next();
+};
+router.use(setActiveNavItem);
 router.get("/", districtController.index);
 router.get("/add", districtController.addDistrict);
 router.get("/is-available", districtController.isAvaiable);

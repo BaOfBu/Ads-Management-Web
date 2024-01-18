@@ -2,7 +2,11 @@ import express from "express";
 import adsLocationController from "../../controllers/departmentOfficer/ads_location.controller.js";
 
 const router = express.Router();
-
+const setActiveNavItem = (req, res, next) => {
+    res.locals.activeNavItem = "management";
+    next();
+};
+router.use(setActiveNavItem);
 router.get("/", adsLocationController.index);
 router.get("/add", adsLocationController.addAdsLocation);
 router.post("/del", adsLocationController.handle_deleteAdsLocation);

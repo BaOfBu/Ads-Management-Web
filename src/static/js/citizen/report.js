@@ -90,6 +90,13 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
     if (email == "") {
         $("#notification-email").css("display", "block");
         isValid = false;
+    } else if (
+        !email.match(
+            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+    ) {
+        $("#notification-email").css("display", "block");
+        isValid = false;
     } else {
         $("#notification-email").css("display", "none");
     }
@@ -104,6 +111,10 @@ document.getElementById("form-citizen").addEventListener("submit", function (eve
         isValid = false;
     } else {
         if (phone.length > 10) {
+            $("#notification-phone").css("display", "block");
+            $("#notification-phone").text("Số điện thoại không hợp lệ");
+            isValid = false;
+        } else if (/^(?:(\d{3}))?[-. ]?(\d{3})[-. ]?(\d{4})$/.test(phone) == false) {
             $("#notification-phone").css("display", "block");
             $("#notification-phone").text("Số điện thoại không hợp lệ");
             isValid = false;

@@ -2,6 +2,11 @@ import express from "express";
 import wardController from "../../controllers/departmentOfficer/ward.controller.js";
 
 const router = express.Router();
+const setActiveNavItem = (req, res, next) => {
+    res.locals.activeNavItem = "management";
+    next();
+};
+router.use(setActiveNavItem);
 
 router.get("/", wardController.index);
 router.get("/add", wardController.addWard);
