@@ -525,6 +525,7 @@ function updateTheInformationReportItemForSideBar(report) {
     // report panel
     $.getJSON(`http://localhost:8888/get-data/get-report-location/get-report-panel`, { id: report.adsLocationId }, function (data) {
         if (data.length > 0) {
+            console.log(data);
             for (let i = 0; i < data.length; i++) {
                 const dateObject = new Date(data[i].date);
                 const formattedDate = dateObject.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
