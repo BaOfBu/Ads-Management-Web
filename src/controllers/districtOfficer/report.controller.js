@@ -59,10 +59,10 @@ const updateStatus = async (req, res, next) => {
     const mailOptions = {
         from: "ntson21@clc.fitus.edu.vn",
         to: report.email,
-        subject: "Thông báo cách thức xử lí ",
+        subject: "Thông báo tiến độ xử lí báo cáo",
         text: `Xin chào ${report.name}
-        \nBáo cáo của bạn về việc ${report.report_type_name} tại ${report.location} đã được xử lí.
-        \nCách thức xử lí của cán bộ phường có nội dung như sau: ${handlingProcedureInfor}
+        \nBáo cáo của bạn về việc ${report.report_type_name} tại ${report.location} ${status == "Đang xử lý" ? "đang được xử lý" : "đã được xử lý"}
+        \nNội dung xử lí của cán bộ phường có nội dung như sau: ${handlingProcedureInfor}
         \nCảm ơn bạn đã gửi báo cáo về cho hệ thống\n`,
     };
 

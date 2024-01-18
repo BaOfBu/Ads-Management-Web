@@ -137,6 +137,7 @@ $(".ward ul.dropdown-menu").on("click", ".dropdown-item", function (event) {
     $("#dropdownWard").text(selectedValue);
     $("#dropdownWard").removeClass("is-invalid");
     $("#wardError").hide();
+    activateWard($(this).data('id'));
 });
 
 $("#dropdownDistrict").on("click", function () {
@@ -149,18 +150,32 @@ $("#dropdownDistrict").on("click", function () {
     }
 });
 
+function activateDistrict(selectedDistrictId) {
+    $('.district ul.dropdown-menu .dropdown-item').removeClass('active');
+
+    $('.district ul.dropdown-menu .dropdown-item[data-id="' + selectedDistrictId + '"]').addClass('active');
+}
+
+function activateWard(selectedWardId) {
+    $('.ward ul.dropdown-menu .dropdown-item').removeClass('active');
+
+    $('.ward ul.dropdown-menu .dropdown-item[data-id="' + selectedWardId + '"]').addClass('active');
+}
+
 $(".district .dropdown-menu .dropdown-item").on("click", function (event) {
     event.preventDefault();
     let selectedValue = $(this).data("value");
     $("#selectedDistrict").val(selectedValue);
     $("#dropdownDistrict").text(selectedValue);
 
+    activateDistrict($(this).data("id"));
+
     console.log("selectedDistrict: ", selectedValue);
     $('.ward ul.dropdown-menu').empty();
     $.getJSON(`/department-officer/management-officer/list-ward?district=${selectedValue}`, function (data) {
         if(data != false){
             for (let p of data) {
-                let newItem = '<li><a class="dropdown-item" data-value="' + p.name + '">' + p.name + '</a></li>';
+                let newItem = `<li><a class="dropdown-item" data-id=${p.wardId} data-value="` + p.name + '">' + p.name + '</a></li>';
                 console.log(newItem);
                 $(".ward ul.dropdown-menu").append(newItem);
             }
